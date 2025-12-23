@@ -1,0 +1,53 @@
+{
+	"name": "wbs_ecommerceproject",
+	"version": "1.0.0",
+	"description": "",
+	"main": "dist/index.js",
+	"type": "module",
+	"imports": {
+		"#db": {
+			"development": "./src/db/index.ts",
+			"production": "./dist/db/index.js"
+		},
+		"#models": {
+			"development": "./src/models/index.ts",
+			"production": "./dist/models/index.js"
+		},
+		"#controllers": {
+			"development": "./src/controllers/index.ts",
+			"production": "./dist/controllers/index.js"
+		},
+		"#routers": {
+			"development": "./src/routers/index.ts",
+			"production": "./dist/routers/index.js"
+		},
+		"#middleware": {
+			"development": "./src/middleware/index.ts",
+			"production": "./dist/middleware/index.js"
+		},
+		"#schemas": {
+			"development": "./src/schemas/index.ts",
+			"production": "./dist/schemas/index.js"
+		}
+	},
+	"scripts": {
+		"dev": "node --env-file=.env.development.local --watch --conditions development src/app.ts",
+		"prebuild": "rm -rf dist",
+		"build": "tsc",
+		"prestart": "npm run build",
+		"start": "node dist/server.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^5.2.1",
+		"mongoose": "^9.0.1",
+		"zod": "^4.1.13"
+	},
+	"devDependencies": {
+		"@types/express": "^5.0.6",
+		"@types/node": "^24.10.2",
+		"typescript": "^5.9.3"
+	}
+}
