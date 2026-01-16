@@ -77,7 +77,7 @@ export const newTattooAppointmentInputSchema = baseAppointmentInputSchema.extend
 	placement: z.string().optional(),
 	size: z.string().optional(),
 	color: z.boolean().optional(),
-	contact: optionalContactSchema,
+	contact: contactSchema,
 });
 
 export const newTattooAppointmentSchema = z.object({
@@ -94,7 +94,7 @@ export const touchUpAppointmentInputSchema = baseAppointmentInputSchema.extend({
 			minClientNameLength,
 			`Client name must be at least ${minClientNameLength} characters long`
 		),
-	contact: optionalContactSchema,
+	contact: contactSchema,
 });
 
 export const touchUpAppointmentSchema = z.object({
@@ -111,7 +111,7 @@ export const consultationAppointmentInputSchema = baseAppointmentInputSchema.ext
 			minClientNameLength,
 			`Client name must be at least ${minClientNameLength} characters long`
 		),
-	contact: optionalContactSchema,
+	contact: contactSchema,
 });
 
 export const consultationAppointmentSchema = z.object({

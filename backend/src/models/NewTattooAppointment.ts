@@ -3,12 +3,12 @@ import Appointment from "./Appointment.ts";
 
 const ContactSchema = new Schema(
 	{
-		type: {
+		contactType: {
 			type: String,
 			required: true,
-			enum: ["Instagram", "WhatsApp", "Email"],
+			enum: ["Instagram", "WhatsApp", "EMail"],
 		},
-		details: { type: String, required: true },
+		contactValue: { type: String, required: true },
 	},
 	{ _id: false }
 );
