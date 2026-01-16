@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 try {
 	await mongoose.connect(process.env.MONGODB_URI!, {
-		dbName: "eCommerceProject",
+		dbName: "appdb",
 	});
 	console.log("✅ MongoDB verbunden");
 } catch (error) {

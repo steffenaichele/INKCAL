@@ -30,6 +30,7 @@ export const userInputSchema = z.strictObject({
 			minPasswordLength,
 			`Password must be at least ${minPasswordLength} characters long`
 		),
+
 });
 
 // Output/DTO Schema
