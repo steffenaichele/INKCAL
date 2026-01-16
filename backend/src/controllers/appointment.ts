@@ -49,18 +49,18 @@ const createAppointment: RequestHandler<
 
 	switch (appointmentType) {
 		case "NewTattoo":
-			newAppointment = await NewTattooAppointment.create(appointmentData);
+			newAppointment = await NewTattooAppointment.create(appointmentData as any);
 			break;
 		case "TouchUp":
-			newAppointment = await TouchUpAppointment.create(appointmentData);
+			newAppointment = await TouchUpAppointment.create(appointmentData as any);
 			break;
 		case "Consultation":
 			newAppointment = await ConsultationAppointment.create(
-				appointmentData
+				appointmentData as any
 			);
 			break;
 		case "Blocker":
-			newAppointment = await BlockerAppointment.create(appointmentData);
+			newAppointment = await BlockerAppointment.create(appointmentData as any);
 			break;
 		default:
 			throw new Error(`Invalid appointment type: ${appointmentType}`, {
@@ -105,25 +105,25 @@ const updateAppointment: RequestHandler<
 				updatedAppointment = await NewTattooAppointment.create({
 					...appointmentData,
 					_id: id,
-				});
+				} as any);
 				break;
 			case "TouchUp":
 				updatedAppointment = await TouchUpAppointment.create({
 					...appointmentData,
 					_id: id,
-				});
+				} as any);
 				break;
 			case "Consultation":
 				updatedAppointment = await ConsultationAppointment.create({
 					...appointmentData,
 					_id: id,
-				});
+				} as any);
 				break;
 			case "Blocker":
 				updatedAppointment = await BlockerAppointment.create({
 					...appointmentData,
 					_id: id,
-				});
+				} as any);
 				break;
 			default:
 				throw new Error(
