@@ -1,6 +1,6 @@
 import express from "express";
 import "#db";
-import { userRouter } from "#routers";
+import { userRouter, appointmentRouter } from "#routers";
 import { errorHandler } from "#middleware";
 
 const port = process.env.PORT;
@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/users", userRouter);
-
+app.use("/appointments", appointmentRouter);
 
 app.get("/", (req: any, res: any) => {
 	res.send("Moingiorno World!");

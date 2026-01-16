@@ -1,19 +1,19 @@
 import { Router } from "express";
 import { validateBody } from "#middleware";
-import { userInputSchema, userParamsSchema } from "#schemas";
-import { getAllAppointments, createAppointment, getAppointmentById, updateAppointment, deleteAppointment } from "#controllers";
+import { userInputSchema } from "#schemas";
+import { getAllUsers, createUser, getUserById, updateUser, deleteUser } from "#controllers";
 
 const userRouter = Router();
 
 userRouter
 	.route("/")
-	.get(getAllAppointments)
-	.post(validateBody(userInputSchema), createAppointment);
+	.get(getAllUsers)
+	.post(validateBody(userInputSchema), createUser);
 
 userRouter
-  .route("/:id")
-  .get(getAppointmentById)
-  .put(validateBody(userInputSchema), updateAppointment)
-  .delete(deleteAppointment);
+	.route("/:id")
+	.get(getUserById)
+	.put(validateBody(userInputSchema), updateUser)
+	.delete(deleteUser);
 
 export default userRouter;
