@@ -23,6 +23,7 @@ __pycache__/
 .env.local
 backend/.env
 backend/.env.local
+backend/.env.development.local
 frontend/.env
 frontend/.env.local
 
