@@ -5,6 +5,41 @@ const minClientNameLength = 2;
 const minTitleLength = 3;
 const minDescriptionLength = 5;
 
+// Contact Type Enum
+const contactTypeEnum = z.enum(["Instagram", "WhatsApp", "EMail"]);
+
+// Instagram validation: minimum 1 character
+const instagramContactSchema = z.strictObject({
+  contactType: z.literal("Instagram"),
+  contactValue: z.string().min(1, "Instagram handle must be at least 1 character")
+});
+
+// WhatsApp validation: E.164 phone format
+const whatsappContactSchema = z.strictObject({
+  contactType: z.literal("WhatsApp"),
+  contactValue: z.string().regex(
+    /^\+[1-9]\d{1,14}$/,
+    "WhatsApp number must be a valid phone number with country code (e.g., +1234567890)"
+  )
+});
+
+// Email validation: standard email format
+const emailContactSchema = z.strictObject({
+  contactType: z.literal("EMail"),
+  contactValue: z.string().email("Invalid email address format")
+});
+
+// Discriminated union for Contact
+export const contactSchema = z.discriminatedUnion("contactType", [
+  instagramContactSchema,
+  whatsappContactSchema,
+  emailContactSchema,
+]);
+
+// Optional wrapper for appointment schemas
+export const optionalContactSchema = contactSchema.optional();
+
+
 const dbEntrySchema = z.strictObject({
     _id: z.instanceof(Types.ObjectId),
     createdAt: z.date(),
@@ -19,19 +54,30 @@ export const appointmentParamsSchema = z.strictObject({
 // Basis Appointment Input Schema
 const baseAppointmentInputSchema = z.object({
     userId: z.string().refine((val) => isValidObjectId(val), "Invalid user ID"),
-    date: z.date(),
+    date: z.iso.date(),
     title: z.string().min(minTitleLength, `Title must be at least ${minTitleLength} characters long`),
-    startTime: z.string(),
-    endTime: z.string(),
+    startTime: z.iso.time(),
+    endTime: z.iso.time(),
 });
 
 // New Tattoo Appointment Input Schema
 export const newTattooAppointmentInputSchema = baseAppointmentInputSchema.extend({
-    clientName: z.string().min(minClientNameLength, `Client name must be at least ${minClientNameLength}} characters long`),
-    designDescription: z.string().min(minDescriptionLength, `Design description must be at least ${minDescriptionLength} characters long`),
-    placement: z.string().optional(),
-    size: z.string().optional(),
-    color: z.boolean().optional(),
+	clientName: z
+		.string()
+		.min(
+			minClientNameLength,
+			`Client name must be at least ${minClientNameLength}} characters long`
+		),
+	designDescription: z
+		.string()
+		.min(
+			minDescriptionLength,
+			`Design description must be at least ${minDescriptionLength} characters long`
+		),
+	placement: z.string().optional(),
+	size: z.string().optional(),
+	color: z.boolean().optional(),
+	contact: optionalContactSchema,
 });
 
 export const newTattooAppointmentSchema = z.object({
@@ -42,7 +88,13 @@ export const newTattooAppointmentSchema = z.object({
 
 // Touch-Up Appointment Input Schema
 export const touchUpAppointmentInputSchema = baseAppointmentInputSchema.extend({
-    clientName: z.string().min(minClientNameLength, `Client name must be at least ${minClientNameLength} characters long`),
+	clientName: z
+		.string()
+		.min(
+			minClientNameLength,
+			`Client name must be at least ${minClientNameLength} characters long`
+		),
+	contact: optionalContactSchema,
 });
 
 export const touchUpAppointmentSchema = z.object({
@@ -53,7 +105,13 @@ export const touchUpAppointmentSchema = z.object({
 
 // Consultation Appointment Input Schema
 export const consultationAppointmentInputSchema = baseAppointmentInputSchema.extend({
-    clientName: z.string().min(minClientNameLength, `Client name must be at least ${minClientNameLength} characters long`),
+	clientName: z
+		.string()
+		.min(
+			minClientNameLength,
+			`Client name must be at least ${minClientNameLength} characters long`
+		),
+	contact: optionalContactSchema,
 });
 
 export const consultationAppointmentSchema = z.object({
@@ -97,3 +155,8 @@ export type BlockerAppointmentInputDTO = z.infer<typeof blockerAppointmentInputS
 export type BlockerAppointmentDTO = z.infer<typeof blockerAppointmentSchema>;
 
 export type AppointmentInputWithTypeDTO = z.infer<typeof appointmentInputWithTypeSchema>;
+
+export type ContactDTO = z.infer<typeof contactSchema>;
+export type InstagramContactDTO = z.infer<typeof instagramContactSchema>;
+export type WhatsAppContactDTO = z.infer<typeof whatsappContactSchema>;
+export type EmailContactDTO = z.infer<typeof emailContactSchema>;
