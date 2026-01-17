@@ -5,8 +5,11 @@ const minClientNameLength = 2;
 const minTitleLength = 3;
 const minDescriptionLength = 5;
 
+// Appointment Type Enum
+export const appointmentTypeEnum = z.enum(["NewTattoo", "TouchUp", "Consultation", "Blocker"]);
+
 // Contact Type Enum
-const contactTypeEnum = z.enum(["Instagram", "WhatsApp", "EMail"]);
+export const contactTypeEnum = z.enum(["Instagram", "WhatsApp", "EMail"]);
 
 // Instagram validation: minimum 1 character
 const instagramContactSchema = z.strictObject({
@@ -77,7 +80,7 @@ export const newTattooAppointmentInputSchema = baseAppointmentInputSchema.extend
 	placement: z.string().optional(),
 	size: z.string().optional(),
 	color: z.boolean().optional(),
-	contact: optionalContactSchema,
+	contact: contactSchema,
 });
 
 export const newTattooAppointmentSchema = z.object({
@@ -94,7 +97,7 @@ export const touchUpAppointmentInputSchema = baseAppointmentInputSchema.extend({
 			minClientNameLength,
 			`Client name must be at least ${minClientNameLength} characters long`
 		),
-	contact: optionalContactSchema,
+	contact: contactSchema,
 });
 
 export const touchUpAppointmentSchema = z.object({
@@ -111,7 +114,7 @@ export const consultationAppointmentInputSchema = baseAppointmentInputSchema.ext
 			minClientNameLength,
 			`Client name must be at least ${minClientNameLength} characters long`
 		),
-	contact: optionalContactSchema,
+	contact: contactSchema,
 });
 
 export const consultationAppointmentSchema = z.object({
@@ -156,6 +159,11 @@ export type BlockerAppointmentDTO = z.infer<typeof blockerAppointmentSchema>;
 
 export type AppointmentInputWithTypeDTO = z.infer<typeof appointmentInputWithTypeSchema>;
 
+// Enum Types
+export type AppointmentType = z.infer<typeof appointmentTypeEnum>;
+export type ContactType = z.infer<typeof contactTypeEnum>;
+
+// Contact Types
 export type ContactDTO = z.infer<typeof contactSchema>;
 export type InstagramContactDTO = z.infer<typeof instagramContactSchema>;
 export type WhatsAppContactDTO = z.infer<typeof whatsappContactSchema>;
