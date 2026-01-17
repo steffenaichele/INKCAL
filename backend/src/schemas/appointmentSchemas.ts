@@ -5,8 +5,11 @@ const minClientNameLength = 2;
 const minTitleLength = 3;
 const minDescriptionLength = 5;
 
+// Appointment Type Enum
+export const appointmentTypeEnum = z.enum(["NewTattoo", "TouchUp", "Consultation", "Blocker"]);
+
 // Contact Type Enum
-const contactTypeEnum = z.enum(["Instagram", "WhatsApp", "EMail"]);
+export const contactTypeEnum = z.enum(["Instagram", "WhatsApp", "EMail"]);
 
 // Instagram validation: minimum 1 character
 const instagramContactSchema = z.strictObject({
@@ -156,6 +159,11 @@ export type BlockerAppointmentDTO = z.infer<typeof blockerAppointmentSchema>;
 
 export type AppointmentInputWithTypeDTO = z.infer<typeof appointmentInputWithTypeSchema>;
 
+// Enum Types
+export type AppointmentType = z.infer<typeof appointmentTypeEnum>;
+export type ContactType = z.infer<typeof contactTypeEnum>;
+
+// Contact Types
 export type ContactDTO = z.infer<typeof contactSchema>;
 export type InstagramContactDTO = z.infer<typeof instagramContactSchema>;
 export type WhatsAppContactDTO = z.infer<typeof whatsappContactSchema>;
