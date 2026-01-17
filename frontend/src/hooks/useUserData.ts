@@ -1,5 +1,13 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * @deprecated Use useUsers from './useUsers' instead
+ * This file will be removed after migration is complete
+ *
+ * Migration example:
+ * OLD: const userData = UserData();
+ * NEW: const { data: userData, isLoading, error } = useUsers();
+ */
 export const UserData = () => {
     const [userData, setUserData] = useState<any>(null);
 
@@ -23,6 +31,14 @@ export const UserData = () => {
     return userData;
 }
 
+/**
+ * @deprecated Use useUser from './useUsers' instead
+ * This file will be removed after migration is complete
+ *
+ * Migration example:
+ * OLD: const user = useUser(userId);
+ * NEW: const { data: user, isLoading, error } = useUser(userId);
+ */
 export const useUser = (userId: string) => {
     const [user, setUser] = useState<any>(null);
 
