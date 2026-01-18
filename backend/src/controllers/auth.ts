@@ -5,10 +5,12 @@ import type { CookieOptions, RequestHandler } from "express";
 
 const TOKEN_TTL = Number(process.env.TOKEN_TTL) * 24 * 60 * 60;
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const tokenCookieOptions = {
 	httpOnly: true,
-	secure: process.env.NODE_ENV === "production",
-	sameSite: "lax",
+	secure: isProduction,
+	sameSite: isProduction ? "none" : "lax",
 	maxAge: TOKEN_TTL * 1000, // 7 days
 } satisfies CookieOptions;
 
