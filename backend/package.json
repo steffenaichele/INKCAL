@@ -35,7 +35,7 @@
 		"prebuild": "rm -rf dist",
 		"build": "tsc",
 		"prestart": "npm run build",
-		"start": "node dist/app.js"
+		"start": "node --conditions production dist/app.js"
 	},
 	"keywords": [],
 	"author": "",
