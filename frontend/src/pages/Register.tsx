@@ -11,7 +11,7 @@ const Register = () => {
 	const [loading, setLoading] = useState(false);
 
 	if (signedIn) {
-		return <Navigate to="/" replace />;
+		return <Navigate to="/dashboard" replace />;
 	}
 
 	const handleSubmit = async (e: React.FormEvent) => {

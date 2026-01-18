@@ -20,7 +20,7 @@ const Navbar = () => {
                 margin: 0,
                 padding: 0
             }}>
-                <li><Link to="/">Home</Link></li>
+                {!signedIn && <li><Link to="/">Home</Link></li>}
                 {signedIn && <li><Link to="/dashboard">Dashboard</Link></li>}
                 <li><Link to="/about">About</Link></li>
             </ul>

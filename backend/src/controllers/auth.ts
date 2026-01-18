@@ -7,7 +7,7 @@ const TOKEN_TTL = Number(process.env.TOKEN_TTL) * 24 * 60 * 60;
 
 const tokenCookieOptions = {
 	httpOnly: true,
-	secure: true,
+	secure: process.env.NODE_ENV === "production",
 	sameSite: "lax",
 	maxAge: TOKEN_TTL * 1000, // 7 days
 } satisfies CookieOptions;
@@ -34,7 +34,15 @@ export const register: RequestHandler = async (req, res) => {
 		return res.status(500).json({ error: "Error during registration :(" });
 	}
 
-	//4.Return success response
+	//4.Create session / JWT
+	const token = jwt.sign(
+		{ _id: (user as any)._id, email: (user as any).email, role: (user as any).role },
+		process.env.JWT_SECRET as string,
+		{ expiresIn: TOKEN_TTL }
+	);
+
+	//5.Return success response
+	res.cookie("token", token, tokenCookieOptions);
 
 	res.json({ message: "User registered successfully" });
 };
@@ -56,7 +64,7 @@ export const login: RequestHandler = async (req, res) => {
 	//3. Create session / JWT
 
     const token = jwt.sign(
-        { userId: user._id, email: user.email, role: user.role },
+        { _id: user._id, email: user.email, role: user.role },
         process.env.JWT_SECRET as string,
         { expiresIn: TOKEN_TTL});
 
@@ -75,7 +83,9 @@ export const me: RequestHandler = async (req, res) => {
 	const {_id} = req.user!;
 	const user = await User.findById(_id);
 	if (!user) {
-		throw new Error("User not found", { cause: 404 });
+		// User was deleted - clear the invalid cookie
+		res.clearCookie("token", tokenCookieOptions);
+		throw new Error("User not found", { cause: 401 });
 	}
-	res.json(user);
+	res.json({ user });
 };

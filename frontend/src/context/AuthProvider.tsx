@@ -7,6 +7,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [signedIn, setSignedIn] = useState(false);
 	const [user, setUser] = useState<User | null>(null);
 	const [checkSession, setCheckSession] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		const getUser = async () => {
@@ -16,9 +17,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 				setUser(data);
 				setSignedIn(true);
 			} catch (error) {
-				console.error(error);
+				// User not authenticated - this is fine
+				setSignedIn(false);
+				setUser(null);
 			} finally {
 				setCheckSession(false);
+				setIsLoading(false);
 			}
 		};
 
@@ -50,6 +54,21 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 		handleSignOut,
 		handleRegister,
 	};
+
+	// Show loading while checking session
+	if (isLoading) {
+		return (
+			<div style={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				height: '100vh'
+			}}>
+				Loading...
+			</div>
+		);
+	}
+
 	return <AuthContext value={value}>{children}</AuthContext>;
 };
 
