@@ -34,13 +34,14 @@ app.use(cors({
 
 app.use(express.json(), cookieParser());
 
-app.use("/auth", authRouter);
-app.use("/users", userRouter);
-app.use("/appointments", appointmentRouter);
-
 app.get("/", (req: any, res: any) => {
 	res.send("Moingiorno World!");
 });
+
+// API Routes with /api prefix
+app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/appointments", appointmentRouter);
 
 app.post("/protected", authenticate, authorize(['admin', 'user']), (req, res) => {
 	throw new Error("You shall not pass!", { cause: 403 });
