@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validateBody } from "#middleware";
+import { validateBody, authenticate, authorize } from "#middleware";
 import { userInputSchema } from "#schemas";
 import { getAllUsers, createUser, getUserById, updateUser, deleteUser } from "#controllers";
 
@@ -13,7 +13,7 @@ userRouter
 userRouter
 	.route("/:id")
 	.get(getUserById)
-	.put(validateBody(userInputSchema), updateUser)
+	.put(authenticate, authorize(['admin', 'self']), validateBody(userInputSchema), updateUser)
 	.delete(deleteUser);
 
 export default userRouter;
