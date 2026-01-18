@@ -5,9 +5,14 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
  * Custom API Error class with status code
  */
 export class ApiError extends Error {
-  constructor(public message: string, public status: number) {
+  message: string;
+  status: number;
+
+  constructor(message: string, status: number) {
     super(message);
     this.name = 'ApiError';
+    this.message = message;
+    this.status = status;
   }
 }
 
