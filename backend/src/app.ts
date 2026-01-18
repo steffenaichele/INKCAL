@@ -1,11 +1,36 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import "#db";
 import { userRouter, appointmentRouter, authRouter } from "#routers";
 import { errorHandler, authenticate, authorize } from "#middleware";
 
 const port = process.env.PORT;
 const app = express();
+
+// CORS configuration
+const allowedOrigins = [
+	"http://localhost:5173",
+	"http://localhost:5174",
+	"https://inkcal.vercel.app",
+	process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+	origin: (origin, callback) => {
+		// Allow requests with no origin (like mobile apps or curl requests)
+		if (!origin) return callback(null, true);
+
+		if (allowedOrigins.includes(origin)) {
+			callback(null, true);
+		} else {
+			callback(new Error('Not allowed by CORS'));
+		}
+	},
+	credentials: true,
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json(), cookieParser());
 
