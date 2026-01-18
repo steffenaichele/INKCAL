@@ -2,7 +2,9 @@ import { z } from "zod/v4";
 import { isValidObjectId, Types } from "mongoose";
 
 const minNameLength = 2;
+const maxNameLength = 100;
 const minPasswordLength = 6;
+const maxPasswordLength = 256;
 
 // Base Schemas (Internal/External)
 const dbEntrySchema = z.strictObject({
@@ -22,6 +24,10 @@ export const userInputSchema = z.strictObject({
 		.min(
 			minNameLength,
 			`Name must be at least ${minNameLength} characters long`
+		)
+		.max(
+			maxNameLength,
+			`Name must be at most ${maxNameLength} characters long`
 		),
 	email: z.string().email("Invalid email address"),
 	password: z
@@ -29,8 +35,9 @@ export const userInputSchema = z.strictObject({
 		.min(
 			minPasswordLength,
 			`Password must be at least ${minPasswordLength} characters long`
-		),
-
+		)
+		.max(maxPasswordLength, `Password must be at most ${maxPasswordLength} characters long`),
+	role: z.enum(["user", "admin"]).optional(),
 });
 
 // Output/DTO Schema
