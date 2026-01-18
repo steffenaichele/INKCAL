@@ -187,3 +187,26 @@ export interface ApiError {
   message: string;
   status?: number;
 }
+
+// ============================================================================
+// Auth Types
+// ============================================================================
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterFormState {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface AuthContextType {
+  signedIn: boolean;
+  user: User | null;
+  handleSignIn: (data: LoginData) => Promise<void>;
+  handleSignOut: () => Promise<void>;
+  handleRegister: (formState: RegisterFormState) => Promise<void>;
+}
