@@ -1,48 +1,45 @@
 import { Link } from 'react-router';
 import { useAuth } from '@/context';
+import './Navbar.scss';
 
 const Navbar = () => {
     const { signedIn, user } = useAuth();
 
     return (
-        <nav style={{
-            padding: '15px',
-            backgroundColor: '#f0f0f0',
-            marginBottom: '20px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        }}>
-            <ul style={{
-                listStyle: 'none',
-                display: 'flex',
-                gap: '20px',
-                margin: 0,
-                padding: 0
-            }}>
-                {!signedIn && <li><Link to="/">Home</Link></li>}
-                {signedIn && <li><Link to="/dashboard">Dashboard</Link></li>}
-                <li><Link to="/about">About</Link></li>
+        <nav className="navbar">
+            <ul className="navbar__list">
+                {!signedIn && (
+                    <li className="navbar__item">
+                        <Link to="/" className="navbar__link">Home</Link>
+                    </li>
+                )}
+                {signedIn && (
+                    <li className="navbar__item">
+                        <Link to="/dashboard" className="navbar__link">Dashboard</Link>
+                    </li>
+                )}
+                <li className="navbar__item">
+                    <Link to="/about" className="navbar__link">About</Link>
+                </li>
             </ul>
-            <ul style={{
-                listStyle: 'none',
-                display: 'flex',
-                gap: '20px',
-                margin: 0,
-                padding: 0,
-                alignItems: 'center'
-            }}>
+            <ul className="navbar__list">
                 {signedIn && user ? (
                     <>
-                        <li style={{ marginRight: '10px' }}>
+                        <li className="navbar__user-greeting">
                             Hello, {user.name}!
                         </li>
-                        <li><Link to="/profile">Profile</Link></li>
+                        <li className="navbar__item">
+                            <Link to="/profile" className="navbar__link">Profile</Link>
+                        </li>
                     </>
                 ) : (
                     <>
-                        <li><Link to="/login">Login</Link></li>
-                        <li><Link to="/register">Register</Link></li>
+                        <li className="navbar__item">
+                            <Link to="/login" className="navbar__link">Login</Link>
+                        </li>
+                        <li className="navbar__item">
+                            <Link to="/register" className="navbar__link">Register</Link>
+                        </li>
                     </>
                 )}
             </ul>
