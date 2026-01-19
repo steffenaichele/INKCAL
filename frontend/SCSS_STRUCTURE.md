@@ -6,24 +6,32 @@
 
 ```
 Ist es ein wiederverwendbarer UI-Component (Button, Input, etc.)?
-├─ JA → src/components/ui/ComponentName.tsx + src/styles/components/_componentname.scss
+├─ JA → src/components/ui/ComponentName/
+│        ├── ComponentName.tsx
+│        ├── ComponentName.scss
+│        └── index.ts
 └─ NEIN → Ist es layout-spezifisch (Navbar, Footer, Header)?
-    ├─ JA → src/components/ComponentName.tsx + src/components/ComponentName.scss
+    ├─ JA → src/components/
+    │        ├── ComponentName.tsx
+    │        └── ComponentName.scss
     └─ NEIN → Ist es page-spezifisch?
-        └─ JA → src/pages/PageName.tsx + src/pages/PageName.scss
+        └─ JA → src/pages/
+                 ├── PageName.tsx
+                 └── PageName.scss
 ```
 
 ## 🎯 Aktuelle Struktur
 
 ### 1. Wiederverwendbare UI Components
-**Location:** `src/components/ui/` + `src/styles/components/`
+**Location:** `src/components/ui/ComponentName/` (Co-Located!)
 
 ```
-src/
-├── components/ui/
-│   └── Button.tsx                    ← React Component
-└── styles/components/
-    └── _button.scss                  ← SCSS Styles
+src/components/ui/
+├── Button/
+│   ├── Button.tsx                    ← React Component
+│   ├── Button.scss                   ← SCSS Styles (direkt daneben!)
+│   └── index.ts                      ← Barrel Export
+└── index.ts                          ← UI Barrel Export
 ```
 
 **Wann nutzen:**
@@ -33,7 +41,12 @@ src/
 
 **Import in Component:**
 ```tsx
-import '../../styles/components/_button.scss';
+import './Button.scss';  // ← Direkt im gleichen Ordner!
+```
+
+**Import für andere Components:**
+```tsx
+import { Button } from '@/components/ui';  // ← Via Barrel Export
 ```
 
 ---
@@ -163,17 +176,19 @@ import './Navbar.scss';           // ← SCSS als letztes!
 ### Szenario 1: Wiederverwendbarer Input Component
 
 ```bash
-# 1. SCSS erstellen
-touch src/styles/components/_input.scss
+# 1. Component-Ordner erstellen
+mkdir -p src/components/ui/Input
 
-# 2. React Component erstellen
-touch src/components/ui/Input.tsx
+# 2. Dateien erstellen
+touch src/components/ui/Input/Input.tsx
+touch src/components/ui/Input/Input.scss
+touch src/components/ui/Input/index.ts
 ```
 
 ```scss
-// src/styles/components/_input.scss
-@use '../utils/variables' as *;
-@use '../utils/mixins' as *;
+// src/components/ui/Input/Input.scss
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
 
 .base-input {
   padding: $spacing-sm $spacing-md;
@@ -193,14 +208,20 @@ touch src/components/ui/Input.tsx
 ```
 
 ```tsx
-// src/components/ui/Input.tsx
+// src/components/ui/Input/Input.tsx
 import { Input as BaseInput } from '@base-ui/react';
-import '../../styles/components/_input.scss';
+import './Input.scss';
 
 export const Input = ({ error, ...props }) => {
   const className = `base-input ${error ? 'base-input--error' : ''}`;
   return <BaseInput className={className} {...props} />;
 };
+```
+
+```tsx
+// src/components/ui/Input/index.ts
+export { Input } from './Input';
+export type { InputProps } from './Input';
 ```
 
 ---
@@ -309,13 +330,13 @@ Nutzen Sie die vorhandenen Utilities aus `styles/main.scss`:
 
 ## 🔍 Quick Reference
 
-| Component Type | SCSS Location | Import Style |
-|---------------|---------------|--------------|
-| UI Component (reusable) | `styles/components/_name.scss` | `import '../../styles/components/_name.scss'` |
-| Layout Component | `components/Name.scss` | `import './Name.scss'` |
-| Page Component | `pages/Name.scss` | `import './Name.scss'` |
-| Global Styles | `styles/main.scss` | Imported in `main.tsx` |
-| Utils (variables/mixins) | `styles/utils/_name.scss` | `@use '../styles/utils/name' as *;` |
+| Component Type | SCSS Location | Import Style | Usage |
+|---------------|---------------|--------------|-------|
+| UI Component (reusable) | `components/ui/Name/Name.scss` | `import './Name.scss'` | `import { Name } from '@/components/ui'` |
+| Layout Component | `components/Name.scss` | `import './Name.scss'` | Direct import |
+| Page Component | `pages/Name.scss` | `import './Name.scss'` | Direct import |
+| Global Styles | `styles/main.scss` | Imported in `main.tsx` | - |
+| Utils (variables/mixins) | `styles/utils/_name.scss` | `@use '../../../styles/utils/name' as *;` | In SCSS files |
 
 ## ✅ Checklist für neue Components
 

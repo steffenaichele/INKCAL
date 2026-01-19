@@ -1,6 +1,6 @@
 // Base UI Button Styles
-@use '../utils/variables' as *;
-@use '../utils/mixins' as *;
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
 @use 'sass:color';
 
 .base-button {
