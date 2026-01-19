@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import "#db";
 import { userRouter, appointmentRouter, authRouter } from "#routers";
 import { errorHandler, authenticate, authorize } from "#middleware";
@@ -7,15 +8,46 @@ import { errorHandler, authenticate, authorize } from "#middleware";
 const port = process.env.PORT;
 const app = express();
 
-app.use(express.json(), cookieParser());
+// CORS configuration
+const allowedOrigins = [
+	"http://localhost:5173",
+	"http://localhost:5174",
+	"https://inkcal.vercel.app",
+	process.env.FRONTEND_URL
+].filter(Boolean);
 
-app.use("/auth", authRouter);
-app.use("/users", userRouter);
-app.use("/appointments", appointmentRouter);
+app.use(cors({
+	origin: (origin, callback) => {
+		// Allow requests with no origin (like mobile apps or curl requests)
+		if (!origin) return callback(null, true);
+
+		// Check if origin is in allowed list
+		if (allowedOrigins.includes(origin)) {
+			return callback(null, true);
+		}
+
+		// Allow all Vercel preview deployments
+		if (origin && origin.endsWith('.vercel.app')) {
+			return callback(null, true);
+		}
+
+		callback(new Error('Not allowed by CORS'));
+	},
+	credentials: true,
+	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+	allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(express.json(), cookieParser());
 
 app.get("/", (req: any, res: any) => {
 	res.send("Moingiorno World!");
 });
+
+// API Routes with /api prefix
+app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/appointments", appointmentRouter);
 
 app.post("/protected", authenticate, authorize(['admin', 'user']), (req, res) => {
 	throw new Error("You shall not pass!", { cause: 403 });

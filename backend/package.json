@@ -35,14 +35,16 @@
 		"prebuild": "rm -rf dist",
 		"build": "tsc",
 		"prestart": "npm run build",
-		"start": "node dist/server.js"
+		"start": "node --conditions production dist/app.js"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@types/cors": "^2.8.19",
 		"bcrypt": "^6.0.0",
 		"cookie-parser": "^1.4.7",
+		"cors": "^2.8.5",
 		"express": "^5.2.1",
 		"jsonwebtoken": "^9.0.3",
 		"mongoose": "^9.0.1",
