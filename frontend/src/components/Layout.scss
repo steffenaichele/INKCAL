@@ -1,10 +1,16 @@
 @use '../styles/utils/variables' as *;
 @use '../styles/utils/mixins' as *;
 
+// Base UI Portal Support
+// Creates a separate stacking context so popups always appear above page contents
+.root {
+  isolation: isolate;
+}
+
 .layout {
+  width: 100vw;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
 
   &__main {
     flex: 1;
