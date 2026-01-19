@@ -195,10 +195,78 @@
 
 ---
 
+## 10. Icons
+
+### Icon System
+
+The project uses **Feather Icons** via the `react-feather` package for a consistent, lightweight icon library.
+
+| Property | Value | Description |
+|----------|-------|-------------|
+| Icon Library | Feather Icons | Open source icon set with 280+ icons |
+| Package | `react-feather` | React component wrapper for Feather Icons |
+| Default Size | 24px | Standard icon size for UI elements |
+| Default Stroke Width | 2px | Line thickness for icon strokes |
+| Default Color | `currentColor` | Inherits text color from parent |
+
+### Icon Size Variants
+
+| Variant | Size (px) | Usage Example |
+|---------|-----------|---------------|
+| Extra Small | 16px | Small labels, inline text icons |
+| Small | 20px | Navigation links, compact UI |
+| Medium | 24px | Default size, buttons, cards |
+| Large | 32px | Feature highlights, large buttons |
+| Extra Large | 40px+ | Hero sections, profile avatars |
+
+### Common Icons Used
+
+| Icon Name | Component | Usage in App |
+|-----------|-----------|--------------|
+| Home | `<Icon name="Home" />` | Home navigation link |
+| Grid | `<Icon name="Grid" />` | Dashboard navigation |
+| Info | `<Icon name="Info" />` | About page link |
+| User | `<Icon name="User" />` | User profile, account display |
+| Settings | `<Icon name="Settings" />` | Profile/settings link |
+| LogIn | `<Icon name="LogIn" />` | Login action |
+| LogOut | `<Icon name="LogOut" />` | Logout action |
+| UserPlus | `<Icon name="UserPlus" />` | Register/signup action |
+| Mail | `<Icon name="Mail" />` | Email display |
+| Calendar | `<Icon name="Calendar" />` | Date information |
+
+### Icon Component API
+
+```tsx
+<Icon
+  name="IconName"        // Required: Feather icon name
+  size={24}              // Optional: Number or string (default: 24)
+  color="currentColor"   // Optional: CSS color (default: currentColor)
+  strokeWidth={2}        // Optional: Line thickness (default: 2)
+  className=""           // Optional: Additional CSS classes
+  onClick={() => {}}     // Optional: Click handler
+/>
+```
+
+### Icon Accessibility
+
+- Icons should always have accompanying text or aria-labels
+- Use `aria-hidden="true"` for purely decorative icons
+- Ensure sufficient color contrast (4.5:1 minimum)
+- Icons inherit color from parent text for better theming
+
+### Icon Files
+
+- **Component**: `src/components/Icon.tsx`
+- **Styles**: `src/components/Icon.scss`
+- **Documentation**: [Feather Icons](https://feathericons.com/)
+
+---
+
 ## Quick Reference: File Paths
 
 - **Variables**: `src/styles/utils/_variables.scss`
 - **Typography**: `src/styles/base/_typography.scss`
+- **Icons**: `src/components/Icon.tsx`
 
 ---
 
@@ -210,5 +278,6 @@
 4. **Shadow Layering**: Shadows use multiple layers for more natural depth
 5. **Responsive Design**: Five breakpoints cover mobile to large desktop screens
 6. **Z-Index Hierarchy**: Organized in increments of 10-20 for flexibility
+7. **Icons**: Use Feather Icons plugin in Figma or import SVGs from [feathericons.com](https://feathericons.com/)
 
 This design system follows modern CSS practices and provides a solid foundation for scalable UI development.

@@ -1,5 +1,7 @@
 import { useAuth } from "@/context";
 import { Navigate, useNavigate } from "react-router";
+import Icon from "@/components/Icon";
+import "./Profile.scss";
 
 const Profile = () => {
 	const { signedIn, user, handleSignOut } = useAuth();
@@ -19,33 +21,43 @@ const Profile = () => {
 	};
 
 	return (
-		<div style={{ maxWidth: "600px", margin: "50px auto", padding: "20px" }}>
-			<h1>Profile</h1>
-			<div style={{ marginTop: "30px" }}>
-				<div style={{ marginBottom: "20px" }}>
-					<strong>Name:</strong> {user.name}
+		<div className="profile">
+			<div className="profile__header">
+				<Icon name="User" size={48} className="profile__avatar" />
+				<h1>Profile</h1>
+			</div>
+
+			<div className="profile__info">
+				<div className="profile__info-item">
+					<Icon name="User" size={20} />
+					<div className="profile__info-content">
+						<span className="profile__info-label">Name</span>
+						<span className="profile__info-value">{user.name}</span>
+					</div>
 				</div>
-				<div style={{ marginBottom: "20px" }}>
-					<strong>Email:</strong> {user.email}
+
+				<div className="profile__info-item">
+					<Icon name="Mail" size={20} />
+					<div className="profile__info-content">
+						<span className="profile__info-label">Email</span>
+						<span className="profile__info-value">{user.email}</span>
+					</div>
 				</div>
-				<div style={{ marginBottom: "20px" }}>
-					<strong>Member since:</strong>{" "}
-					{new Date(user.createdAt).toLocaleDateString()}
+
+				<div className="profile__info-item">
+					<Icon name="Calendar" size={20} />
+					<div className="profile__info-content">
+						<span className="profile__info-label">Member since</span>
+						<span className="profile__info-value">
+							{new Date(user.createdAt).toLocaleDateString()}
+						</span>
+					</div>
 				</div>
 			</div>
-			<button
-				onClick={onLogout}
-				style={{
-					marginTop: "30px",
-					padding: "10px 20px",
-					backgroundColor: "#dc3545",
-					color: "white",
-					border: "none",
-					cursor: "pointer",
-					borderRadius: "4px"
-				}}
-			>
-				Logout
+
+			<button onClick={onLogout} className="profile__logout-btn">
+				<Icon name="LogOut" size={20} />
+				<span>Logout</span>
 			</button>
 		</div>
 	);

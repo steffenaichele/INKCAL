@@ -1,0 +1,104 @@
+@use '../styles/utils/variables' as *;
+@use '../styles/utils/mixins' as *;
+
+.profile {
+	max-width: 600px;
+	margin: $spacing-xxl auto;
+	padding: $spacing-lg;
+
+	&__header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: $spacing-md;
+		margin-bottom: $spacing-xl;
+		text-align: center;
+	}
+
+	&__avatar {
+		padding: $spacing-lg;
+		background-color: $primary-color;
+		color: $white;
+		border-radius: $border-radius-full;
+		box-shadow: $shadow-md;
+	}
+
+	&__info {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-md;
+		margin-bottom: $spacing-xl;
+	}
+
+	&__info-item {
+		display: flex;
+		align-items: flex-start;
+		gap: $spacing-md;
+		padding: $spacing-md;
+		background-color: $gray-100;
+		border-radius: $border-radius-md;
+		border: 1px solid $border-color;
+		@include transition(all);
+
+		&:hover {
+			background-color: $white;
+			box-shadow: $shadow-sm;
+		}
+
+		.icon {
+			margin-top: $spacing-xs;
+			color: $primary-color;
+		}
+	}
+
+	&__info-content {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+		flex: 1;
+	}
+
+	&__info-label {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-medium;
+		color: $gray-600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	&__info-value {
+		font-size: $font-size-md;
+		font-weight: $font-weight-medium;
+		color: $gray-900;
+	}
+
+	&__logout-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: $spacing-sm $spacing-lg;
+		background-color: $danger-color;
+		color: $white;
+		border: none;
+		border-radius: $border-radius-md;
+		font-size: $font-size-md;
+		font-weight: $font-weight-medium;
+		cursor: pointer;
+		@include transition(all);
+
+		&:hover {
+			background-color: #c82333; // Darker shade of danger color
+			transform: translateY(-1px);
+			box-shadow: $shadow-md;
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+	}
+
+	// Responsive
+	@include sm {
+		padding: $spacing-xl;
+	}
+}
