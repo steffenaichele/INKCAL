@@ -1,0 +1,101 @@
+// Headings
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-bold;
+  line-height: $line-height-sm;
+  color: $gray-900;
+}
+
+h1 {
+  font-size: 2.5rem;  // 40px
+  margin-bottom: $spacing-lg;
+}
+
+h2 {
+  font-size: 2rem;    // 32px
+  margin-bottom: $spacing-md;
+}
+
+h3 {
+  font-size: 1.75rem; // 28px
+  margin-bottom: $spacing-md;
+}
+
+h4 {
+  font-size: 1.5rem;  // 24px
+  margin-bottom: $spacing-sm;
+}
+
+h5 {
+  font-size: 1.25rem; // 20px
+  margin-bottom: $spacing-sm;
+}
+
+h6 {
+  font-size: 1rem;    // 16px
+  margin-bottom: $spacing-xs;
+}
+
+// Paragraphs
+p {
+  margin-bottom: $spacing-md;
+  color: $gray-700;
+}
+
+// Links
+a {
+  color: $primary-color;
+  text-decoration: none;
+  @include transition(color);
+
+  &:hover {
+    color: color-mix(in srgb, $primary-color 90%, black);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include focus-ring($primary-color);
+  }
+}
+
+// Lists
+ul, ol {
+  padding-left: $spacing-lg;
+  margin-bottom: $spacing-md;
+
+  li {
+    margin-bottom: $spacing-xs;
+  }
+}
+
+// Text utilities
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-truncate {
+  @include text-truncate;
+}
+
+.text-muted {
+  color: $gray-600;
+}
+
+.text-bold {
+  font-weight: $font-weight-bold;
+}
+
+.text-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.text-light {
+  font-weight: $font-weight-light;
+}
