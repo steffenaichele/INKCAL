@@ -1,3 +1,6 @@
+@use './variables' as *;
+@use 'sass:color';
+
 // Responsive breakpoints
 @mixin sm {
   @media (min-width: $breakpoint-sm) {
@@ -109,7 +112,7 @@
     border-radius: $border-radius-full;
 
     &:hover {
-      background: darken($thumb-color, 10%);
+      background: color.scale($thumb-color, $lightness: -10%);
     }
   }
 }

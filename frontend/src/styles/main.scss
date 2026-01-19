@@ -1,25 +1,25 @@
 // Main SCSS Entry Point
 
 // 1. Utils (must be first for variables/mixins)
-@import './utils/variables';
-@import './utils/mixins';
+@use './utils/variables' as *;
+@use './utils/mixins' as *;
 
 // 2. Base styles
-@import './base/reset';
-@import './base/typography';
+@use './base/reset';
+@use './base/typography';
 
 // 3. Components (Base UI styled components will be imported here)
-// @import './components/button';
-// @import './components/input';
-// @import './components/dialog';
+// @use './components/button';
+// @use './components/input';
+// @use './components/dialog';
 
 // 4. Layouts
-// @import './layouts/container';
-// @import './layouts/grid';
+// @use './layouts/container';
+// @use './layouts/grid';
 
 // 5. Themes
-// @import './themes/light';
-// @import './themes/dark';
+// @use './themes/light';
+// @use './themes/dark';
 
 // Global utilities
 .container {
