@@ -1,5 +1,14 @@
 # INKCAL Deployment Guide
 
+## 🚀 Release-Based Deployment Strategy
+
+This project uses **GitHub Releases** for production deployments to ensure stability and version control.
+
+### Quick Release Command
+```bash
+gh release create v1.x.x --title "Release v1.x.x" --notes "Release notes"
+```
+
 ## Lokale Entwicklung
 
 ### Backend
@@ -14,46 +23,57 @@
 3. Starte den Dev-Server: `npm run dev`
 4. Das Frontend läuft auf `http://localhost:5173`
 
-## Production Deployment
+## 📋 Production Deployment URLs
 
-### Backend Deployment
+- **Frontend:** https://inkcal.vercel.app
+- **Backend:** https://inkcal-production.up.railway.app
+- **GitHub:** https://github.com/steffenaichele/INKCAL
 
-#### Option 1: Vercel/Railway/Render
-1. Erstelle ein neues Backend-Projekt auf deiner Plattform
-2. Verbinde dein Git-Repository
-3. Setze folgende Environment Variables:
+## 🔄 Configuring Release-Based Deployments
+
+### Railway (Backend)
+
+**Current:** Auto-deploys on every push to `main`
+
+**To Configure for Releases Only:**
+1. Visit [Railway Dashboard](https://railway.app/dashboard)
+2. Select `inkcal-backend` → `INKCAL` service
+3. Go to **Settings → Source**
+4. **Option A - Production Branch Strategy:**
+   - Create a `production` branch
+   - Set Railway to watch `production` branch
+   - Only merge releases into `production`
+
+5. **Option B - Manual Trigger:**
+   - Disable auto-deploy
+   - Use `railway up` command after each release
+
+**Recommended: Option A with production branch**
+
+### Vercel (Frontend)
+
+**Current:** Auto-deploys on every push to `main`
+
+**To Configure for Releases Only:**
+1. Visit [Vercel Dashboard](https://vercel.com/dashboard)
+2. Select `inkcal` project → **Settings → Git**
+3. **Option A - Production Branch:**
+   - Set Production Branch to `production`
+   - Create GitHub Actions workflow to update `production` on releases
+
+4. **Option B - Ignored Build Step:**
+   - Add build script that checks for release tag
+   - Settings → General → Ignored Build Step
+   ```bash
+   git describe --exact-match --tags HEAD > /dev/null 2>&1
    ```
-   PORT=3000
-   MONGODB_URI=deine_mongodb_connection_string
-   JWT_SECRET=dein_geheimer_jwt_key
-   FRONTEND_URL=https://deine-frontend-url.vercel.app
+
+5. **Option C - Manual Deployment:**
+   ```bash
+   vercel --prod
    ```
-4. Deploy das Backend
-5. Notiere dir die Backend-URL (z.B. `https://inkcal-backend.railway.app`)
 
-### Frontend Deployment (Vercel)
-
-#### Schritt 1: Environment Variables in Vercel setzen
-1. Gehe zu deinem Vercel-Projekt
-2. Navigiere zu **Settings → Environment Variables**
-3. Füge folgende Variables hinzu:
-   ```
-   VITE_APP_AUTH_SERVER_URL=https://deine-backend-url.com/api/auth
-   VITE_API_URL=https://deine-backend-url.com/api
-   ```
-4. Wähle **Production**, **Preview**, und **Development** aus
-
-#### Schritt 2: .env.production lokal anpassen
-Bearbeite `frontend/.env.production`:
-```env
-VITE_APP_AUTH_SERVER_URL=https://deine-backend-url.com/api/auth
-VITE_API_URL=https://deine-backend-url.com/api
-```
-
-#### Schritt 3: Re-Deploy
-1. Committe und pushe deine Änderungen
-2. Vercel wird automatisch neu deployen
-3. Oder manuell in Vercel: **Deployments → Redeploy**
+**Recommended: Option A with production branch**
 
 ## CORS-Konfiguration
 

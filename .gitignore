@@ -47,3 +47,5 @@ npm-debug.log*
 # Project specific
 .coverage
 .pytest_cache/
+.vercel
+.env*.local

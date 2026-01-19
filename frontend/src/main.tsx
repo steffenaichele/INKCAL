@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/query-client";
 import { AuthProvider } from "@/context";
-import "./index.css";
+import "./styles/main.scss";
 import App from "./App";
 
 createRoot(document.getElementById("root")!).render(

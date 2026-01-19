@@ -1,0 +1,63 @@
+// Main SCSS Entry Point
+
+// 1. Utils (must be first for variables/mixins)
+@import './utils/variables';
+@import './utils/mixins';
+
+// 2. Base styles
+@import './base/reset';
+@import './base/typography';
+
+// 3. Components (Base UI styled components will be imported here)
+// @import './components/button';
+// @import './components/input';
+// @import './components/dialog';
+
+// 4. Layouts
+// @import './layouts/container';
+// @import './layouts/grid';
+
+// 5. Themes
+// @import './themes/light';
+// @import './themes/dark';
+
+// Global utilities
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+}
+
+.section {
+  padding: $spacing-xxl 0;
+}
+
+// Flex utilities
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.flex-column {
+  @include flex-column;
+}
+
+// Spacing utilities
+@for $i from 0 through 8 {
+  .mt-#{$i} { margin-top: $spacer * $i * 0.5; }
+  .mb-#{$i} { margin-bottom: $spacer * $i * 0.5; }
+  .ml-#{$i} { margin-left: $spacer * $i * 0.5; }
+  .mr-#{$i} { margin-right: $spacer * $i * 0.5; }
+  .pt-#{$i} { padding-top: $spacer * $i * 0.5; }
+  .pb-#{$i} { padding-bottom: $spacer * $i * 0.5; }
+  .pl-#{$i} { padding-left: $spacer * $i * 0.5; }
+  .pr-#{$i} { padding-right: $spacer * $i * 0.5; }
+}

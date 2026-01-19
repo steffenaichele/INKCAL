@@ -1,0 +1,31 @@
+name: Deploy on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Update production branch
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git fetch origin production || git checkout -b production
+          git checkout production
+          git reset --hard ${{ github.event.release.tag_name }}
+          git push origin production --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify deployment
+        run: |
+          echo "✅ Production branch updated to ${{ github.event.release.tag_name }}"
+          echo "Railway and Vercel will auto-deploy from production branch"
