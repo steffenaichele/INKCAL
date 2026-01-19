@@ -1,16 +1,33 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
 import Layout from "./components/Layout";
 
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import Dashboard from "./pages/Dashboard";
+// Lazy load all pages for optimal bundle splitting
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+
+// Loading fallback component
+const PageLoader = () => (
+	<div
+		style={{
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			minHeight: "400px",
+			color: "#6c757d",
+		}}
+	>
+		Loading...
+	</div>
+);
 
 function App() {
 	return (
-		<>
+		<Suspense fallback={<PageLoader />}>
 			<Routes>
 				<Route path="/" element={<Layout />}>
 					<Route index element={<Home />} />
@@ -21,7 +38,7 @@ function App() {
 					<Route path="/dashboard" element={<Dashboard />} />
 				</Route>
 			</Routes>
-		</>
+		</Suspense>
 	);
 }
 
