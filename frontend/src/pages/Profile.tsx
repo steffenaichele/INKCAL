@@ -1,7 +1,7 @@
 import { useAuth } from "@/context";
 import { Navigate, useNavigate } from "react-router";
 import Icon from "@/components/Icon";
-import "./Profile.scss";
+import "@/styles/pages/Profile.scss";
 
 const Profile = () => {
 	const { signedIn, user, handleSignOut } = useAuth();

@@ -1,0 +1,132 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $gray-200;
+  background: $white;
+  min-height: 400px;
+  @include transition(box-shadow);
+
+  &:last-child {
+    border-right: none;
+  }
+
+  &:hover {
+    background: $gray-100;
+  }
+
+  &--today {
+    .calendar-day__header {
+      background: linear-gradient(135deg, $primary-color 0%, #0056b3 100%);
+      color: $white;
+    }
+  }
+
+  &--non-workday {
+    background-color: $gray-100;
+
+    .calendar-day__slot {
+      background: repeating-linear-gradient(
+        45deg,
+        $gray-100,
+        $gray-100 10px,
+        $gray-200 10px,
+        $gray-200 20px
+      );
+    }
+  }
+
+  &__header {
+    background: $gray-100;
+    padding: $spacing-sm;
+    text-align: center;
+    border-bottom: 2px solid $gray-200;
+    @include flex-center;
+    flex-direction: column;
+    gap: calc($spacing-xs / 2);
+    min-height: 60px;
+  }
+
+  &__weekday {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__date {
+    font-size: $font-size-xs;
+    color: $gray-600;
+
+    .calendar-day--today & {
+      color: $white;
+      opacity: 0.9;
+    }
+  }
+
+  &__slots {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  &__slot {
+    min-height: 60px;
+    border-bottom: 1px solid $gray-200;
+    position: relative;
+    background: $white;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &--non-working {
+      background: repeating-linear-gradient(
+        45deg,
+        $gray-100,
+        $gray-100 8px,
+        $gray-200 8px,
+        $gray-200 16px
+      );
+      opacity: 0.6;
+    }
+  }
+
+  &__appointments {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+  }
+
+  &__non-workday-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include flex-center;
+    color: $gray-500;
+    font-style: italic;
+    font-size: $font-size-sm;
+    background: rgba($gray-100, 0.8);
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-md) {
+    min-height: 300px;
+
+    &__slot {
+      min-height: 50px;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { useAuth } from "@/context";
 import { Navigate, Link } from "react-router";
 import Icon from "@/components/Icon";
-import "./Home.scss";
+import "@/styles/pages/Home.scss";
 
 const Home = () => {
 	const { signedIn } = useAuth();

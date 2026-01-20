@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { appointmentsApi } from "@/services/api/appointments";
 import type { Appointment } from "@/types/api";
 import Clock from "@/components/Clock";
+import Calendar from "@/components/Calendar";
+import "@/styles/pages/Dashboard.scss";
 
 const Dashboard = () => {
 	const { signedIn, user } = useAuth();
@@ -19,71 +21,67 @@ const Dashboard = () => {
 		return <Navigate to="/login" replace />;
 	}
 
+	const handleAppointmentClick = (appointment: Appointment) => {
+		// TODO: Open appointment details modal or navigate to edit page
+		console.log('Appointment clicked:', appointment);
+	};
+
 	return (
-		<div style={{ maxWidth: "1200px", margin: "20px auto", padding: "20px" }}>
+		<div className="dashboard">
 			<h1>Welcome, {user.name}!</h1>
 
-			<Clock />
+			<div className="dashboard__widgets">
+				<Clock />
+			</div>
 
-			<div style={{ marginTop: "30px" }}>
+			<div className="dashboard__calendar">
+				<Calendar userId={user._id} onAppointmentClick={handleAppointmentClick} />
+			</div>
+
+			<div className="dashboard__appointments-list">
 				<h2>Your Appointments</h2>
 
 				{isLoading && <p>Loading appointments...</p>}
 
 				{error && (
-					<div style={{ color: "red", padding: "10px", backgroundColor: "#ffebee", borderRadius: "4px" }}>
+					<div className="dashboard__error">
 						Error loading appointments: {error instanceof Error ? error.message : "Unknown error"}
 					</div>
 				)}
 
 				{!isLoading && !error && appointments && appointments.length === 0 && (
-					<p style={{ color: "#666", fontStyle: "italic" }}>
+					<p className="dashboard__empty">
 						No appointments found. Create your first appointment!
 					</p>
 				)}
 
 				{!isLoading && !error && appointments && appointments.length > 0 && (
-					<div style={{ display: "grid", gap: "15px", marginTop: "20px" }}>
+					<div className="dashboard__appointment-grid">
 						{appointments.map((appointment: Appointment) => (
-							<div
-								key={appointment._id}
-								style={{
-									border: "1px solid #ddd",
-									borderRadius: "8px",
-									padding: "20px",
-									backgroundColor: "#fff",
-									boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-								}}
-							>
-								<div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
+							<div key={appointment._id} className="dashboard__appointment-card">
+								<div className="dashboard__appointment-content">
 									<div>
-										<h3 style={{ margin: "0 0 10px 0" }}>{appointment.title}</h3>
-										<div style={{ color: "#666", fontSize: "14px" }}>
-											<p style={{ margin: "5px 0" }}>
+										<h3>{appointment.title}</h3>
+										<div className="dashboard__appointment-details">
+											<p>
 												<strong>Type:</strong> {appointment.appointmentType}
 											</p>
-											<p style={{ margin: "5px 0" }}>
+											<p>
 												<strong>Date:</strong> {new Date(appointment.date).toLocaleDateString()}
 											</p>
-											<p style={{ margin: "5px 0" }}>
+											<p>
 												<strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
 											</p>
 											{appointment.appointmentType !== "Blocker" && (
-												<p style={{ margin: "5px 0" }}>
+												<p>
 													<strong>Client:</strong> {appointment.clientName}
 												</p>
 											)}
 										</div>
 									</div>
 									<span
-										style={{
-											padding: "4px 12px",
-											borderRadius: "12px",
-											fontSize: "12px",
-											fontWeight: "bold",
-											backgroundColor: getAppointmentTypeColor(appointment.appointmentType),
-											color: "#fff"
-										}}
+										className="dashboard__appointment-badge"
+										style={{ backgroundColor: getAppointmentTypeColor(appointment.appointmentType) }}
 									>
 										{appointment.appointmentType}
 									</span>

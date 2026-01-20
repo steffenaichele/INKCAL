@@ -210,3 +210,37 @@ export interface AuthContextType {
   handleSignOut: () => Promise<void>;
   handleRegister: (formState: RegisterFormState) => Promise<void>;
 }
+
+// ============================================================================
+// Workdays Types
+// ============================================================================
+
+export type DayOfWeek = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+
+export interface DayConfig {
+  dayOfWeek: DayOfWeek;
+  isWorkday: boolean;
+  startTime: string; // HH:mm format (24-hour)
+  endTime: string; // HH:mm format (24-hour)
+  durationMinutes?: number; // Virtual field from backend
+  durationFormatted?: string; // Virtual field from backend (e.g., "8h 30m")
+}
+
+export interface Workdays {
+  _id: string;
+  userId: string;
+  timezone: string;
+  workdays: DayConfig[];
+  totalWeeklyMinutes?: number; // Virtual field from backend
+  totalWeeklyHours?: string; // Virtual field from backend (e.g., "40h 0m")
+  averageDailyMinutes?: number; // Virtual field from backend
+  averageDailyHours?: string; // Virtual field from backend (e.g., "8h 0m")
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface WorkdaysInput {
+  timezone?: string;
+  workdays: Omit<DayConfig, 'durationMinutes' | 'durationFormatted'>[];
+}
