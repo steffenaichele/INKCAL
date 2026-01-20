@@ -23,19 +23,21 @@ const dbEntrySchema = z.strictObject({
 	__v: z.int().nonnegative(),
 });
 
-// Individual day configuration schema
+// Individual day configuration schema (for input)
 export const dayConfigSchema = z.strictObject({
 	dayOfWeek: dayOfWeekEnum,
 	isWorkday: z.boolean().default(true),
 	startTime: z
 		.string()
-		.regex(timeRegex, "Start time must be in HH:mm format (24-hour)"),
+		.regex(timeRegex, "Start time must be in HH:mm format (24-hour)")
+		.default("00:00"),
 	endTime: z
 		.string()
-		.regex(timeRegex, "End time must be in HH:mm format (24-hour)"),
+		.regex(timeRegex, "End time must be in HH:mm format (24-hour)")
+		.default("23:59"),
 }).refine(
 	(data) => {
-		// Validate that end time is after start time
+		// Validate that end time is after start time (or equal to 23:59 for full day)
 		const startParts = data.startTime.split(":").map(Number);
 		const endParts = data.endTime.split(":").map(Number);
 
@@ -43,14 +45,32 @@ export const dayConfigSchema = z.strictObject({
 
 		const [startHour = 0, startMin = 0] = startParts;
 		const [endHour = 0, endMin = 0] = endParts;
+
+		// Special case: 00:00 to 23:59 is valid (full day)
+		if (startHour === 0 && startMin === 0 && endHour === 23 && endMin === 59) {
+			return true;
+		}
+
 		const startMinutes = startHour * 60 + startMin;
-		const endMinutes = endHour * 60 + endMin;
+		let endMinutes = endHour * 60 + endMin;
+
+		// Handle end time 23:59 as end of day
+		if (endHour === 23 && endMin === 59) {
+			endMinutes = 24 * 60;
+		}
+
 		return endMinutes > startMinutes;
 	},
 	{
 		message: "End time must be after start time",
 	}
 );
+
+// Day configuration output schema (includes virtual fields)
+export const dayConfigOutputSchema = dayConfigSchema.extend({
+	durationMinutes: z.number().optional(),
+	durationFormatted: z.string().optional(),
+});
 
 // Workdays input schema (for creating/updating)
 export const workdaysInputSchema = z.strictObject({
@@ -82,10 +102,15 @@ export const workdaysInputSchema = z.strictObject({
 		),
 });
 
-// Output/DTO Schema
+// Output/DTO Schema (includes virtual fields)
 export const workdaysSchema = z.object({
 	userId: z.instanceof(Types.ObjectId),
-	...workdaysInputSchema.shape,
+	timezone: z.string(),
+	workdays: z.array(dayConfigOutputSchema),
+	totalWeeklyMinutes: z.number().optional(),
+	totalWeeklyHours: z.string().optional(),
+	averageDailyMinutes: z.number().optional(),
+	averageDailyHours: z.string().optional(),
 	...dbEntrySchema.shape,
 });
 

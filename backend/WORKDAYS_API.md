@@ -23,16 +23,24 @@ Get the workdays configuration for a specific user.
       "dayOfWeek": "monday",
       "isWorkday": true,
       "startTime": "09:00",
-      "endTime": "17:00"
+      "endTime": "17:00",
+      "durationMinutes": 480,
+      "durationFormatted": "8h 0m"
     },
     {
       "dayOfWeek": "tuesday",
       "isWorkday": true,
       "startTime": "09:00",
-      "endTime": "17:00"
+      "endTime": "17:00",
+      "durationMinutes": 480,
+      "durationFormatted": "8h 0m"
     },
     // ... all 7 days
   ],
+  "totalWeeklyMinutes": 2400,
+  "totalWeeklyHours": "40h 0m",
+  "averageDailyMinutes": 480,
+  "averageDailyHours": "8h 0m",
   "createdAt": "2024-01-20T10:00:00.000Z",
   "updatedAt": "2024-01-20T10:00:00.000Z"
 }
@@ -103,8 +111,9 @@ Create a new workdays configuration for a user.
 - All 7 days must be configured
 - Each day must appear exactly once
 - `startTime` and `endTime` must be in HH:mm format (24-hour)
-- `endTime` must be after `startTime`
+- `endTime` must be after `startTime` (or 23:59 for full day)
 - `dayOfWeek` must be one of: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`
+- **Default values**: `startTime` defaults to `00:00`, `endTime` defaults to `23:59` (24h duration)
 
 **Response:** Returns the created workdays configuration (201 Created)
 
@@ -157,20 +166,26 @@ Get all workdays configurations for all users.
 
 ### DayConfig
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| dayOfWeek | enum | Yes | One of: monday, tuesday, wednesday, thursday, friday, saturday, sunday |
-| isWorkday | boolean | Yes | Whether this day is a working day (default: true) |
-| startTime | string | Yes | Start time in HH:mm format (24-hour) |
-| endTime | string | Yes | End time in HH:mm format (24-hour) |
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| dayOfWeek | enum | Yes | - | One of: monday, tuesday, wednesday, thursday, friday, saturday, sunday |
+| isWorkday | boolean | No | true | Whether this day is a working day |
+| startTime | string | No | "00:00" | Start time in HH:mm format (24-hour) |
+| endTime | string | No | "23:59" | End time in HH:mm format (24-hour) |
+| durationMinutes | number | - | (calculated) | Virtual field: work duration in minutes |
+| durationFormatted | string | - | (calculated) | Virtual field: formatted as "Xh Ym" |
 
 ### Workdays
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| userId | ObjectId | Yes | Reference to User model (unique) |
-| timezone | string | No | Timezone for the workdays (default: "Europe/Berlin") |
-| workdays | DayConfig[] | Yes | Array of 7 day configurations |
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| userId | ObjectId | Yes | - | Reference to User model (unique) |
+| timezone | string | No | "Europe/Berlin" | Timezone for the workdays |
+| workdays | DayConfig[] | Yes | - | Array of 7 day configurations |
+| totalWeeklyMinutes | number | - | (calculated) | Virtual field: total work minutes per week |
+| totalWeeklyHours | string | - | (calculated) | Virtual field: formatted as "Xh Ym" |
+| averageDailyMinutes | number | - | (calculated) | Virtual field: average work minutes per day |
+| averageDailyHours | string | - | (calculated) | Virtual field: formatted as "Xh Ym" |
 
 ---
 
@@ -316,6 +331,12 @@ curl -X POST http://localhost:3000/api/workdays/USER_ID \
 - Each user can have only one workdays configuration
 - All 7 days of the week must be configured
 - Times are stored in 24-hour format (HH:mm)
+- **Default values**: `startTime` defaults to `00:00`, `endTime` defaults to `23:59` (full 24h day)
 - The timezone field helps with international users
-- Even non-working days must have start/end times (can use "00:00")
+- Even non-working days must have start/end times (defaults will be used if not specified)
 - Use `isWorkday: false` to mark days as non-working days
+- **Automatic calculations**:
+  - Each day's work duration is calculated automatically (`durationMinutes`, `durationFormatted`)
+  - Total weekly work hours are calculated (`totalWeeklyMinutes`, `totalWeeklyHours`)
+  - Average daily work hours are calculated for working days only
+  - Special case: `00:00` to `23:59` equals a full 24-hour day (1440 minutes)
