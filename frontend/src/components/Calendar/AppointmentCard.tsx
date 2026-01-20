@@ -7,6 +7,8 @@ import type { Appointment } from "@/types/api";
 export interface AppointmentCardProps {
 	appointment: Appointment;
 	style?: CSSProperties;
+	onEdit?: (appointment: Appointment) => void;
+	onDelete?: (appointment: Appointment) => void;
 }
 
 const overlayStyle: CSSProperties = {
@@ -40,7 +42,12 @@ const cardBaseStyle: CSSProperties = {
 	boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
 };
 
-const AppointmentCard = ({ appointment, style }: AppointmentCardProps) => {
+const AppointmentCard = ({
+	appointment,
+	style,
+	onEdit,
+	onDelete,
+}: AppointmentCardProps) => {
 	const blendy = useRef<ReturnType<typeof createBlendy> | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const blendyId = `appointment-${appointment._id}`;
@@ -98,6 +105,16 @@ const AppointmentCard = ({ appointment, style }: AppointmentCardProps) => {
 	const showClient = appointment.appointmentType !== "Blocker";
 	const clientName = showClient ? appointment.clientName : null;
 
+	const handleEdit = () => {
+		onEdit?.(appointment);
+		closeModal();
+	};
+
+	const handleDelete = () => {
+		onDelete?.(appointment);
+		closeModal();
+	};
+
 	return (
 		<>
 			{isModalOpen &&
@@ -111,6 +128,23 @@ const AppointmentCard = ({ appointment, style }: AppointmentCardProps) => {
 							<p>{formattedDate}</p>
 							<p>{timeRange}</p>
 							{clientName && <p>Client: {clientName}</p>}
+							<div
+								style={{
+									display: "flex",
+									gap: 8,
+									marginTop: 12,
+								}}>
+								<button
+									onClick={handleEdit}
+									aria-label="Edit appointment">
+									Edit
+								</button>
+								<button
+									onClick={handleDelete}
+									aria-label="Delete appointment">
+									Delete
+								</button>
+							</div>
 							<button
 								onClick={closeModal}
 								aria-label="Close modal">

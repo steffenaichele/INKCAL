@@ -2,10 +2,34 @@
 @use '../../styles/utils/mixins' as *;
 
 .calendar {
-  @include card($spacing-lg, $border-radius-lg);
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-lg;
+  grid-area: 2 / 2 / span 4 / span 4;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  box-shadow: $shadow-box;
+	--borderWidth: 1px;
+	background: #1d1f20;
+	position: relative;
+	border-radius: 16px;
+
+	.gradient-border:after {
+		content: "";
+		position: absolute;
+		top: calc(-1 * var(--borderWidth));
+		left: calc(-1 * var(--borderWidth));
+		height: calc(100% + var(--borderWidth) * 2);
+		width: calc(100% + var(--borderWidth) * 2);
+		background: linear-gradient(
+			0deg,
+			rgba(255, 255, 255, 0.4) 0%,
+			rgba(255, 255, 255, 0) 41%,
+			rgba(255, 255, 255, 0) 57%,
+			rgba(255, 255, 255, 0.1) 100%
+		);
+		border-radius: 16px;
+		z-index: -1;
+		background-size: 300% 300%;
+	}
 
   &--loading,
   &--error,
@@ -49,22 +73,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: $spacing-md;
-    border-bottom: 2px solid $gray-200;
-    gap: $spacing-md;
-    flex-wrap: wrap;
-
-    @media (max-width: $breakpoint-sm) {
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
-
-  &__title-section {
-    display: flex;
-    align-items: center;
-    gap: $spacing-md;
-    flex-wrap: wrap;
   }
 
   &__title {
@@ -75,14 +83,6 @@
     align-items: center;
     gap: $spacing-sm;
     margin: 0;
-
-    @media (max-width: $breakpoint-md) {
-      font-size: $font-size-lg;
-    }
-  }
-
-  &__title-icon {
-    color: $primary-color;
   }
 
   &__default-notice {

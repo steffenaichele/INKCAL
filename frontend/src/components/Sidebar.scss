@@ -3,6 +3,7 @@
 
 .sidebar {
 	grid-area: 1 / 1 / 2 / 2;
+	margin: 0.5rem;
 	width: 72px;
 	height: calc(100vh - 1rem);
 	box-shadow: $shadow-box;
@@ -10,6 +11,9 @@
 	background: #1d1f20;
 	position: relative;
 	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
 
 	.gradient-border:after {
 		content: "";
@@ -74,5 +78,169 @@
 		margin-right: $spacing-md;
 		color: $gray-700;
 		font-weight: $font-weight-medium;
+	}
+
+	&__action {
+		margin: 0 $spacing-xs $spacing-sm;
+		padding: $spacing-sm;
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		width: calc(100% - 2 * $spacing-xs);
+		border: 1px solid $gray-300;
+		background: $white;
+		color: $gray-900;
+		border-radius: $border-radius-sm;
+		cursor: pointer;
+		font-weight: $font-weight-medium;
+		@include transition(all);
+
+		&:hover {
+			background: $gray-100;
+		}
+	}
+
+	&__modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.35);
+		z-index: 1200;
+	}
+
+	&__modal {
+		background: $white;
+		padding: $spacing-lg;
+		border-radius: $border-radius-lg;
+		box-shadow: $shadow-lg;
+		min-width: 320px;
+		max-width: 90vw;
+		color: $gray-900;
+		gap: $spacing-md;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__modal-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: $spacing-md;
+
+		button {
+			@extend .sidebar__btn;
+			@extend .sidebar__btn--ghost;
+			padding: $spacing-xs;
+		}
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-sm;
+
+		label {
+			display: flex;
+			flex-direction: column;
+			gap: $spacing-xs;
+			font-weight: $font-weight-medium;
+			color: $gray-800;
+
+			input,
+			select {
+				padding: $spacing-xs $spacing-sm;
+				border: 1px solid $gray-300;
+				border-radius: $border-radius-sm;
+				background: $white;
+				color: $gray-900;
+			}
+		}
+	}
+
+	&__form-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: $spacing-sm;
+		margin-top: $spacing-sm;
+	}
+
+	&__radio-group {
+		border: 1px solid $gray-200;
+		border-radius: $border-radius-sm;
+		padding: $spacing-sm;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-sm;
+
+		legend {
+			font-weight: $font-weight-semibold;
+			margin-bottom: $spacing-xs;
+		}
+	}
+
+	&__radio-option {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-rows: auto auto;
+		column-gap: $spacing-sm;
+		row-gap: 2px;
+		align-items: center;
+		padding: $spacing-xs;
+		border-radius: $border-radius-sm;
+		cursor: pointer;
+		border: 1px solid transparent;
+
+		&:hover {
+			background: $gray-100;
+			border-color: $gray-200;
+		}
+
+		input {
+			grid-row: 1 / span 2;
+		}
+	}
+
+	&__radio-label {
+		font-weight: $font-weight-medium;
+		color: $gray-900;
+	}
+
+	&__radio-hint {
+		font-size: $font-size-xs;
+		color: $gray-600;
+	}
+
+	&__btn {
+		padding: $spacing-xs $spacing-md;
+		border-radius: $border-radius-sm;
+		border: 1px solid transparent;
+		cursor: pointer;
+		font-weight: $font-weight-medium;
+		@include transition(all);
+
+		&--primary {
+			background: $primary-color;
+			color: $white;
+			border-color: $primary-color;
+
+			&:hover {
+				background: darken($primary-color, 5%);
+			}
+		}
+
+		&--ghost {
+			background: transparent;
+			color: $gray-800;
+			border-color: $gray-300;
+
+			&:hover {
+				background: $gray-100;
+			}
+		}
 	}
 }

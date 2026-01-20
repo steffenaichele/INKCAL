@@ -1,10 +1,13 @@
-@use '../utils/variables' as *;
-@use '../utils/mixins' as *;
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
 
 .profile {
 	max-width: 600px;
 	margin: $spacing-xxl auto;
 	padding: $spacing-lg;
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xl;
 
 	&__header {
 		display: flex;
@@ -27,7 +30,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: $spacing-md;
-		margin-bottom: $spacing-xl;
 	}
 
 	&__info-item {
@@ -94,6 +96,106 @@
 
 		&:active {
 			transform: translateY(0);
+		}
+	}
+
+	&__section {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-md;
+		padding: $spacing-md;
+		border: 1px solid $border-color;
+		border-radius: $border-radius-md;
+		background: $gray-50;
+	}
+
+	&__section-title {
+		font-size: $font-size-lg;
+		font-weight: $font-weight-semibold;
+		margin: 0;
+		color: $gray-900;
+	}
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-sm;
+
+		label {
+			display: flex;
+			flex-direction: column;
+			gap: $spacing-xs;
+			font-weight: $font-weight-medium;
+			color: $gray-800;
+
+			input {
+				padding: $spacing-xs $spacing-sm;
+				border: 1px solid $gray-300;
+				border-radius: $border-radius-sm;
+				background: $white;
+				color: $gray-900;
+			}
+		}
+	}
+
+	&__form-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: $spacing-sm;
+		margin-top: $spacing-sm;
+	}
+
+	&__btn {
+		padding: $spacing-xs $spacing-md;
+		border-radius: $border-radius-sm;
+		border: 1px solid transparent;
+		cursor: pointer;
+		font-weight: $font-weight-medium;
+		@include transition(all);
+
+		&--primary {
+			background: $primary-color;
+			color: $white;
+			border-color: $primary-color;
+
+			&:hover {
+				background: darken($primary-color, 5%);
+			}
+		}
+	}
+
+	&__working-days {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: $spacing-sm;
+	}
+
+	&__working-day {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+		padding: $spacing-sm;
+		border: 1px solid $gray-200;
+		border-radius: $border-radius-sm;
+		background: $white;
+	}
+
+	&__working-day-toggle {
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+		font-weight: $font-weight-medium;
+		color: $gray-900;
+	}
+
+	&__time-inputs {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: $spacing-xs;
+
+		label {
+			font-weight: $font-weight-medium;
+			font-size: $font-size-sm;
 		}
 	}
 

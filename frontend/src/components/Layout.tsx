@@ -5,10 +5,10 @@ import './Layout.scss';
 const Layout = () => {
     return (
         <div className="layout">
-            <Sidebar />
             <main className="layout__main">
                 <Outlet />
             </main>
+            <Sidebar />
         </div>
     );
 };

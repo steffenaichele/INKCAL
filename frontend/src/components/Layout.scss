@@ -13,10 +13,12 @@
 	height: 100vh;
 	display: grid;
 	grid-template-rows: auto 1fr;
-  overflow: hidden;
+	overflow: hidden;
 
 	&__main {
 		grid-area: 1 / 1 / 2 / 3;
 		width: 100%;
+		height: 100%;
+		overflow: hidden;
 	}
 }

@@ -11,9 +11,16 @@ const Dashboard = () => {
 	const { signedIn, user } = useAuth();
 
 	// Fetch appointments for the logged-in user
-	const { data: appointments, isLoading, error } = useQuery({
-		queryKey: ['appointments', user?._id],
-		queryFn: () => user ? appointmentsApi.getAll({ userId: user._id }) : Promise.resolve([]),
+	const {
+		data: appointments,
+		isLoading,
+		error,
+	} = useQuery({
+		queryKey: ["appointments", user?._id],
+		queryFn: () =>
+			user
+				? appointmentsApi.getAll({ userId: user._id })
+				: Promise.resolve([]),
 		enabled: !!user,
 	});
 
@@ -33,11 +40,11 @@ const Dashboard = () => {
 				<Calendar userId={user._id} />
 			</div>
 
-			<AppointmentList
+			{/* <AppointmentList
 				appointments={appointments || []}
 				isLoading={isLoading}
 				error={error}
-			/>
+			/> */}
 		</div>
 	);
 };
