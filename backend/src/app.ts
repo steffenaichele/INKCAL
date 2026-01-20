@@ -2,7 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "#db";
-import { userRouter, appointmentRouter, authRouter } from "#routers";
+import { userRouter, workdaysRouter, appointmentRouter, authRouter } from "#routers";
 import { errorHandler, authenticate, authorize } from "#middleware";
 
 const port = process.env.PORT;
@@ -47,6 +47,7 @@ app.get("/", (req: any, res: any) => {
 // API Routes with /api prefix
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/workdays", workdaysRouter);
 app.use("/api/appointments", appointmentRouter);
 
 app.post("/protected", authenticate, authorize(['admin', 'user']), (req, res) => {
