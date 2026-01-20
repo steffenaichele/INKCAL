@@ -10,9 +10,10 @@
 .layout {
 	position: relative;
 	width: 100vw;
-	min-height: 100vh;
+	height: 100vh;
 	display: grid;
 	grid-template-rows: auto 1fr;
+  overflow: hidden;
 
 	&__main {
 		grid-area: 1 / 1 / 2 / 3;

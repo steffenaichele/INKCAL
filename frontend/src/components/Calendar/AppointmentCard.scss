@@ -2,10 +2,9 @@
 @use '../../styles/utils/mixins' as *;
 
 .appointment-card {
-  position: absolute;
-  left: 0;
-  right: 0;
+  // Grid positioning handled by inline styles (gridRow, gridColumn)
   padding: $spacing-xs;
+  margin: 2px; // Small margin to prevent overlapping borders
   border-radius: $border-radius-md;
   color: $white;
   cursor: pointer;
@@ -74,5 +73,265 @@
   // Reduce padding and font sizes for very small appointment cards
   &[style*="height"] {
     min-height: 40px;
+  }
+
+  // Appointment type colors
+  &--newtattoo {
+    background-color: #4caf50;
+  }
+
+  &--touchup {
+    background-color: #2196f3;
+  }
+
+  &--consultation {
+    background-color: #ff9800;
+  }
+
+  &--blocker {
+    background-color: #9e9e9e;
+  }
+}
+
+// Modal styles
+.appointment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.appointment-modal {
+  background: $white;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-xl;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+
+  @media (max-width: $breakpoint-sm) {
+    max-width: 100%;
+    max-height: 95vh;
+  }
+
+  &__header {
+    padding: $spacing-xl;
+    border-bottom: 1px solid $gray-200;
+    @include flex-between;
+    gap: $spacing-md;
+    position: sticky;
+    top: 0;
+    background: $white;
+    z-index: 10;
+    border-radius: $border-radius-xl $border-radius-xl 0 0;
+  }
+
+  &__title-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $gray-900;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @media (max-width: $breakpoint-sm) {
+      font-size: $font-size-lg;
+    }
+  }
+
+  &__type-badge {
+    display: inline-block;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-xl;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    color: $white;
+    align-self: flex-start;
+
+    &--newtattoo {
+      background-color: #4caf50;
+    }
+
+    &--touchup {
+      background-color: #2196f3;
+    }
+
+    &--consultation {
+      background-color: #ff9800;
+    }
+
+    &--blocker {
+      background-color: #9e9e9e;
+    }
+  }
+
+  &__close {
+    @include button-reset;
+    padding: $spacing-xs;
+    border-radius: $border-radius-md;
+    color: $gray-600;
+    @include transition(all);
+    flex-shrink: 0;
+
+    &:hover {
+      background: $gray-100;
+      color: $gray-900;
+    }
+  }
+
+  &__content {
+    padding: $spacing-xl;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xl;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__section-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $gray-900;
+    margin: 0;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__info-item {
+    display: flex;
+    gap: $spacing-md;
+    align-items: flex-start;
+
+    &--full {
+      flex-direction: column;
+    }
+  }
+
+  &__icon {
+    color: $primary-color;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  &__label {
+    font-size: $font-size-xs;
+    color: $gray-600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__value {
+    font-size: $font-size-md;
+    color: $gray-900;
+    line-height: $line-height-base;
+  }
+
+  &__footer {
+    padding: $spacing-lg $spacing-xl;
+    border-top: 1px solid $gray-200;
+    display: flex;
+    gap: $spacing-md;
+    justify-content: flex-end;
+    position: sticky;
+    bottom: 0;
+    background: $white;
+    border-radius: 0 0 $border-radius-xl $border-radius-xl;
+
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &__button {
+    @include button-reset;
+    padding: $spacing-sm $spacing-lg;
+    border-radius: $border-radius-md;
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    @include transition(all);
+    cursor: pointer;
+
+    @media (max-width: $breakpoint-sm) {
+      width: 100%;
+    }
+
+    &--primary {
+      background: $primary-color;
+      color: $white;
+
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+
+    &--secondary {
+      background: $white;
+      color: $gray-700;
+      border: 1px solid $gray-300;
+
+      &:hover {
+        background: $gray-100;
+        border-color: $gray-400;
+      }
+    }
+  }
+
+  // Type-specific border accent
+  &--newtattoo {
+    border-top: 4px solid #4caf50;
+  }
+
+  &--touchup {
+    border-top: 4px solid #2196f3;
+  }
+
+  &--consultation {
+    border-top: 4px solid #ff9800;
+  }
+
+  &--blocker {
+    border-top: 4px solid #9e9e9e;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }

@@ -35,7 +35,9 @@
 		"prebuild": "rm -rf dist",
 		"build": "tsc",
 		"prestart": "npm run build",
-		"start": "node --conditions production dist/app.js"
+		"start": "node --conditions production dist/app.js",
+		"seed-example": "node --env-file=.env.development.local --conditions development src/scripts/seedExampleData.ts",
+		"list-users": "node --env-file=.env.development.local --conditions development src/scripts/listUsers.ts"
 	},
 	"keywords": [],
 	"author": "",

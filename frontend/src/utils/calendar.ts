@@ -365,3 +365,83 @@ export function getAppointmentTypeColor(appointmentType: string): string {
       return '#757575';
   }
 }
+
+// ============================================================================
+// Block-Based Grid Utilities (15-minute blocks)
+// ============================================================================
+
+/**
+ * Calculate grid row position for appointment using 15-minute blocks
+ * @param appointmentTime - Appointment time (HH:mm)
+ * @param displayStartTime - Display start time (HH:mm)
+ * @param blockDuration - Duration of each block in minutes (default: 15)
+ * @returns Grid row position (1-indexed)
+ */
+export function calculateBlockPosition(
+  appointmentTime: string,
+  displayStartTime: string,
+  blockDuration: number = 15
+): number {
+  const appointmentMinutes = parseTimeToMinutes(appointmentTime);
+  const displayStartMinutes = parseTimeToMinutes(displayStartTime);
+  const offsetMinutes = appointmentMinutes - displayStartMinutes;
+  return Math.floor(offsetMinutes / blockDuration) + 1; // +1 for 1-indexed grid
+}
+
+/**
+ * Calculate grid row span for appointment duration
+ * @param startTime - Appointment start time (HH:mm)
+ * @param endTime - Appointment end time (HH:mm)
+ * @param blockDuration - Duration of each block in minutes (default: 15)
+ * @returns Number of blocks to span
+ */
+export function calculateBlockSpan(
+  startTime: string,
+  endTime: string,
+  blockDuration: number = 15
+): number {
+  const startMinutes = parseTimeToMinutes(startTime);
+  const endMinutes = parseTimeToMinutes(endTime);
+  const durationMinutes = endMinutes - startMinutes;
+  return Math.ceil(durationMinutes / blockDuration);
+}
+
+/**
+ * Generate time labels for 15-minute grid (only show on the hour)
+ * @param startTime - Display start time (HH:mm)
+ * @param endTime - Display end time (HH:mm)
+ * @param blockDuration - Duration of each block in minutes (default: 15)
+ * @returns Array of block labels with positions
+ */
+export function generateBlockLabels(
+  startTime: string,
+  endTime: string,
+  blockDuration: number = 15
+): Array<{ block: number; label: string | null }> {
+  const startMinutes = parseTimeToMinutes(startTime);
+  const endMinutes = parseTimeToMinutes(endTime);
+  const totalBlocks = (endMinutes - startMinutes) / blockDuration;
+
+  const labels: Array<{ block: number; label: string | null }> = [];
+
+  for (let i = 0; i < totalBlocks; i++) {
+    const currentMinutes = startMinutes + (i * blockDuration);
+    const isHourMark = currentMinutes % 60 === 0;
+
+    labels.push({
+      block: i + 1,
+      label: isHourMark ? formatMinutesToTime(currentMinutes) : null,
+    });
+  }
+
+  return labels;
+}
+
+/**
+ * Format date to API format (YYYY-MM-DD)
+ * @param date - Date object
+ * @returns Formatted date string
+ */
+export function formatDateForApi(date: Date): string {
+  return formatISODate(date);
+}

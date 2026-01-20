@@ -1,123 +1,104 @@
-import { useMemo } from 'react';
-import type { Appointment, DayConfig } from '@/types/api';
-import Day from './Day';
-import { getWeekDates, getDayOfWeek, parseTimeToMinutes, getHoursBetween, addHoursToTime } from '@/utils/calendar';
-import './Week.scss';
+import type { Appointment } from "@/types/api";
+import { useCalendarConfig } from "@/context";
+import Day from "./Day";
+import {
+	getWeekDates,
+	getDayOfWeek,
+	parseTimeToMinutes,
+	addDays,
+	formatDateForApi,
+	generateBlockLabels,
+} from "@/utils/calendar";
+import "./Week.scss";
 
 export interface WeekProps {
-  startDate: Date; // Monday of the week
-  workdays: DayConfig[];
-  appointments: Appointment[];
-  onAppointmentClick?: (appointment: Appointment) => void;
+	startDate: Date; // Monday of the week
+	appointments: Appointment[];
 }
 
-const Week = ({ startDate, workdays, appointments, onAppointmentClick }: WeekProps) => {
-  // Generate 7 dates for the week (Monday through Sunday)
-  const weekDates = useMemo(() => {
-    return getWeekDates(startDate);
-  }, [startDate]);
+const Week = ({ startDate, appointments }: WeekProps) => {
+	const { config } = useCalendarConfig();
 
-  // Map workdays array to a lookup object by dayOfWeek
-  const workdaysMap = useMemo(() => {
-    const map = new Map<string, DayConfig>();
-    workdays.forEach(day => {
-      map.set(day.dayOfWeek, day);
-    });
-    return map;
-  }, [workdays]);
+	if (!config) {
+		return (
+			<div className="calendar-week calendar-week--loading">
+				Loading...
+			</div>
+		);
+	}
 
-  // Calculate unified time range for the entire week (earliest start to latest end)
-  const weekTimeRange = useMemo(() => {
-    let earliestStart = '23:59';
-    let latestEnd = '00:00';
+	const weekDates = getWeekDates(startDate);
 
-    workdays.forEach(day => {
-      if (day.isWorkday) {
-        const startMinutes = parseTimeToMinutes(day.startTime);
-        const endMinutes = parseTimeToMinutes(day.endTime);
-        const currentEarliestMinutes = parseTimeToMinutes(earliestStart);
-        const currentLatestMinutes = parseTimeToMinutes(latestEnd);
+	const weekStart = formatDateForApi(startDate);
+	const weekEnd = formatDateForApi(addDays(startDate, 7));
+	const weekAppointments = appointments.filter((app) => {
+		const appDateOnly = app.date.split("T")[0];
+		return appDateOnly >= weekStart && appDateOnly < weekEnd;
+	});
 
-        if (startMinutes < currentEarliestMinutes) {
-          earliestStart = day.startTime;
-        }
-        if (endMinutes > currentLatestMinutes) {
-          latestEnd = day.endTime;
-        }
-      }
-    });
+	const blockLabels = generateBlockLabels(
+		config.displayStartTime,
+		config.displayEndTime,
+		config.blockDuration,
+	);
 
-    // If no workdays found, default to 9 AM - 5 PM
-    if (earliestStart === '23:59' && latestEnd === '00:00') {
-      earliestStart = '09:00';
-      latestEnd = '17:00';
-    }
+	const workdaysMap = new Map(config.workdays.map((w) => [w.dayOfWeek, w]));
 
-    // Add buffer hours (1 hour before and after working hours)
-    const workingStartTime = earliestStart;
-    const workingEndTime = latestEnd;
-    const displayStartTime = addHoursToTime(earliestStart, -1);
-    const displayEndTime = addHoursToTime(latestEnd, 1);
+	return (
+		<div className="calendar-week">
+			{/* Hour labels column */}
+			<div className="calendar-week__hours">
+				<div className="calendar-week__hours-header"></div>
+				<div
+					className="calendar-week__hours-list"
+					style={{
+						gridTemplateRows: `repeat(${config.totalBlocks}, 1fr)`,
+					}}>
+					{blockLabels.map(({ block, label }) => {
+						const hourMinutes =
+							parseTimeToMinutes(config.displayStartTime) +
+							(block - 1) * config.blockDuration;
+						const workingStartMinutes = parseTimeToMinutes(
+							config.workingStartTime,
+						);
+						const workingEndMinutes = parseTimeToMinutes(
+							config.workingEndTime,
+						);
+						const isNonWorkingHour =
+							hourMinutes < workingStartMinutes ||
+							hourMinutes >= workingEndMinutes;
 
-    return {
-      startTime: displayStartTime,
-      endTime: displayEndTime,
-      workingStartTime,
-      workingEndTime,
-      hours: getHoursBetween(displayStartTime, displayEndTime),
-    };
-  }, [workdays]);
+						return (
+							<div
+								key={block}
+								className={`calendar-week__hour-label ${isNonWorkingHour && label ? "calendar-week__hour-label--non-working" : ""}`}
+								style={{ gridRow: block }}>
+								{label || ""}
+							</div>
+						);
+					})}
+				</div>
+			</div>
 
-  return (
-    <div className="calendar-week">
-      <div className="calendar-week__container">
-        {/* Hour labels column */}
-        <div className="calendar-week__hours">
-          <div className="calendar-week__hours-header"></div>
-          <div className="calendar-week__hours-list">
-            {weekTimeRange.hours.map(hour => {
-              const hourMinutes = parseTimeToMinutes(hour);
-              const workingStartMinutes = parseTimeToMinutes(weekTimeRange.workingStartTime);
-              const workingEndMinutes = parseTimeToMinutes(weekTimeRange.workingEndTime);
-              const isNonWorkingHour = hourMinutes < workingStartMinutes || hourMinutes >= workingEndMinutes;
+			{weekDates.map((date) => {
+				const dayOfWeek = getDayOfWeek(date);
+				const workdayConfig = workdaysMap.get(dayOfWeek) || null;
+				const dayAppointments = weekAppointments.filter(
+					(app) => app.date.split("T")[0] === formatDateForApi(date),
+				);
 
-              return (
-                <div
-                  key={hour}
-                  className={`calendar-week__hour-label ${isNonWorkingHour ? 'calendar-week__hour-label--non-working' : ''}`}
-                >
-                  {hour}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Days grid */}
-        <div className="calendar-week__days">
-          {weekDates.map(date => {
-            const dayOfWeek = getDayOfWeek(date);
-            const workdayConfig = workdaysMap.get(dayOfWeek) || null;
-
-            return (
-              <Day
-                key={date.toISOString()}
-                date={date}
-                workdayConfig={workdayConfig}
-                appointments={appointments}
-                onAppointmentClick={onAppointmentClick}
-                weekStartTime={weekTimeRange.startTime}
-                weekEndTime={weekTimeRange.endTime}
-                weekHours={weekTimeRange.hours}
-                workingStartTime={weekTimeRange.workingStartTime}
-                workingEndTime={weekTimeRange.workingEndTime}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
+				return (
+					<Day
+						key={date.toISOString()}
+						date={date}
+						workdayConfig={workdayConfig}
+						appointments={dayAppointments}
+						config={config}
+					/>
+				);
+			})}
+		</div>
+	);
 };
 
 export default Week;

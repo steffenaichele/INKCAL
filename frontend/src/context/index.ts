@@ -1,5 +1,6 @@
 import { createContext, use } from "react";
 import AuthProvider from "./AuthProvider";
+import CalendarConfigProvider from "./CalendarConfigProvider";
 import type { AuthContextType } from "@/types/api";
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -11,4 +12,6 @@ const useAuth = (): AuthContextType => {
 	return context;
 };
 
-export { AuthContext, useAuth, AuthProvider };
+export { AuthContext, useAuth, AuthProvider, CalendarConfigProvider };
+export { useCalendarConfig } from "./CalendarConfigContext";
+export type { CalendarConfig, CalendarConfigContextType } from "./CalendarConfigContext";

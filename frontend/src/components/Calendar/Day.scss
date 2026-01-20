@@ -26,16 +26,6 @@
 
   &--non-workday {
     background-color: $gray-100;
-
-    .calendar-day__slot {
-      background: repeating-linear-gradient(
-        45deg,
-        $gray-100,
-        $gray-100 10px,
-        $gray-200 10px,
-        $gray-200 20px
-      );
-    }
   }
 
   &__header {
@@ -68,65 +58,48 @@
 
   &__slots {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr; // Single column, appointments use grid positioning
     position: relative;
+    min-height: 400px;
   }
 
-  &__slot {
-    min-height: 60px;
-    border-bottom: 1px solid $gray-200;
+  &__non-working-card {
+    background: repeating-linear-gradient(
+      45deg,
+      $gray-100,
+      $gray-100 8px,
+      $gray-200 8px,
+      $gray-200 16px
+    );
+    opacity: 0.7;
+    z-index: 0;
     position: relative;
-    background: $white;
+    @include transition(opacity);
+    cursor: pointer;
 
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &--non-working {
-      background: repeating-linear-gradient(
-        45deg,
-        $gray-100,
-        $gray-100 8px,
-        $gray-200 8px,
-        $gray-200 16px
-      );
-      opacity: 0.6;
+    &:hover {
+      opacity: 0.85;
     }
   }
 
-  &__appointments {
+  &__non-working-label {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-
-    > * {
-      pointer-events: auto;
-    }
-  }
-
-  &__non-workday-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     @include flex-center;
     color: $gray-500;
     font-style: italic;
     font-size: $font-size-sm;
-    background: rgba($gray-100, 0.8);
+    background: rgba($white, 0.9);
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
   }
 
   // Responsive adjustments
   @media (max-width: $breakpoint-md) {
     min-height: 300px;
-
-    &__slot {
-      min-height: 50px;
-    }
   }
 }

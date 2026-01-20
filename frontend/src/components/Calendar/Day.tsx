@@ -1,139 +1,150 @@
-import { useMemo } from 'react';
-import type { Appointment, DayConfig } from '@/types/api';
-import AppointmentCard from './AppointmentCard';
+import type { Appointment, DayConfig } from "@/types/api";
+import type { CalendarConfig } from "@/context";
+import AppointmentCard from "./AppointmentCard";
 import {
-  formatWeekdayShort,
-  formatDateShort,
-  getAppointmentsForDay,
-  sortAppointmentsByTime,
-  findHourSlotIndex,
-  calculateAppointmentPosition,
-  calculateAppointmentHeight,
-  groupOverlappingAppointments,
-  isToday,
-  parseTimeToMinutes,
-} from '@/utils/calendar';
-import './Day.scss';
+	formatWeekdayShort,
+	formatDateShort,
+	sortAppointmentsByTime,
+	groupOverlappingAppointments,
+	isToday,
+	calculateBlockPosition,
+	calculateBlockSpan,
+} from "@/utils/calendar";
+import "./Day.scss";
 
 export interface DayProps {
-  date: Date;
-  workdayConfig: DayConfig | null;
-  appointments: Appointment[];
-  onAppointmentClick?: (appointment: Appointment) => void;
-  weekStartTime: string;
-  weekEndTime: string;
-  weekHours: string[];
-  workingStartTime: string;
-  workingEndTime: string;
+	date: Date;
+	workdayConfig: DayConfig | null;
+	appointments: Appointment[]; // Pre-filtered by Week
+	config: CalendarConfig;
 }
 
-const Day = ({ date, workdayConfig, appointments, onAppointmentClick, weekHours, workingStartTime, workingEndTime }: DayProps) => {
-  const weekday = formatWeekdayShort(date);
-  const dateStr = formatDateShort(date);
-  const today = isToday(date);
+const Day = ({ date, workdayConfig, appointments, config }: DayProps) => {
+	const weekday = formatWeekdayShort(date);
+	const dateStr = formatDateShort(date);
+	const today = isToday(date);
 
-  // Filter and sort appointments for this day
-  const dayAppointments = useMemo(() => {
-    const filtered = getAppointmentsForDay(appointments, date);
-    return sortAppointmentsByTime(filtered);
-  }, [appointments, date]);
+	const sortedAppointments = sortAppointmentsByTime(appointments);
+	const appointmentGroups = groupOverlappingAppointments(sortedAppointments);
 
-  // Use week-wide hours for consistent grid
-  const hours = weekHours;
+	const appointmentGridPositions = (() => {
+		const positions = new Map<
+			string,
+			{ gridRow: string; gridColumn: string }
+		>();
 
-  // Group overlapping appointments
-  const appointmentGroups = useMemo(() => {
-    return groupOverlappingAppointments(dayAppointments);
-  }, [dayAppointments]);
+		appointmentGroups.forEach((group) => {
+			const groupSize = group.length;
 
-  // Calculate positions for appointments
-  const appointmentPositions = useMemo(() => {
-    const positions = new Map<string, { top: number; height: number; left: number; width: number }>();
+			group.forEach((appointment, index) => {
+				const rowStart = calculateBlockPosition(
+					appointment.startTime,
+					config.displayStartTime,
+					config.blockDuration,
+				);
+				const rowSpan = calculateBlockSpan(
+					appointment.startTime,
+					appointment.endTime,
+					config.blockDuration,
+				);
 
-    appointmentGroups.forEach(group => {
-      const groupSize = group.length;
+				const columnStart = index + 1;
+				const gridRow = `${rowStart} / span ${rowSpan}`;
+				const gridColumn =
+					groupSize > 1 ? `${columnStart} / span 1` : "1 / -1";
 
-      group.forEach((appointment, index) => {
-        const hourSlotIndex = findHourSlotIndex(appointment.startTime, hours);
-        const hourStart = hours[hourSlotIndex] || hours[0];
+				positions.set(appointment._id, { gridRow, gridColumn });
+			});
+		});
 
-        const positionInHour = calculateAppointmentPosition(appointment.startTime, hourStart);
-        const top = hourSlotIndex * 100 + positionInHour;
-        const height = calculateAppointmentHeight(appointment.startTime, appointment.endTime);
+		return positions;
+	})();
 
-        // If overlapping, divide width and offset left
-        const width = groupSize > 1 ? 100 / groupSize : 100;
-        const left = index * width;
+	const nonWorkingRanges = (() => {
+		if (!workdayConfig || !workdayConfig.isWorkday) {
+			return [{ startBlock: 1, endBlock: config.totalBlocks }];
+		}
 
-        positions.set(appointment._id, { top, height, left, width });
-      });
-    });
+		const ranges: Array<{ startBlock: number; endBlock: number }> = [];
+		const workingStartBlock = calculateBlockPosition(
+			config.workingStartTime,
+			config.displayStartTime,
+			config.blockDuration,
+		);
+		const workingEndBlock = calculateBlockPosition(
+			config.workingEndTime,
+			config.displayStartTime,
+			config.blockDuration,
+		);
 
-    return positions;
-  }, [appointmentGroups, hours]);
+		if (workingStartBlock > 1) {
+			ranges.push({ startBlock: 1, endBlock: workingStartBlock - 1 });
+		}
 
-  // Check if this is a non-workday
-  const isNonWorkday = !workdayConfig || !workdayConfig.isWorkday;
+		if (workingEndBlock <= config.totalBlocks) {
+			ranges.push({
+				startBlock: workingEndBlock,
+				endBlock: config.totalBlocks,
+			});
+		}
 
-  return (
-    <div className={`calendar-day ${today ? 'calendar-day--today' : ''} ${isNonWorkday ? 'calendar-day--non-workday' : ''}`}>
-      <div className="calendar-day__header">
-        <div className="calendar-day__weekday">{weekday}</div>
-        <div className="calendar-day__date">{dateStr}</div>
-      </div>
+		return ranges;
+	})();
 
-      <div className="calendar-day__slots">
-        {hours.map((hour, index) => {
-          const hourMinutes = parseTimeToMinutes(hour);
-          const workingStartMinutes = parseTimeToMinutes(workingStartTime);
-          const workingEndMinutes = parseTimeToMinutes(workingEndTime);
-          const isNonWorkingHour = hourMinutes < workingStartMinutes || hourMinutes >= workingEndMinutes;
+	const isNonWorkday = !workdayConfig || !workdayConfig.isWorkday;
 
-          return (
-            <div
-              key={hour}
-              className={`calendar-day__slot ${isNonWorkingHour ? 'calendar-day__slot--non-working' : ''}`}
-              data-hour={hour}
-              data-index={index}
-            />
-          );
-        })}
+	return (
+		<div
+			className={`calendar-day ${today ? "calendar-day--today" : ""} ${isNonWorkday ? "calendar-day--non-workday" : ""}`}>
+			<div className="calendar-day__header">
+				<div className="calendar-day__weekday">{weekday}</div>
+				<div className="calendar-day__date">{dateStr}</div>
+			</div>
 
-        {/* Appointments layer */}
-        {!isNonWorkday && (
-          <div className="calendar-day__appointments">
-            {dayAppointments.map(appointment => {
-              const position = appointmentPositions.get(appointment._id);
-              if (!position) return null;
+			<div
+				className="calendar-day__slots"
+				style={{
+					gridTemplateRows: `repeat(${config.totalBlocks}, 1fr)`,
+				}}>
+				{/* Non-working time cards */}
+				{nonWorkingRanges.map((range, index) => (
+					<div
+						key={`non-working-${index}`}
+						className="calendar-day__non-working-card"
+						style={{
+							gridRow: `${range.startBlock} / ${range.endBlock + 1}`,
+							gridColumn: "1 / -1",
+						}}>
+						{isNonWorkday && (
+							<div className="calendar-day__non-working-label">
+								<span>Not a workday</span>
+							</div>
+						)}
+					</div>
+				))}
 
-              const style: React.CSSProperties = {
-                top: `${position.top}%`,
-                height: `${position.height}%`,
-                left: `${position.left}%`,
-                width: `${position.width}%`,
-              };
+				{/* Appointments */}
+				{!isNonWorkday &&
+					sortedAppointments.map((appointment) => {
+						const position = appointmentGridPositions.get(
+							appointment._id,
+						);
+						if (!position) return null;
 
-              return (
-                <AppointmentCard
-                  key={appointment._id}
-                  appointment={appointment}
-                  style={style}
-                  onClick={onAppointmentClick}
-                />
-              );
-            })}
-          </div>
-        )}
-
-        {/* Non-workday overlay */}
-        {isNonWorkday && (
-          <div className="calendar-day__non-workday-overlay">
-            <span>Not a workday</span>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+						return (
+							<AppointmentCard
+								key={appointment._id}
+								appointment={appointment}
+								style={{
+									gridRow: position.gridRow,
+									gridColumn: position.gridColumn,
+								}}
+							/>
+						);
+					})}
+			</div>
+		</div>
+	);
 };
 
 export default Day;

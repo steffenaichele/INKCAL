@@ -1,0 +1,121 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.appointment-list {
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $gray-900;
+    margin-bottom: $spacing-lg;
+
+    @media (max-width: $breakpoint-md) {
+      font-size: $font-size-lg;
+    }
+  }
+
+  &__loading,
+  &__empty {
+    color: $gray-600;
+    line-height: $line-height-base;
+  }
+
+  &__empty {
+    font-style: italic;
+    padding: $spacing-lg;
+    text-align: center;
+    background: $gray-100;
+    border-radius: $border-radius-md;
+  }
+
+  &__error {
+    color: $danger-color;
+    padding: $spacing-md;
+    background-color: #ffebee;
+    border-radius: $border-radius-md;
+    border: 1px solid $danger-color;
+  }
+
+  &__grid {
+    display: grid;
+    gap: $spacing-md;
+    margin-top: $spacing-lg;
+
+    @media (min-width: $breakpoint-md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: $breakpoint-lg) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    border: 1px solid $gray-200;
+    border-radius: $border-radius-lg;
+    padding: $spacing-lg;
+    background-color: $white;
+    box-shadow: $shadow-sm;
+    @include transition(all);
+
+    &:hover {
+      box-shadow: $shadow-md;
+      transform: translateY(-2px);
+    }
+  }
+
+  &__card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $spacing-md;
+  }
+
+  &__card-title {
+    margin: 0 0 $spacing-sm 0;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $gray-900;
+  }
+
+  &__card-details {
+    color: $gray-600;
+    font-size: $font-size-sm;
+
+    p {
+      margin: $spacing-xs 0;
+      color: $gray-600;
+    }
+
+    strong {
+      color: $gray-700;
+      font-weight: $font-weight-medium;
+    }
+  }
+
+  &__badge {
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-xl;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    color: $white;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    // Appointment type colors
+    &--newtattoo {
+      background-color: #4caf50;
+    }
+
+    &--touchup {
+      background-color: #2196f3;
+    }
+
+    &--consultation {
+      background-color: #ff9800;
+    }
+
+    &--blocker {
+      background-color: #9e9e9e;
+    }
+  }
+}

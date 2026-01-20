@@ -1,56 +1,141 @@
-import type { Appointment } from '@/types/api';
-import { getAppointmentTypeColor } from '@/utils/calendar';
-import './AppointmentCard.scss';
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { createBlendy } from "blendy";
+import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent } from "react";
+import type { Appointment } from "@/types/api";
 
 export interface AppointmentCardProps {
-  appointment: Appointment;
-  style?: React.CSSProperties;
-  onClick?: (appointment: Appointment) => void;
+	appointment: Appointment;
+	style?: CSSProperties;
 }
 
-const AppointmentCard = ({ appointment, style, onClick }: AppointmentCardProps) => {
-  const backgroundColor = getAppointmentTypeColor(appointment.appointmentType);
+const overlayStyle: CSSProperties = {
+	position: "fixed",
+	top: 0,
+	left: 0,
+	right: 0,
+	bottom: 0,
+	display: "flex",
+	alignItems: "center",
+	justifyContent: "center",
+	background: "rgba(0,0,0,0.25)",
+	zIndex: 1000,
+};
 
-  const handleClick = () => {
-    onClick?.(appointment);
-  };
+const modalStyle: CSSProperties = {
+	background: "#fff",
+	padding: "16px",
+	borderRadius: 8,
+	boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+	minWidth: 260,
+	maxWidth: "90vw",
+};
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick?.(appointment);
-    }
-  };
+const cardBaseStyle: CSSProperties = {
+	border: "1px solid #ddd",
+	borderRadius: 6,
+	padding: "10px 12px",
+	cursor: "pointer",
+	background: "#fff",
+	boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+};
 
-  // Format time range
-  const timeRange = `${appointment.startTime} - ${appointment.endTime}`;
+const AppointmentCard = ({ appointment, style }: AppointmentCardProps) => {
+	const blendy = useRef<ReturnType<typeof createBlendy> | null>(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const blendyId = `appointment-${appointment._id}`;
 
-  // Show client name for non-Blocker appointments
-  const showClient = appointment.appointmentType !== 'Blocker';
-  const clientName = showClient ? appointment.clientName : null;
+	useEffect(() => {
+		blendy.current = createBlendy({ animation: "dynamic" });
+	}, []);
 
-  return (
-    <div
-      className="appointment-card"
-      style={{ ...style, backgroundColor }}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      role="button"
-      tabIndex={0}
-      title={`${appointment.title} - ${timeRange}${clientName ? ` - ${clientName}` : ''}`}
-    >
-      <div className="appointment-card__header">
-        <span className="appointment-card__type">{appointment.appointmentType}</span>
-        <span className="appointment-card__time">{timeRange}</span>
-      </div>
+	const openModal = () => {
+		setIsModalOpen(true);
+		setTimeout(() => {
+			blendy.current?.update();
+			blendy.current?.toggle(blendyId);
+		}, 0);
+	};
 
-      <div className="appointment-card__title">{appointment.title}</div>
+	const closeModal = () => {
+		blendy.current?.untoggle(blendyId, () => {
+			setIsModalOpen(false);
+		});
+	};
 
-      {clientName && (
-        <div className="appointment-card__client">{clientName}</div>
-      )}
-    </div>
-  );
+	useEffect(() => {
+		const handleEscape = (e: KeyboardEvent) => {
+			if (e.key === "Escape" && isModalOpen) {
+				closeModal();
+			}
+		};
+
+		if (isModalOpen) {
+			document.addEventListener("keydown", handleEscape);
+		}
+
+		return () => {
+			document.removeEventListener("keydown", handleEscape);
+		};
+	}, [isModalOpen]);
+
+	const handleKeyDown = (e: ReactKeyboardEvent) => {
+		if (e.key === "Enter" || e.key === " ") {
+			e.preventDefault();
+			openModal();
+		}
+	};
+
+	const appointmentDate = new Date(appointment.date);
+	const formattedDate = appointmentDate.toLocaleDateString("en-US", {
+		weekday: "long",
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+
+	const timeRange = `${appointment.startTime} - ${appointment.endTime}`;
+	const showClient = appointment.appointmentType !== "Blocker";
+	const clientName = showClient ? appointment.clientName : null;
+
+	return (
+		<>
+			{isModalOpen &&
+				createPortal(
+					<div onClick={closeModal} style={overlayStyle}>
+						<div
+							data-blendy-to={blendyId}
+							onClick={(e) => e.stopPropagation()}
+							style={modalStyle}>
+							<h2>{appointment.title}</h2>
+							<p>{formattedDate}</p>
+							<p>{timeRange}</p>
+							{clientName && <p>Client: {clientName}</p>}
+							<button
+								onClick={closeModal}
+								aria-label="Close modal">
+								Close
+							</button>
+						</div>
+					</div>,
+					document.body,
+				)}
+
+			<div
+				data-blendy-from={blendyId}
+				style={{ ...cardBaseStyle, ...style }}
+				onClick={openModal}
+				onKeyDown={handleKeyDown}
+				role="button"
+				tabIndex={0}
+				title={`${appointment.title} - ${timeRange}${clientName ? ` - ${clientName}` : ""}`}>
+				<div>{appointment.appointmentType}</div>
+				<div>{timeRange}</div>
+				<div>{appointment.title}</div>
+				{clientName && <div>{clientName}</div>}
+			</div>
+		</>
+	);
 };
 
 export default AppointmentCard;

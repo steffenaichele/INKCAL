@@ -2,9 +2,9 @@ import { useAuth } from "@/context";
 import { Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { appointmentsApi } from "@/services/api/appointments";
-import type { Appointment } from "@/types/api";
 import Clock from "@/components/Clock";
 import Calendar from "@/components/Calendar";
+import AppointmentList from "@/components/AppointmentList";
 import "@/styles/pages/Dashboard.scss";
 
 const Dashboard = () => {
@@ -21,94 +21,25 @@ const Dashboard = () => {
 		return <Navigate to="/login" replace />;
 	}
 
-	const handleAppointmentClick = (appointment: Appointment) => {
-		// TODO: Open appointment details modal or navigate to edit page
-		console.log('Appointment clicked:', appointment);
-	};
-
 	return (
 		<div className="dashboard">
-			<h1>Welcome, {user.name}!</h1>
+			<h1 className="dashboard__title">Welcome, {user.name}!</h1>
 
-			<div className="dashboard__widgets">
+			<div className="dashboard__clock">
 				<Clock />
 			</div>
 
 			<div className="dashboard__calendar">
-				<Calendar userId={user._id} onAppointmentClick={handleAppointmentClick} />
+				<Calendar userId={user._id} />
 			</div>
 
-			<div className="dashboard__appointments-list">
-				<h2>Your Appointments</h2>
-
-				{isLoading && <p>Loading appointments...</p>}
-
-				{error && (
-					<div className="dashboard__error">
-						Error loading appointments: {error instanceof Error ? error.message : "Unknown error"}
-					</div>
-				)}
-
-				{!isLoading && !error && appointments && appointments.length === 0 && (
-					<p className="dashboard__empty">
-						No appointments found. Create your first appointment!
-					</p>
-				)}
-
-				{!isLoading && !error && appointments && appointments.length > 0 && (
-					<div className="dashboard__appointment-grid">
-						{appointments.map((appointment: Appointment) => (
-							<div key={appointment._id} className="dashboard__appointment-card">
-								<div className="dashboard__appointment-content">
-									<div>
-										<h3>{appointment.title}</h3>
-										<div className="dashboard__appointment-details">
-											<p>
-												<strong>Type:</strong> {appointment.appointmentType}
-											</p>
-											<p>
-												<strong>Date:</strong> {new Date(appointment.date).toLocaleDateString()}
-											</p>
-											<p>
-												<strong>Time:</strong> {appointment.startTime} - {appointment.endTime}
-											</p>
-											{appointment.appointmentType !== "Blocker" && (
-												<p>
-													<strong>Client:</strong> {appointment.clientName}
-												</p>
-											)}
-										</div>
-									</div>
-									<span
-										className="dashboard__appointment-badge"
-										style={{ backgroundColor: getAppointmentTypeColor(appointment.appointmentType) }}
-									>
-										{appointment.appointmentType}
-									</span>
-								</div>
-							</div>
-						))}
-					</div>
-				)}
-			</div>
+			<AppointmentList
+				appointments={appointments || []}
+				isLoading={isLoading}
+				error={error}
+			/>
 		</div>
 	);
-};
-
-// Helper function to get color based on appointment type
-const getAppointmentTypeColor = (type: string): string => {
-	switch (type) {
-		case "NewTattoo":
-			return "#4caf50";
-		case "TouchUp":
-			return "#2196f3";
-		case "Consultation":
-			return "#ff9800";
-		case "Blocker":
-			return "#9e9e9e";
-		default:
-			return "#757575";
-	}
 };
 
 export default Dashboard;
