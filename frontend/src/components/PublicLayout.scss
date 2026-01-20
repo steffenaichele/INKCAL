@@ -1,0 +1,124 @@
+@use '../styles/utils/variables' as *;
+@use '../styles/utils/mixins' as *;
+
+// Base UI Portal Support
+.root {
+	isolation: isolate;
+}
+
+.public-layout {
+	min-height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr;
+
+	// When sidebar is active (login/register pages)
+	&:has(.public-layout__sidebar) {
+		grid-template-columns: 1fr 480px;
+
+		@media (max-width: $breakpoint-md) {
+			grid-template-columns: 1fr;
+
+			.public-layout__hero {
+				display: none;
+			}
+		}
+	}
+
+	&__hero {
+		background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 15%) 100%);
+		color: $white;
+		padding: $spacing-xxl;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow: auto;
+	}
+
+	&__hero-content {
+		max-width: 800px;
+		width: 100%;
+	}
+
+	&__title {
+		font-size: 3.5rem;
+		font-weight: $font-weight-bold;
+		margin-bottom: $spacing-lg;
+		line-height: $line-height-sm;
+
+		@media (max-width: $breakpoint-md) {
+			font-size: 2.5rem;
+		}
+	}
+
+	&__description {
+		font-size: $font-size-xl;
+		line-height: $line-height-base;
+		margin-bottom: $spacing-xxl;
+		opacity: 0.95;
+	}
+
+	&__features {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: $spacing-lg;
+		margin-top: $spacing-xl;
+	}
+
+	&__feature {
+		background: rgba($white, 0.1);
+		padding: $spacing-lg;
+		border-radius: $border-radius-lg;
+		backdrop-filter: blur(10px);
+		@include transition(all);
+
+		&:hover {
+			background: rgba($white, 0.15);
+			transform: translateY(-4px);
+		}
+
+		h3 {
+			font-size: $font-size-lg;
+			font-weight: $font-weight-semibold;
+			margin-bottom: $spacing-sm;
+			margin-top: $spacing-sm;
+		}
+
+		p {
+			font-size: $font-size-sm;
+			opacity: 0.9;
+			line-height: $line-height-base;
+		}
+	}
+
+	&__feature-icon {
+		font-size: 2.5rem;
+		display: block;
+		margin-bottom: $spacing-sm;
+	}
+
+	&__sidebar {
+		background-color: $white;
+		padding: $spacing-xxl;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		box-shadow: $shadow-xl;
+		overflow: auto;
+
+		@media (max-width: $breakpoint-md) {
+			padding: $spacing-lg;
+			box-shadow: none;
+		}
+	}
+
+	&__content {
+		padding: $spacing-xxl;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		@media (max-width: $breakpoint-md) {
+			padding: $spacing-lg;
+		}
+	}
+}

@@ -8,9 +8,9 @@
 }
 
 .layout {
+  position: relative;
   width: 100vw;
   min-height: 100vh;
-  display: grid;
 
   &__main {
     flex: 1;

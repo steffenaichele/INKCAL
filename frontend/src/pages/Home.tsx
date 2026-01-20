@@ -1,6 +1,7 @@
 import { useAuth } from "@/context";
-import { Navigate } from "react-router";
-import { Link } from "react-router";
+import { Navigate, Link } from "react-router";
+import Icon from "@/components/Icon";
+import "./Home.scss";
 
 const Home = () => {
 	const { signedIn } = useAuth();
@@ -10,40 +11,24 @@ const Home = () => {
 		return <Navigate to="/dashboard" replace />;
 	}
 
-	// Landing page for non-authenticated users
+	// Landing page for non-authenticated users - shown in PublicLayout hero area
 	return (
-		<div style={{ maxWidth: "800px", margin: "50px auto", padding: "20px", textAlign: "center" }}>
-			<h1 style={{ fontSize: "48px", marginBottom: "20px" }}>Welcome to INKCAL</h1>
-			<p style={{ fontSize: "20px", color: "#666", marginBottom: "40px" }}>
-				Your personal appointment management system for tattoo artists
-			</p>
-			<div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
-				<Link
-					to="/login"
-					style={{
-						padding: "12px 24px",
-						backgroundColor: "#2196f3",
-						color: "white",
-						textDecoration: "none",
-						borderRadius: "4px",
-						fontSize: "16px"
-					}}
-				>
-					Login
-				</Link>
-				<Link
-					to="/register"
-					style={{
-						padding: "12px 24px",
-						backgroundColor: "#4caf50",
-						color: "white",
-						textDecoration: "none",
-						borderRadius: "4px",
-						fontSize: "16px"
-					}}
-				>
-					Register
-				</Link>
+		<div className="home">
+			<div className="home__cta">
+				<h2 className="home__cta-title">Get Started Today</h2>
+				<p className="home__cta-text">
+					Join hundreds of tattoo artists managing their schedules efficiently
+				</p>
+				<div className="home__cta-buttons">
+					<Link to="/login" className="home__cta-button home__cta-button--primary">
+						<Icon name="LogIn" size={20} />
+						<span>Sign In</span>
+					</Link>
+					<Link to="/register" className="home__cta-button home__cta-button--secondary">
+						<Icon name="UserPlus" size={20} />
+						<span>Create Account</span>
+					</Link>
+				</div>
 			</div>
 		</div>
 	);

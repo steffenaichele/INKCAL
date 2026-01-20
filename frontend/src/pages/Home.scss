@@ -1,0 +1,73 @@
+@use '../styles/utils/variables' as *;
+@use '../styles/utils/mixins' as *;
+
+.home {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+
+	&__cta {
+		text-align: center;
+		padding: $spacing-xxl;
+		background: rgba($white, 0.05);
+		border-radius: $border-radius-xl;
+		backdrop-filter: blur(10px);
+	}
+
+	&__cta-title {
+		font-size: 2.5rem;
+		font-weight: $font-weight-bold;
+		margin-bottom: $spacing-md;
+		color: $white;
+	}
+
+	&__cta-text {
+		font-size: $font-size-lg;
+		margin-bottom: $spacing-xl;
+		opacity: 0.9;
+		color: $white;
+	}
+
+	&__cta-buttons {
+		display: flex;
+		gap: $spacing-md;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	&__cta-button {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: $spacing-md $spacing-xl;
+		border-radius: $border-radius-lg;
+		font-size: $font-size-md;
+		font-weight: $font-weight-semibold;
+		text-decoration: none;
+		@include transition(all);
+		cursor: pointer;
+
+		&--primary {
+			background-color: $white;
+			color: $primary-color;
+
+			&:hover {
+				background-color: darken($white, 5%);
+				transform: translateY(-2px);
+				box-shadow: $shadow-lg;
+			}
+		}
+
+		&--secondary {
+			background-color: rgba($white, 0.2);
+			color: $white;
+			border: 2px solid $white;
+
+			&:hover {
+				background-color: rgba($white, 0.3);
+				transform: translateY(-2px);
+				box-shadow: $shadow-md;
+			}
+		}
+	}
+}

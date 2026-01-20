@@ -3,6 +3,7 @@ import { Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { appointmentsApi } from "@/services/api/appointments";
 import type { Appointment } from "@/types/api";
+import Clock from "@/components/Clock";
 
 const Dashboard = () => {
 	const { signedIn, user } = useAuth();
@@ -21,6 +22,8 @@ const Dashboard = () => {
 	return (
 		<div style={{ maxWidth: "1200px", margin: "20px auto", padding: "20px" }}>
 			<h1>Welcome, {user.name}!</h1>
+
+			<Clock />
 
 			<div style={{ marginTop: "30px" }}>
 				<h2>Your Appointments</h2>

@@ -67,7 +67,12 @@ export const dayConfigSchema = z.strictObject({
 );
 
 // Day configuration output schema (includes virtual fields)
-export const dayConfigOutputSchema = dayConfigSchema.extend({
+// Note: Can't use .extend() on schemas with refinements, so we recreate it
+export const dayConfigOutputSchema = z.strictObject({
+	dayOfWeek: dayOfWeekEnum,
+	isWorkday: z.boolean(),
+	startTime: z.string().regex(timeRegex, "Start time must be in HH:mm format (24-hour)"),
+	endTime: z.string().regex(timeRegex, "End time must be in HH:mm format (24-hour)"),
 	durationMinutes: z.number().optional(),
 	durationFormatted: z.string().optional(),
 });
