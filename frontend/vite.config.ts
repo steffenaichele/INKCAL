@@ -9,6 +9,28 @@ export default defineConfig({
 			"@": path.resolve(__dirname, "./src"),
 		},
 	},
+	build: {
+		// Enable source maps for production debugging (optional)
+		sourcemap: false,
+		// Optimize chunk size
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					// Separate vendor chunks for better caching
+					"react-vendor": [
+						"react",
+						"react-dom",
+						"react-router",
+						"react-router-dom",
+					],
+					"query-vendor": ["@tanstack/react-query"],
+				},
+			},
+		},
+		// Target modern browsers for smaller bundles
+		target: "esnext",
+		minify: "esbuild",
+	},
 	server: {
 		proxy: {
 			"/api": {
@@ -16,5 +38,10 @@ export default defineConfig({
 				changeOrigin: true,
 			},
 		},
+	},
+	// Preview mode configuration for Vercel
+	preview: {
+		port: 4173,
+		strictPort: true,
 	},
 });

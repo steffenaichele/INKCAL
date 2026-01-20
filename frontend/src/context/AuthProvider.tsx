@@ -1,7 +1,12 @@
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { AuthContext } from ".";
 import { login, me, logout, register } from "@/data";
-import type { User, LoginData, RegisterFormState, AuthContextType } from "@/types/api";
+import type {
+	User,
+	LoginData,
+	RegisterFormState,
+	AuthContextType,
+} from "@/types/api";
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [signedIn, setSignedIn] = useState(false);
@@ -15,37 +20,40 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 				const data = await me();
 
 				setUser(data);
-				setSignedIn(true);
+				setSignedIn(() => true);
 			} catch (error) {
 				// User not authenticated - this is fine
-				setSignedIn(false);
-				setUser(null);
+				setSignedIn(() => false);
+				setUser(() => null);
 			} finally {
-				setCheckSession(false);
-				setIsLoading(false);
+				setCheckSession(() => false);
+				setIsLoading(() => false);
 			}
 		};
 
 		if (checkSession) getUser();
 	}, [checkSession]);
 
-	const handleSignIn = async ({ email, password }: LoginData) => {
+	const handleSignIn = useCallback(async ({ email, password }: LoginData) => {
 		await login({ email, password });
-		setSignedIn(true);
-		setCheckSession(true);
-	};
+		setSignedIn(() => true);
+		setCheckSession(() => true);
+	}, []);
 
-	const handleRegister = async (formState: RegisterFormState) => {
-		await register(formState);
-		setSignedIn(true);
-		setCheckSession(true);
-	};
+	const handleRegister = useCallback(
+		async (formState: RegisterFormState) => {
+			await register(formState);
+			setSignedIn(() => true);
+			setCheckSession(() => true);
+		},
+		[]
+	);
 
-	const handleSignOut = async () => {
+	const handleSignOut = useCallback(async () => {
 		await logout();
-		setSignedIn(false);
-		setUser(null);
-	};
+		setSignedIn(() => false);
+		setUser(() => null);
+	}, []);
 
 	const value: AuthContextType = {
 		signedIn,
@@ -58,12 +66,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 	// Show loading while checking session
 	if (isLoading) {
 		return (
-			<div style={{
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				height: '100vh'
-			}}>
+			<div
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					height: "100vh",
+				}}
+			>
 				Loading...
 			</div>
 		);

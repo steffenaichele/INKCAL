@@ -1,0 +1,46 @@
+@use '../styles/utils/variables' as *;
+@use '../styles/utils/mixins' as *;
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+	transition: all $transition-speed-fast $transition-timing;
+
+	// Allow parent to control cursor
+	&[role='button'],
+	&.icon--clickable {
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.7;
+		}
+	}
+
+	// Size variants
+	&--xs {
+		width: 16px;
+		height: 16px;
+	}
+
+	&--sm {
+		width: 20px;
+		height: 20px;
+	}
+
+	&--md {
+		width: 24px;
+		height: 24px;
+	}
+
+	&--lg {
+		width: 32px;
+		height: 32px;
+	}
+
+	&--xl {
+		width: 40px;
+		height: 40px;
+	}
+}

@@ -1,0 +1,86 @@
+@use "../styles/utils/variables" as *;
+@use "../styles/utils/mixins" as *;
+
+.sidebar {
+	padding: $spacing-md $spacing-lg;
+	background-color: $gray-100;
+	margin-bottom: $spacing-lg;
+	box-shadow: $shadow-box;
+
+	@include flex-between;
+
+	.gradient-border {
+		--borderWidth: 1px;
+		background: #1d1f20;
+		position: relative;
+		border-radius: 16px;
+    
+		.gradient-border:after {
+			content: "";
+			position: absolute;
+			top: calc(-1 * var(--borderWidth));
+			left: calc(-1 * var(--borderWidth));
+			height: calc(100% + var(--borderWidth) * 2);
+			width: calc(100% + var(--borderWidth) * 2);
+			background: linear-gradient(
+				0deg,
+				rgba(255, 255, 255, 0.4) 0%,
+				rgba(255, 255, 255, 0) 41%,
+				rgba(255, 255, 255, 0) 57%,
+				rgba(255, 255, 255, 0.1) 100%
+			);
+			border-radius: 16px;
+			z-index: -1;
+			background-size: 300% 300%;
+		}
+	}
+
+	&__list {
+		list-style: none;
+		display: flex;
+		gap: $spacing-lg;
+		margin: 0;
+		padding: 0;
+		align-items: center;
+	}
+
+	&__item {
+		// Sidebar item styles
+	}
+
+	&__link {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		color: $gray-700;
+		text-decoration: none;
+		font-weight: $font-weight-medium;
+		padding: $spacing-xs $spacing-sm;
+		border-radius: $border-radius-sm;
+		@include transition(all);
+
+		&:hover {
+			color: $primary-color;
+			background-color: rgba($primary-color, 0.1);
+		}
+
+		&--active {
+			color: $primary-color;
+			font-weight: $font-weight-semibold;
+		}
+	}
+
+	&__user-greeting {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		margin-right: $spacing-md;
+		color: $gray-700;
+		font-weight: $font-weight-medium;
+	}
+
+	// Responsive
+	@include md {
+		padding: $spacing-lg $spacing-xl;
+	}
+}
