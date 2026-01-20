@@ -1,4 +1,7 @@
 // Base UI Button Styles
+@use '../../../styles/utils/variables' as *;
+@use '../../../styles/utils/mixins' as *;
+@use 'sass:color';
 
 .base-button {
   // Base styles
@@ -35,12 +38,12 @@
     border: $border-width solid $primary-color;
 
     &:hover:not(:disabled) {
-      background-color: darken($primary-color, 10%);
-      border-color: darken($primary-color, 10%);
+      background-color: color.scale($primary-color, $lightness: -10%);
+      border-color: color.scale($primary-color, $lightness: -10%);
     }
 
     &:active:not(:disabled) {
-      background-color: darken($primary-color, 15%);
+      background-color: color.scale($primary-color, $lightness: -15%);
     }
   }
 
@@ -50,8 +53,8 @@
     border: $border-width solid $secondary-color;
 
     &:hover:not(:disabled) {
-      background-color: darken($secondary-color, 10%);
-      border-color: darken($secondary-color, 10%);
+      background-color: color.scale($secondary-color, $lightness: -10%);
+      border-color: color.scale($secondary-color, $lightness: -10%);
     }
   }
 
@@ -85,8 +88,8 @@
     border: $border-width solid $danger-color;
 
     &:hover:not(:disabled) {
-      background-color: darken($danger-color, 10%);
-      border-color: darken($danger-color, 10%);
+      background-color: color.scale($danger-color, $lightness: -10%);
+      border-color: color.scale($danger-color, $lightness: -10%);
     }
   }
 

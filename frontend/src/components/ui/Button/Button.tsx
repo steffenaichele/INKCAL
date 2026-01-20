@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react';
-import '../../styles/components/_button.scss';
+import './Button.scss';
 
 export interface ButtonProps {
   children: React.ReactNode;

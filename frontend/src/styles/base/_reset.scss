@@ -1,4 +1,5 @@
 // Modern CSS Reset
+@use '../utils/variables' as *;
 *,
 *::before,
 *::after {
