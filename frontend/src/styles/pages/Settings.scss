@@ -2,7 +2,8 @@
 @use "../utils/mixins" as *;
 
 .profile {
-	max-width: 600px;
+	grid-area: 1 / 2 / 2 / 3;
+	width: 45vw;
 	margin: $spacing-xxl auto;
 	padding: $spacing-lg;
 	display: flex;

@@ -1,34 +1,19 @@
 @use "../utils/variables" as *;
-@use "../utils/mixins" as *;
 
 .dashboard {
+	grid-area: 1 / 1 / 2 / 2;
+	border-radius: .75rem;
 	position: relative;
 	width: 100%;
 	height: 100%;
 	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	grid-template-rows: repeat(6, 1fr);
+	grid-template-rows: auto 1fr auto;
+	background-color: var(--bg-tertiary);
+}
 
-	&__title {
-		font-size: $font-size-xxl;
-		font-weight: $font-weight-bold;
-		color: var(--text-primary);
-		grid-column: 1 / 5;
-		grid-row: 1 / 2;
-		align-self: center;
-	}
-
-	&__clock {
-		grid-column: 5 / 7;
-		grid-row: 1 / 2;
-		justify-self: end;
-		align-self: center;
-	}
-
-	&__calendar {
-		grid-column: 2 / 6;
-		grid-row: 2 / 6;
-		width: 100%;
-    height: 100%;
-	}
+.dashboard__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-sm;
+	padding: 0 $spacing-lg $spacing-md;
 }

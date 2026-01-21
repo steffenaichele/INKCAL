@@ -78,31 +78,114 @@
   outline: inherit;
 }
 
-// Glassmorphism box with gradient border
-@mixin glass-box {
-  position: relative;
-  box-shadow: $shadow-box;
-  --borderWidth: 1px;
-  background: var(--bg-primary);
-  border-radius: $border-radius-xl;
-  overflow: hidden;
+// === GLASSMORPHISM MIXIN SYSTEM ===
 
-  &::after {
-    content: "";
-    position: absolute;
-    top: calc(-1 * var(--borderWidth));
-    left: calc(-1 * var(--borderWidth));
-    height: calc(100% + var(--borderWidth) * 2);
-    width: calc(100% + var(--borderWidth) * 2);
-    background: linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.4) 0%,
-      rgba(255, 255, 255, 0) 41%,
-      rgba(255, 255, 255, 0) 57%,
-      rgba(255, 255, 255, 0.1) 100%
-    );
-    border-radius: $border-radius-xl;
-    z-index: -1;
-    background-size: 300% 300%;
+// GPU acceleration for performance
+@mixin gpu-accelerate {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+// Core glass effect with backdrop blur
+@mixin glass-base(
+  $blur: $backdrop-blur-medium,
+  $bg-alpha: $glass-alpha-medium,
+  $border-alpha: 0.1,
+  $shadow: $glass-shadow-medium
+) {
+  @include gpu-accelerate;
+  position: relative;
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  background: rgba(var(--glass-bg-rgb, 10, 10, 10), $bg-alpha);
+  border: 1px solid rgba(255, 255, 255, $border-alpha);
+  box-shadow: $shadow;
+
+  // Fallback for browsers without backdrop-filter support
+  @supports not (backdrop-filter: blur($blur)) {
+    background: rgba(var(--glass-bg-rgb, 10, 10, 10), $bg-alpha + 0.2);
   }
+}
+
+// Glass variants
+@mixin glass-subtle {
+  @include glass-base(
+    $blur: $backdrop-blur-subtle,
+    $bg-alpha: $glass-alpha-subtle,
+    $border-alpha: 0.04,
+    $shadow: $glass-shadow-low
+  );
+}
+
+@mixin glass-medium {
+  @include glass-base(
+    $blur: $backdrop-blur-medium,
+    $bg-alpha: $glass-alpha-medium,
+    $border-alpha: 0.1,
+    $shadow: $glass-shadow-medium
+  );
+}
+
+@mixin glass-strong {
+  @include glass-base(
+    $blur: $backdrop-blur-strong,
+    $bg-alpha: $glass-alpha-strong,
+    $border-alpha: 0.15,
+    $shadow: $glass-shadow-high
+  );
+}
+
+// Glass overlay (for modal backdrops)
+@mixin glass-overlay {
+  backdrop-filter: blur($backdrop-blur-medium);
+  -webkit-backdrop-filter: blur($backdrop-blur-medium);
+  background: rgba(0, 0, 0, $glass-alpha-overlay);
+}
+
+// Glass card with hover effect
+@mixin glass-card($radius: $border-radius-xl) {
+  @include glass-medium;
+  border-radius: $radius;
+  @include transition(all, $transition-speed-medium, $ease-out-expo);
+
+  &:hover {
+    backdrop-filter: blur($backdrop-blur-strong);
+    -webkit-backdrop-filter: blur($backdrop-blur-strong);
+    background: rgba(var(--glass-bg-rgb, 10, 10, 10), $glass-alpha-strong);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: $glass-shadow-high;
+    transform: translateY(-2px);
+  }
+}
+
+// Glass button effect
+@mixin glass-button {
+  @include glass-subtle;
+  border-radius: $border-radius-lg;
+  @include transition(all, $transition-speed-fast, $ease-out-expo);
+
+  &:hover:not(:disabled) {
+    backdrop-filter: blur($backdrop-blur-medium);
+    -webkit-backdrop-filter: blur($backdrop-blur-medium);
+    background: rgba(var(--glass-bg-rgb, 10, 10, 10), $glass-alpha-light);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+}
+
+// Reduced motion support
+@mixin reduce-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Legacy glass-box (backward compatibility - deprecated)
+@mixin glass-box {
+  @include glass-medium;
+  border-radius: $border-radius-xl;
 }

@@ -8,7 +8,7 @@ import Icon from "@/components/Icon";
 import { Button } from "@/components/ui/Button/Button";
 import { workdaysApi } from "@/services/api/workdays";
 import type { DayOfWeek, WorkdaysInput } from "@/types/api";
-import "@/styles/pages/Profile.scss";
+import "@/styles/pages/Settings.scss";
 
 const Profile = () => {
 	const { signedIn, user, handleSignOut } = useAuth();

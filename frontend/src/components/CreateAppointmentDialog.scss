@@ -1,0 +1,196 @@
+@use "../styles/utils/variables" as *;
+@use "../styles/utils/mixins" as *;
+
+.create-appointment__backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: $z-index-modal-backdrop;
+	@include glass-overlay;
+	animation: fade-in $transition-speed-medium $ease-out-expo;
+}
+
+.create-appointment__popup {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: $z-index-modal;
+	width: 90vw;
+	max-width: 600px;
+	max-height: 90vh;
+	overflow-y: auto;
+	animation: modal-slide-up $transition-speed-medium $ease-out-expo;
+
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.2);
+		border-radius: $border-radius-full;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.3);
+		}
+	}
+}
+
+.create-appointment__content {
+	@include glass-strong;
+	border-radius: $border-radius-2xl;
+	padding: $spacing-xl;
+	color: var(--text-primary);
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-lg;
+}
+
+.create-appointment__title {
+	font-size: $font-size-xxl;
+	font-weight: $font-weight-bold;
+	color: var(--text-primary);
+	margin: 0;
+}
+
+.create-appointment__form {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+}
+
+.create-appointment__field {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xs;
+}
+
+.create-appointment__field-label {
+	font-weight: $font-weight-medium;
+	color: var(--text-primary);
+	font-size: $font-size-sm;
+}
+
+.create-appointment__field-input {
+	padding: $spacing-sm $spacing-md;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: $border-radius-lg;
+	background: rgba(var(--glass-bg-rgb), 0.15);
+	backdrop-filter: blur($backdrop-blur-subtle);
+	-webkit-backdrop-filter: blur($backdrop-blur-subtle);
+	color: var(--text-primary);
+	font-size: $font-size-base;
+	@include transition(all, $transition-speed-fast, $ease-out-expo);
+
+	&:focus {
+		outline: none;
+		border-color: var(--primary-color);
+		background: rgba(var(--glass-bg-rgb), 0.25);
+		box-shadow: 0 0 0 3px var(--focus-ring);
+	}
+
+	&::placeholder {
+		color: var(--text-secondary);
+	}
+
+	&:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+}
+
+.create-appointment__field-error {
+	color: var(--danger-color);
+	font-size: $font-size-xs;
+	margin-top: 2px;
+}
+
+.create-appointment__form-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: $spacing-sm;
+	margin-top: $spacing-sm;
+}
+
+.create-appointment__radio-group {
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: $border-radius-lg;
+	padding: $spacing-md;
+	background: rgba(var(--glass-bg-rgb), 0.1);
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-sm;
+
+	legend {
+		font-weight: $font-weight-semibold;
+		margin-bottom: $spacing-xs;
+		color: var(--text-primary);
+	}
+}
+
+.create-appointment__radio-option {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: auto auto;
+	column-gap: $spacing-sm;
+	row-gap: 2px;
+	align-items: center;
+	padding: $spacing-md;
+	border-radius: $border-radius-lg;
+	cursor: pointer;
+	border: 1px solid transparent;
+	background: rgba(var(--glass-bg-rgb), 0.05);
+	@include transition(all, $transition-speed-fast, $ease-out-expo);
+
+	&:hover {
+		background: rgba(var(--glass-bg-rgb), 0.15);
+		border-color: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur($backdrop-blur-subtle);
+		-webkit-backdrop-filter: blur($backdrop-blur-subtle);
+	}
+
+	input {
+		grid-row: 1 / span 2;
+	}
+}
+
+.create-appointment__radio-label {
+	font-weight: $font-weight-medium;
+	color: var(--text-primary);
+}
+
+.create-appointment__radio-hint {
+	font-size: $font-size-xs;
+	color: var(--text-secondary);
+	grid-column: 2;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes modal-slide-up {
+	from {
+		opacity: 0;
+		transform: translate(-50%, -45%) scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.create-appointment__backdrop,
+	.create-appointment__popup {
+		animation: none;
+	}
+}

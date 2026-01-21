@@ -4,7 +4,7 @@ import Layout from "./components/Layout";
 
 // Lazy load all pages for optimal bundle splitting
 const Home = lazy(() => import("./pages/Home"));
-const Profile = lazy(() => import("./pages/Profile"));
+const Profile = lazy(() => import("./pages/Settings"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 // Loading fallback component

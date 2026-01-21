@@ -2,26 +2,18 @@ import { useState, useEffect, type ReactNode } from 'react';
 import { ThemeContext, type Theme } from './ThemeContext';
 
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  // Check localStorage or system preference
-  const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem('theme') as Theme | null;
-    if (stored) return stored;
+  // Always use dark theme as default
+  const [theme] = useState<Theme>('dark');
 
-    // Check system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
-  });
-
-  // Apply theme to document
+  // Apply dark theme to document on mount
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }, []);
 
+  // Keep toggleTheme function for future compatibility, but it does nothing
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    // Theme toggle disabled - dark mode only
+    console.log('Theme toggle is disabled. Dark mode only.');
   };
 
   const value = {

@@ -1,16 +1,14 @@
 import { Outlet } from 'react-router';
-import Sidebar from './Sidebar';
+import Settings from '../pages/Settings';
 import './Layout.scss';
 
 const Layout = () => {
     return (
         <div className="layout">
-            <main className="layout__main">
-                <Outlet />
-            </main>
-            <Sidebar />
+            <Outlet />
+            <Settings />
         </div>
     );
 };
 
-export default Layout; 
+export default Layout;
