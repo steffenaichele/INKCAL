@@ -1,6 +1,7 @@
 import { useAuth } from "@/context";
 import { useState } from "react";
 import { Link, Navigate } from "react-router";
+import { Button } from "@/components/ui/Button/Button";
 
 const Login = () => {
 	const { signedIn, handleSignIn } = useAuth();
@@ -64,13 +65,15 @@ const Login = () => {
 						{error}
 					</div>
 				)}
-				<button
+				<Button
 					type="submit"
 					disabled={loading}
-					style={{ width: "100%", padding: "10px", cursor: loading ? "not-allowed" : "pointer" }}
+					variant="primary"
+					fullWidth
+					loading={loading}
 				>
 					{loading ? "Logging in..." : "Login"}
-				</button>
+				</Button>
 			</form>
 			<p style={{ marginTop: "20px", textAlign: "center" }}>
 				Don't have an account? <Link to="/register">Register here</Link>

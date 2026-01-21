@@ -145,24 +145,6 @@
 		margin-top: $spacing-sm;
 	}
 
-	&__btn {
-		padding: $spacing-xs $spacing-md;
-		border-radius: $border-radius-sm;
-		border: 1px solid transparent;
-		cursor: pointer;
-		font-weight: $font-weight-medium;
-		@include transition(all);
-
-		&--primary {
-			background: $primary-color;
-			color: $white;
-			border-color: $primary-color;
-
-			&:hover {
-				background: darken($primary-color, 5%);
-			}
-		}
-	}
 
 	&__working-days {
 		display: grid;

@@ -4,6 +4,7 @@ import { appointmentsApi } from "@/services/api/appointments";
 import { useCalendarConfig } from "@/context";
 import Week from "./Week";
 import Icon from "@/components/Icon";
+import { Button } from "@/components/ui/Button/Button";
 import { getMonday, addDays, formatMonthYear } from "@/utils/calendar";
 import "./Calendar.scss";
 
@@ -58,28 +59,34 @@ const Calendar = ({ userId }: CalendarProps) => {
 				<h2 className="calendar__title">{monthYear}</h2>
 
 				<div className="calendar__controls">
-					<button
+					<Button
 						className="calendar__control-btn"
 						onClick={() => shiftWeek(-7)}
+						variant="ghost"
+						size="sm"
 						aria-label="Previous week"
 						title="Previous week">
 						<Icon name="ChevronLeft" size={20} />
-					</button>
+					</Button>
 
-					<button
+					<Button
 						className="calendar__today-btn"
 						onClick={handleToday}
+						variant="ghost"
+						size="sm"
 						aria-label="Go to current week">
 						Today
-					</button>
+					</Button>
 
-					<button
+					<Button
 						className="calendar__control-btn"
 						onClick={() => shiftWeek(7)}
+						variant="ghost"
+						size="sm"
 						aria-label="Next week"
 						title="Next week">
 						<Icon name="ChevronRight" size={20} />
-					</button>
+					</Button>
 				</div>
 			</div>
 

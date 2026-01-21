@@ -4,11 +4,14 @@ import { Link } from "react-router";
 
 import Icon from "./Icon";
 import Logo from "./ui/Logo/Logo";
-import { useTheme } from "@/context";
+import Avatar from "./ui/Avatar/Avatar";
+import { Button } from "./ui/Button/Button";
+import { useTheme, useAuth } from "@/context";
 import "./Sidebar.scss";
 
 const Sidebar = React.memo(() => {
 	const { theme, toggleTheme } = useTheme();
+	const { user } = useAuth();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [form, setForm] = useState({
 		title: "",
@@ -93,24 +96,36 @@ const Sidebar = React.memo(() => {
 					</Link>
 				</li>
 				<li className="sidebar__item">
-					<button
+					<Button
 						onClick={toggleTheme}
 						className="sidebar__link"
+						variant="ghost"
 						type="button"
 						aria-label="Toggle theme">
 						<Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={20} />
 						<span>{theme === 'light' ? 'Dark' : 'Light'} Mode</span>
-					</button>
+					</Button>
 				</li>
 			</ul>
 
-			<button
+			<Button
 				className="sidebar__action"
 				onClick={openModal}
+				variant="ghost"
 				type="button">
 				<Icon name="Plus" size={20} />
 				<span>New appointment</span>
-			</button>
+			</Button>
+
+			{user && (
+				<div className="sidebar__user">
+					<Avatar name={user.name} size="md" />
+					<div className="sidebar__user-info">
+						<span className="sidebar__user-name">{user.name}</span>
+						<span className="sidebar__user-email">{user.email}</span>
+					</div>
+				</div>
+			)}
 
 			{isModalOpen &&
 				createPortal(
@@ -122,12 +137,14 @@ const Sidebar = React.memo(() => {
 							onClick={(e) => e.stopPropagation()}>
 							<div className="sidebar__modal-header">
 								<h3>New appointment</h3>
-								<button
+								<Button
+									variant="ghost"
+									size="sm"
 									type="button"
 									onClick={closeModal}
 									aria-label="Close">
 									<Icon name="X" size={20} />
-								</button>
+								</Button>
 							</div>
 							<form
 								className="sidebar__form"
@@ -197,17 +214,17 @@ const Sidebar = React.memo(() => {
 									))}
 								</fieldset>
 								<div className="sidebar__form-actions">
-									<button
+									<Button
+										variant="ghost"
 										type="button"
-										onClick={closeModal}
-										className="sidebar__btn sidebar__btn--ghost">
+										onClick={closeModal}>
 										Cancel
-									</button>
-									<button
-										type="submit"
-										className="sidebar__btn sidebar__btn--primary">
+									</Button>
+									<Button
+										variant="primary"
+										type="submit">
 										Save
-									</button>
+									</Button>
 								</div>
 							</form>
 						</div>

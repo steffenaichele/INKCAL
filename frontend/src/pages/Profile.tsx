@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Icon from "@/components/Icon";
+import { Button } from "@/components/ui/Button/Button";
 import { workdaysApi } from "@/services/api/workdays";
 import type { DayOfWeek, WorkdaysInput } from "@/types/api";
 import "@/styles/pages/Profile.scss";
@@ -202,11 +203,11 @@ const Profile = () => {
 						/>
 					</label>
 					<div className="profile__form-actions">
-						<button
+						<Button
 							type="submit"
-							className="profile__btn profile__btn--primary">
+							variant="primary">
 							Update password
-						</button>
+						</Button>
 					</div>
 				</form>
 			</div>
@@ -265,20 +266,20 @@ const Profile = () => {
 						))}
 					</div>
 					<div className="profile__form-actions">
-						<button
+						<Button
 							type="submit"
-							className="profile__btn profile__btn--primary"
+							variant="primary"
 							disabled={saveWorkingDaysMutation.isPending}>
 							Save working days
-						</button>
+						</Button>
 					</div>
 				</form>
 			</div>
 
-			<button onClick={onLogout} className="profile__logout-btn">
+			<Button onClick={onLogout} variant="danger" className="profile__logout-btn">
 				<Icon name="LogOut" size={20} />
 				<span>Logout</span>
-			</button>
+			</Button>
 		</div>
 	);
 };

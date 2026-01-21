@@ -78,6 +78,40 @@
 		}
 	}
 
+	&__user {
+		margin-top: auto;
+		padding: $spacing-sm;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		gap: $spacing-xs;
+		border-top: 1px solid var(--border-color);
+	}
+
+	&__user-info {
+		display: none;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+	}
+
+	&__user-name {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-medium;
+		color: var(--text-primary);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__user-email {
+		font-size: $font-size-xs;
+		color: var(--text-secondary);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
 	&__user-greeting {
 		display: inline-flex;
 		align-items: center;
@@ -138,12 +172,6 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: $spacing-md;
-
-		button {
-			@extend .sidebar__btn;
-			@extend .sidebar__btn--ghost;
-			padding: $spacing-xs;
-		}
 	}
 
 	&__form {
@@ -222,32 +250,4 @@
 		color: $gray-600;
 	}
 
-	&__btn {
-		padding: $spacing-xs $spacing-md;
-		border-radius: $border-radius-sm;
-		border: 1px solid transparent;
-		cursor: pointer;
-		font-weight: $font-weight-medium;
-		@include transition(all);
-
-		&--primary {
-			background: $primary-color;
-			color: $white;
-			border-color: $primary-color;
-
-			&:hover {
-				background: darken($primary-color, 5%);
-			}
-		}
-
-		&--ghost {
-			background: transparent;
-			color: $gray-800;
-			border-color: $gray-300;
-
-			&:hover {
-				background: $gray-100;
-			}
-		}
-	}
 }

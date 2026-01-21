@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { createBlendy } from "blendy";
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent } from "react";
 import type { Appointment } from "@/types/api";
+import { Button } from "@/components/ui/Button/Button";
 
 export interface AppointmentCardProps {
 	appointment: Appointment;
@@ -135,22 +136,28 @@ const AppointmentCard = ({
 									gap: 8,
 									marginTop: 12,
 								}}>
-								<button
+								<Button
 									onClick={handleEdit}
+									variant="primary"
+									size="sm"
 									aria-label="Edit appointment">
 									Edit
-								</button>
-								<button
+								</Button>
+								<Button
 									onClick={handleDelete}
+									variant="danger"
+									size="sm"
 									aria-label="Delete appointment">
 									Delete
-								</button>
+								</Button>
 							</div>
-							<button
+							<Button
 								onClick={closeModal}
+								variant="ghost"
+								size="sm"
 								aria-label="Close modal">
 								Close
-							</button>
+							</Button>
 						</div>
 					</div>,
 					document.body,

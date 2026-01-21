@@ -2,16 +2,13 @@ import * as React from 'react';
 import { Button as BaseButton } from '@base-ui/react';
 import './Button.scss';
 
-export interface ButtonProps {
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   loading?: boolean;
-  disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
