@@ -1,9 +1,8 @@
-import mongoose from 'mongoose';
-import Appointment from '../models/Appointment.js';
+import "#db";
+import { Appointment } from "#models";
 
 async function listAppointments() {
   try {
-    await mongoose.connect(process.env.MONGO_URI!);
     console.log('Connected to database\n');
 
     const appointments = await Appointment.find().sort({ date: 1 });
@@ -19,7 +18,6 @@ async function listAppointments() {
       console.log('');
     });
 
-    await mongoose.connection.close();
     console.log('Database connection closed');
   } catch (error) {
     console.error('Error:', error);

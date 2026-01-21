@@ -22,13 +22,6 @@ const Sidebar = React.memo(() => {
 		endTime?: string;
 		type?: string;
 	}>({});
-	const [form, setForm] = useState({
-		title: "",
-		date: "",
-		startTime: "",
-		endTime: "",
-		type: "Consultation",
-	});
 
 	const appointmentTypes = [
 		{
@@ -69,17 +62,22 @@ const Sidebar = React.memo(() => {
 		return () => document.removeEventListener("keydown", onKey);
 	}, [isModalOpen]);
 
-	const handleChange = (
-		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-	) => {
-		const { name, value } = e.target;
-		setForm((prev) => ({ ...prev, [name]: value }));
-	};
-
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setFormErrors({});
+
+		const formData = new FormData(e.currentTarget);
+		const appointmentData = {
+			title: formData.get("title") as string,
+			date: formData.get("date") as string,
+			startTime: formData.get("startTime") as string,
+			endTime: formData.get("endTime") as string,
+			type: formData.get("type") as string,
+		};
+
+		console.log("Creating appointment:", appointmentData);
 		// TODO: wire to appointments API
+
 		closeModal();
 	};
 
@@ -173,8 +171,6 @@ const Sidebar = React.memo(() => {
 										required
 										placeholder="Appointment title"
 										className="sidebar__field-input"
-										value={form.title}
-										onChange={handleChange}
 									/>
 									<Field.Error className="sidebar__field-error" />
 								</Field.Root>
@@ -189,8 +185,6 @@ const Sidebar = React.memo(() => {
 										type="date"
 										required
 										className="sidebar__field-input"
-										value={form.date}
-										onChange={handleChange}
 									/>
 									<Field.Error className="sidebar__field-error" />
 								</Field.Root>
@@ -205,8 +199,6 @@ const Sidebar = React.memo(() => {
 										type="time"
 										required
 										className="sidebar__field-input"
-										value={form.startTime}
-										onChange={handleChange}
 									/>
 									<Field.Error className="sidebar__field-error" />
 								</Field.Root>
@@ -221,8 +213,6 @@ const Sidebar = React.memo(() => {
 										type="time"
 										required
 										className="sidebar__field-input"
-										value={form.endTime}
-										onChange={handleChange}
 									/>
 									<Field.Error className="sidebar__field-error" />
 								</Field.Root>
@@ -231,7 +221,7 @@ const Sidebar = React.memo(() => {
 									<legend className="sidebar__field-label">
 										Type
 									</legend>
-									{appointmentTypes.map((option) => (
+									{appointmentTypes.map((option, index) => (
 										<label
 											key={option.value}
 											className="sidebar__radio-option">
@@ -239,10 +229,7 @@ const Sidebar = React.memo(() => {
 												type="radio"
 												name="type"
 												value={option.value}
-												checked={
-													form.type === option.value
-												}
-												onChange={handleChange}
+												defaultChecked={index === 0}
 												required
 											/>
 											<span className="sidebar__radio-label">

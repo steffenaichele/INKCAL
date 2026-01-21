@@ -24,7 +24,6 @@
 		overflow: hidden;
 		margin: 0;
 		padding: 0;
-
 	}
 
 	&__item {
@@ -141,13 +140,13 @@
 	}
 
 	&__modal {
-		background: $white;
+		background: var(--card-bg);
 		padding: $spacing-lg;
 		border-radius: $border-radius-lg;
-		box-shadow: $shadow-lg;
+		box-shadow: var(--shadow-lg);
 		min-width: 50vw;
 		max-width: 90vw;
-		color: $gray-900;
+		color: var(--text-primary);
 		gap: $spacing-md;
 		display: flex;
 		flex-direction: column;
@@ -164,23 +163,44 @@
 		display: flex;
 		flex-direction: column;
 		gap: $spacing-sm;
+	}
 
-		label {
-			display: flex;
-			flex-direction: column;
-			gap: $spacing-xs;
-			font-weight: $font-weight-medium;
-			color: $gray-800;
+	&__field {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+	}
 
-			input,
-			select {
-				padding: $spacing-xs $spacing-sm;
-				border: 1px solid $gray-300;
-				border-radius: $border-radius-sm;
-				background: $white;
-				color: $gray-900;
-			}
+	&__field-label {
+		font-weight: $font-weight-medium;
+		color: var(--text-primary);
+		font-size: $font-size-sm;
+	}
+
+	&__field-input {
+		padding: $spacing-xs $spacing-sm;
+		border: 1px solid var(--border-color);
+		border-radius: $border-radius-sm;
+		background: var(--card-bg);
+		color: var(--text-primary);
+		font-size: $font-size-base;
+		@include transition(all);
+
+		&:focus {
+			outline: none;
+			border-color: var(--primary-color);
+			box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.1);
 		}
+
+		&::placeholder {
+			color: var(--text-secondary);
+		}
+	}
+
+	&__field-error {
+		color: var(--danger-color);
+		font-size: $font-size-xs;
+		margin-top: 2px;
 	}
 
 	&__form-actions {
@@ -191,7 +211,7 @@
 	}
 
 	&__radio-group {
-		border: 1px solid $gray-200;
+		border: 1px solid var(--border-color);
 		border-radius: $border-radius-sm;
 		padding: $spacing-sm;
 		display: flex;
@@ -201,6 +221,7 @@
 		legend {
 			font-weight: $font-weight-semibold;
 			margin-bottom: $spacing-xs;
+			color: var(--text-primary);
 		}
 	}
 
@@ -215,10 +236,11 @@
 		border-radius: $border-radius-sm;
 		cursor: pointer;
 		border: 1px solid transparent;
+		@include transition(all);
 
 		&:hover {
-			background: $gray-100;
-			border-color: $gray-200;
+			background: var(--hover-bg);
+			border-color: var(--border-color);
 		}
 
 		input {
@@ -228,12 +250,12 @@
 
 	&__radio-label {
 		font-weight: $font-weight-medium;
-		color: $gray-900;
+		color: var(--text-primary);
 	}
 
 	&__radio-hint {
 		font-size: $font-size-xs;
-		color: $gray-600;
+		color: var(--text-secondary);
 	}
 
 }
