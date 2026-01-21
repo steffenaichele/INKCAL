@@ -2,6 +2,8 @@ import { useAuth } from "@/context";
 import { Navigate, useNavigate } from "react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Form } from "@base-ui/react/form";
+import { Field } from "@base-ui/react/field";
 import Icon from "@/components/Icon";
 import { Button } from "@/components/ui/Button/Button";
 import { workdaysApi } from "@/services/api/workdays";
@@ -13,6 +15,11 @@ const Profile = () => {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
+	const [passwordErrors, setPasswordErrors] = useState<{
+		currentPassword?: string;
+		newPassword?: string;
+		confirmPassword?: string;
+	}>({});
 	const [passwordForm, setPasswordForm] = useState({
 		currentPassword: "",
 		newPassword: "",
@@ -47,7 +54,9 @@ const Profile = () => {
 				return {
 					label,
 					dayOfWeek: value,
-					isWorkday: match?.isWorkday ?? !["saturday", "sunday"].includes(value),
+					isWorkday:
+						match?.isWorkday ??
+						!["saturday", "sunday"].includes(value),
 					startTime: match?.startTime ?? "09:00",
 					endTime: match?.endTime ?? "17:00",
 				};
@@ -91,6 +100,7 @@ const Profile = () => {
 
 	const submitPassword = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setPasswordErrors({});
 		// TODO: integrate with password update API
 		setPasswordForm({
 			currentPassword: "",
@@ -171,50 +181,64 @@ const Profile = () => {
 
 			<div className="profile__section">
 				<h2 className="profile__section-title">Change password</h2>
-				<form className="profile__form" onSubmit={submitPassword}>
-					<label>
-						Current password
-						<input
+				<Form
+					className="profile__form"
+					onSubmit={submitPassword}
+					errors={passwordErrors}>
+					<Field.Root
+						name="currentPassword"
+						className="profile__field">
+						<Field.Label className="profile__label">
+							Current password
+						</Field.Label>
+						<Field.Control
 							type="password"
-							name="currentPassword"
+							required
+							className="profile__input"
 							value={passwordForm.currentPassword}
 							onChange={handlePasswordChange}
-							required
 						/>
-					</label>
-					<label>
-						New password
-						<input
+						<Field.Error className="profile__error" />
+					</Field.Root>
+					<Field.Root name="newPassword" className="profile__field">
+						<Field.Label className="profile__label">
+							New password
+						</Field.Label>
+						<Field.Control
 							type="password"
-							name="newPassword"
+							required
+							className="profile__input"
 							value={passwordForm.newPassword}
 							onChange={handlePasswordChange}
-							required
 						/>
-					</label>
-					<label>
-						Confirm new password
-						<input
+						<Field.Error className="profile__error" />
+					</Field.Root>
+					<Field.Root
+						name="confirmPassword"
+						className="profile__field">
+						<Field.Label className="profile__label">
+							Confirm new password
+						</Field.Label>
+						<Field.Control
 							type="password"
-							name="confirmPassword"
+							required
+							className="profile__input"
 							value={passwordForm.confirmPassword}
 							onChange={handlePasswordChange}
-							required
 						/>
-					</label>
+						<Field.Error className="profile__error" />
+					</Field.Root>
 					<div className="profile__form-actions">
-						<Button
-							type="submit"
-							variant="primary">
+						<Button type="submit" variant="primary">
 							Update password
 						</Button>
 					</div>
-				</form>
+				</Form>
 			</div>
 
 			<div className="profile__section">
 				<h2 className="profile__section-title">Working days</h2>
-				<form className="profile__form" onSubmit={submitWorkingDays}>
+				<Form className="profile__form" onSubmit={submitWorkingDays}>
 					<div className="profile__working-days">
 						{workingDays.map((day, idx) => (
 							<div
@@ -233,10 +257,15 @@ const Profile = () => {
 									<span>{day.label}</span>
 								</label>
 								<div className="profile__time-inputs">
-									<label>
-										Start
-										<input
+									<Field.Root
+										name={`${day.dayOfWeek}_start`}
+										className="profile__time-field">
+										<Field.Label className="profile__time-label">
+											Start
+										</Field.Label>
+										<Field.Control
 											type="time"
+											className="profile__time-input"
 											value={day.startTime}
 											onChange={(e) =>
 												updateWorkingDay(idx, {
@@ -246,11 +275,16 @@ const Profile = () => {
 											disabled={!day.isWorkday}
 											required={day.isWorkday}
 										/>
-									</label>
-									<label>
-										End
-										<input
+									</Field.Root>
+									<Field.Root
+										name={`${day.dayOfWeek}_end`}
+										className="profile__time-field">
+										<Field.Label className="profile__time-label">
+											End
+										</Field.Label>
+										<Field.Control
 											type="time"
+											className="profile__time-input"
 											value={day.endTime}
 											onChange={(e) =>
 												updateWorkingDay(idx, {
@@ -260,7 +294,7 @@ const Profile = () => {
 											disabled={!day.isWorkday}
 											required={day.isWorkday}
 										/>
-									</label>
+									</Field.Root>
 								</div>
 							</div>
 						))}
@@ -273,10 +307,13 @@ const Profile = () => {
 							Save working days
 						</Button>
 					</div>
-				</form>
+				</Form>
 			</div>
 
-			<Button onClick={onLogout} variant="danger" className="profile__logout-btn">
+			<Button
+				onClick={onLogout}
+				variant="danger"
+				className="profile__logout-btn">
 				<Icon name="LogOut" size={20} />
 				<span>Logout</span>
 			</Button>

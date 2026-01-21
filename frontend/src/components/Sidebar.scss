@@ -6,75 +6,62 @@
 	margin: 0.5rem;
 	width: 72px;
 	height: calc(100vh - 1rem);
-	box-shadow: $shadow-box;
-	--borderWidth: 1px;
-	background: var(--sidebar-bg);
-	position: relative;
-	border-radius: 16px;
-	display: flex;
-	flex-direction: column;
-	gap: $spacing-md;
-	transition: background-color 0.3s ease;
+	display: grid;
+	grid-template-rows: 56px 1fr auto 1fr auto;
+	padding: 1rem .75rem;
+	transition: all 0.3s ease;
+	overflow: hidden;
+	z-index: 1000;
 
-	.gradient-border:after {
-		content: "";
-		position: absolute;
-		top: calc(-1 * var(--borderWidth));
-		left: calc(-1 * var(--borderWidth));
-		height: calc(100% + var(--borderWidth) * 2);
-		width: calc(100% + var(--borderWidth) * 2);
-		background: linear-gradient(
-			0deg,
-			rgba(255, 255, 255, 0.4) 0%,
-			rgba(255, 255, 255, 0) 41%,
-			rgba(255, 255, 255, 0) 57%,
-			rgba(255, 255, 255, 0.1) 100%
-		);
-		border-radius: 16px;
-		z-index: -1;
-		background-size: 300% 300%;
+	&:hover {
+		width: 280px;
+		@include glass-box;
+		transition: all 0.4s ease;
 	}
 
 	&__list {
 		width: 100%;
-		list-style: none;
-		display: flex;
-		gap: $spacing-lg;
+		overflow: hidden;
 		margin: 0;
 		padding: 0;
-		align-items: center;
+
 	}
 
 	&__item {
-		width: 100%;
+		width: 256px;
 		height: 3rem;
-	}
+		margin-bottom: 2px;
+		padding: .75rem;
+		border-radius: $border-radius-sm;
+		cursor: pointer;
+		@include transition(all);
 
+		&:hover {
+			background: var(--bg-tertiary);
+		}
+	}
+	
 	&__link {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
-		justify-content: center;
-		gap: $spacing-xs;
+		gap: 1.5rem;
 		width: 100%;
 		height: 100%;
 		color: var(--text-secondary);
 		text-decoration: none;
 		font-weight: $font-weight-medium;
-		padding: $spacing-xs $spacing-sm;
 		border-radius: $border-radius-sm;
 		border: none;
 		background: transparent;
 		cursor: pointer;
 		@include transition(all);
 
-		&:hover {
-			color: $primary-color;
-			background-color: rgba($primary-color, 0.1);
+		svg {
+			margin: 2px;
 		}
 
-		&--active {
-			color: $primary-color;
-			font-weight: $font-weight-semibold;
+		span {
+			display: inline-block;
 		}
 	}
 
@@ -122,7 +109,6 @@
 	}
 
 	&__action {
-		margin: 0 $spacing-xs $spacing-sm;
 		padding: $spacing-sm;
 		display: inline-flex;
 		align-items: center;
@@ -159,7 +145,7 @@
 		padding: $spacing-lg;
 		border-radius: $border-radius-lg;
 		box-shadow: $shadow-lg;
-		min-width: 320px;
+		min-width: 50vw;
 		max-width: 90vw;
 		color: $gray-900;
 		gap: $spacing-md;

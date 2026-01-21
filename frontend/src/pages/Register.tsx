@@ -1,95 +1,97 @@
 import { useAuth } from "@/context";
 import { useState } from "react";
 import { Link, Navigate } from "react-router";
+import { Form } from "@base-ui/react/form";
+import { Field } from "@base-ui/react/field";
 import { Button } from "@/components/ui/Button/Button";
+import styles from "@/styles/pages/Auth.module.css";
 
 const Register = () => {
 	const { signedIn, handleRegister } = useAuth();
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
+	const [errors, setErrors] = useState<{
+		name?: string;
+		email?: string;
+		password?: string;
+	}>({});
 	const [loading, setLoading] = useState(false);
 
 	if (signedIn) {
 		return <Navigate to="/dashboard" replace />;
 	}
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setError("");
+		setErrors({});
 		setLoading(true);
 
 		try {
+			const formData = new FormData(e.currentTarget);
+			const name = formData.get("name") as string;
+			const email = formData.get("email") as string;
+			const password = formData.get("password") as string;
 			await handleRegister({ name, email, password });
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "Registration failed");
+			const message =
+				err instanceof Error ? err.message : "Registration failed";
+			setErrors({ email: message });
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	return (
-		<div style={{ maxWidth: "400px", margin: "50px auto", padding: "20px" }}>
+		<div
+			style={{ maxWidth: "400px", margin: "50px auto", padding: "20px" }}>
 			<h1>Register</h1>
-			<form onSubmit={handleSubmit}>
-				<div style={{ marginBottom: "15px" }}>
-					<label htmlFor="name" style={{ display: "block", marginBottom: "5px" }}>
-						Name
-					</label>
-					<input
-						id="name"
+			<Form
+				className={styles.Form}
+				onSubmit={handleSubmit}
+				errors={errors}>
+				<Field.Root name="name" className={styles.Field}>
+					<Field.Label className={styles.Label}>Name</Field.Label>
+					<Field.Control
 						type="text"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
 						required
-						style={{ width: "100%", padding: "8px" }}
+						placeholder="Enter your full name"
+						className={styles.Input}
 						disabled={loading}
 					/>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<label htmlFor="email" style={{ display: "block", marginBottom: "5px" }}>
-						Email
-					</label>
-					<input
-						id="email"
+					<Field.Error className={styles.Error} />
+				</Field.Root>
+
+				<Field.Root name="email" className={styles.Field}>
+					<Field.Label className={styles.Label}>Email</Field.Label>
+					<Field.Control
 						type="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
 						required
-						style={{ width: "100%", padding: "8px" }}
+						placeholder="Enter your email"
+						className={styles.Input}
 						disabled={loading}
 					/>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<label htmlFor="password" style={{ display: "block", marginBottom: "5px" }}>
-						Password
-					</label>
-					<input
-						id="password"
+					<Field.Error className={styles.Error} />
+				</Field.Root>
+
+				<Field.Root name="password" className={styles.Field}>
+					<Field.Label className={styles.Label}>Password</Field.Label>
+					<Field.Control
 						type="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
 						required
-						style={{ width: "100%", padding: "8px" }}
+						placeholder="Enter your password"
+						className={styles.Input}
 						disabled={loading}
 					/>
-				</div>
-				{error && (
-					<div style={{ color: "red", marginBottom: "15px" }}>
-						{error}
-					</div>
-				)}
+					<Field.Error className={styles.Error} />
+				</Field.Root>
+
 				<Button
 					type="submit"
 					disabled={loading}
 					variant="primary"
 					fullWidth
-					loading={loading}
-				>
+					loading={loading}>
 					{loading ? "Registering..." : "Register"}
 				</Button>
-			</form>
+			</Form>
 			<p style={{ marginTop: "20px", textAlign: "center" }}>
 				Already have an account? <Link to="/login">Login here</Link>
 			</p>
