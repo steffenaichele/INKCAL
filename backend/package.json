@@ -37,7 +37,9 @@
 		"prestart": "npm run build",
 		"start": "node --conditions production dist/app.js",
 		"seed-example": "node --env-file=.env.development.local --conditions development src/scripts/seedExampleData.ts",
-		"list-users": "node --env-file=.env.development.local --conditions development src/scripts/listUsers.ts"
+		"list-users": "node --env-file=.env.development.local --conditions development src/scripts/listUsers.ts",
+		"list-appointments": "node --env-file=.env.development.local --conditions development src/scripts/listAppointments.ts",
+		"setup-example": "node --env-file=.env.development.local --conditions development src/scripts/setupExampleUser.ts"
 	},
 	"keywords": [],
 	"author": "",
