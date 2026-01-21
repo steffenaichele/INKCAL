@@ -31,39 +31,34 @@ const Profile = () => {
 		[],
 	);
 
-	const [workingDays, setWorkingDays] = useState(
-		dayOrder.map(({ label, value }) => ({
-			label,
-			dayOfWeek: value,
-			isWorkday: !["saturday", "sunday"].includes(value),
-			startTime: "09:00",
-			endTime: "17:00",
-		})),
-	);
-
-	const { data: workdaysData, isLoading: workdaysLoading } = useQuery({
+	const { data: workdaysData } = useQuery({
 		queryKey: ["workdays", user?._id],
 		queryFn: () => workdaysApi.getByUserId(user!._id),
 		enabled: !!user,
 	});
 
-	useEffect(() => {
-		if (!workdaysData) return;
-		setWorkingDays(
+	const initialWorkingDays = useMemo(
+		() =>
 			dayOrder.map(({ label, value }) => {
-				const match = workdaysData.workdays.find(
+				const match = workdaysData?.workdays.find(
 					(w) => w.dayOfWeek === value,
 				);
 				return {
 					label,
 					dayOfWeek: value,
-					isWorkday: match?.isWorkday ?? false,
+					isWorkday: match?.isWorkday ?? !["saturday", "sunday"].includes(value),
 					startTime: match?.startTime ?? "09:00",
 					endTime: match?.endTime ?? "17:00",
 				};
 			}),
-		);
-	}, [dayOrder, workdaysData]);
+		[dayOrder, workdaysData],
+	);
+
+	const [workingDays, setWorkingDays] = useState(initialWorkingDays);
+
+	useEffect(() => {
+		setWorkingDays(initialWorkingDays);
+	}, [initialWorkingDays]);
 
 	const saveWorkingDaysMutation = useMutation({
 		mutationFn: (payload: WorkdaysInput) =>

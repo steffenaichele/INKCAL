@@ -84,6 +84,7 @@ const AppointmentCard = ({
 		return () => {
 			document.removeEventListener("keydown", handleEscape);
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isModalOpen]);
 
 	const handleKeyDown = (e: ReactKeyboardEvent) => {

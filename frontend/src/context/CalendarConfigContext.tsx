@@ -1,4 +1,4 @@
-import { createContext, use } from 'react';
+import { createContext } from 'react';
 import type { DayConfig } from '@/types/api';
 
 export interface CalendarConfig {
@@ -17,13 +17,5 @@ export interface CalendarConfigContextType {
 }
 
 const CalendarConfigContext = createContext<CalendarConfigContextType | null>(null);
-
-export const useCalendarConfig = (): CalendarConfigContextType => {
-  const context = use(CalendarConfigContext);
-  if (!context) {
-    throw new Error('useCalendarConfig must be used within a CalendarConfigProvider');
-  }
-  return context;
-};
 
 export { CalendarConfigContext };

@@ -21,7 +21,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 				setUser(data);
 				setSignedIn(() => true);
-			} catch (error) {
+			} catch {
 				// User not authenticated - this is fine
 				setSignedIn(() => false);
 				setUser(() => null);

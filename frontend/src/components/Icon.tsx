@@ -21,7 +21,13 @@ const Icon = React.memo<IconProps>(({
 	strokeWidth = 2,
 	onClick,
 }) => {
-	const IconComponent = Icons[name] as React.ComponentType<any>;
+	const IconComponent = Icons[name] as React.ComponentType<{
+		className?: string;
+		size?: number | string;
+		color?: string;
+		strokeWidth?: number;
+		onClick?: () => void;
+	}>;
 
 	if (!IconComponent) {
 		console.warn(`Icon "${name}" not found in react-feather`);

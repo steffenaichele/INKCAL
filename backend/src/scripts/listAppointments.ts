@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Appointment } from '../models/Appointment.js';
+import Appointment from '../models/Appointment.js';
 
 async function listAppointments() {
   try {
@@ -10,7 +10,7 @@ async function listAppointments() {
 
     console.log(`Found ${appointments.length} appointment(s):\n`);
 
-    appointments.forEach((apt, index) => {
+    appointments.forEach((apt: typeof Appointment.prototype, index: number) => {
       console.log(`${index + 1}. ${apt.title}`);
       console.log(`   Date: ${apt.date}`);
       console.log(`   Time: ${apt.startTime} - ${apt.endTime}`);

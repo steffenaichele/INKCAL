@@ -13,5 +13,5 @@ const useAuth = (): AuthContextType => {
 };
 
 export { AuthContext, useAuth, AuthProvider, CalendarConfigProvider };
-export { useCalendarConfig } from "./CalendarConfigContext";
+export { useCalendarConfig } from "./useCalendarConfig";
 export type { CalendarConfig, CalendarConfigContextType } from "./CalendarConfigContext";

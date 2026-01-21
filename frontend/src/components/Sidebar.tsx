@@ -8,7 +8,6 @@ import "./Sidebar.scss";
 
 const Sidebar = React.memo(() => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const modalId = "create-appointment";
 	const [form, setForm] = useState({
 		title: "",
 		date: "",
