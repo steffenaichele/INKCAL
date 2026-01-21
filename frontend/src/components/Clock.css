@@ -1,1 +1,1 @@
-.clock{color:#fff;display:flex;gap:1rem}.clock__time-value{font-size:.875rem;font-weight:400}.clock__date-value{font-size:.875rem;font-weight:400}/*# sourceMappingURL=Clock.css.map */
+.clock{color:var(--text-primary);display:flex;gap:1rem}.clock__time-value{font-size:.875rem;font-weight:400}.clock__date-value{font-size:.875rem;font-weight:400}/*# sourceMappingURL=Clock.css.map */

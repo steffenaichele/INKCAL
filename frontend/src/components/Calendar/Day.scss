@@ -4,23 +4,14 @@
 .calendar-day {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid $gray-200;
-  background: $white;
+  background: var(--bg-primary);
   min-height: 400px;
   @include transition(box-shadow);
-
-  &:last-child {
-    border-right: none;
-  }
-
-  &:hover {
-    background: $gray-100;
-  }
 
   &--today {
     .calendar-day__header {
       background: linear-gradient(135deg, $primary-color 0%, #0056b3 100%);
-      color: $white;
+      color: var(--text-primary);
     }
   }
 
@@ -29,14 +20,11 @@
   }
 
   &__header {
-    background: $gray-100;
     padding: $spacing-sm;
     text-align: center;
-    border-bottom: 2px solid $gray-200;
-    @include flex-center;
     flex-direction: column;
     gap: calc($spacing-xs / 2);
-    min-height: 60px;
+    min-height: 3rem;
   }
 
   &__weekday {
@@ -48,12 +36,12 @@
 
   &__date {
     font-size: $font-size-xs;
-    color: $gray-600;
+    color: var(--text-primary);
 
-    .calendar-day--today & {
-      color: $white;
-      opacity: 0.9;
-    }
+    // .calendar-day--today & {
+    //   color: $white;
+    //   opacity: 0.9;
+    // }
   }
 
   &__slots {
@@ -65,41 +53,8 @@
   }
 
   &__non-working-card {
-    background: repeating-linear-gradient(
-      45deg,
-      $gray-100,
-      $gray-100 8px,
-      $gray-200 8px,
-      $gray-200 16px
-    );
     opacity: 0.7;
     z-index: 0;
     position: relative;
-    @include transition(opacity);
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.85;
-    }
-  }
-
-  &__non-working-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    @include flex-center;
-    color: $gray-500;
-    font-style: italic;
-    font-size: $font-size-sm;
-    background: rgba($white, 0.9);
-    padding: $spacing-sm $spacing-md;
-    border-radius: $border-radius-md;
-    box-shadow: $shadow-sm;
-  }
-
-  // Responsive adjustments
-  @media (max-width: $breakpoint-md) {
-    min-height: 300px;
   }
 }

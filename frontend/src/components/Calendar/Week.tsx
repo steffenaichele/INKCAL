@@ -80,23 +80,26 @@ const Week = ({ startDate, appointments }: WeekProps) => {
 				</div>
 			</div>
 
-			{weekDates.map((date) => {
-				const dayOfWeek = getDayOfWeek(date);
-				const workdayConfig = workdaysMap.get(dayOfWeek) || null;
-				const dayAppointments = weekAppointments.filter(
-					(app) => app.date.split("T")[0] === formatDateForApi(date),
-				);
+			{/* Days container */}
+			<div className="calendar-week__days">
+				{weekDates.map((date) => {
+					const dayOfWeek = getDayOfWeek(date);
+					const workdayConfig = workdaysMap.get(dayOfWeek) || null;
+					const dayAppointments = weekAppointments.filter(
+						(app) => app.date.split("T")[0] === formatDateForApi(date),
+					);
 
-				return (
-					<Day
-						key={date.toISOString()}
-						date={date}
-						workdayConfig={workdayConfig}
-						appointments={dayAppointments}
-						config={config}
-					/>
-				);
-			})}
+					return (
+						<Day
+							key={date.toISOString()}
+							date={date}
+							workdayConfig={workdayConfig}
+							appointments={dayAppointments}
+							config={config}
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 };

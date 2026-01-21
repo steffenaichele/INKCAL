@@ -4,9 +4,11 @@ import { Link } from "react-router";
 
 import Icon from "./Icon";
 import Logo from "./ui/Logo/Logo";
+import { useTheme } from "@/context";
 import "./Sidebar.scss";
 
 const Sidebar = React.memo(() => {
+	const { theme, toggleTheme } = useTheme();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [form, setForm] = useState({
 		title: "",
@@ -89,6 +91,16 @@ const Sidebar = React.memo(() => {
 						<Icon name="Settings" size={20} />
 						<span>Profile</span>
 					</Link>
+				</li>
+				<li className="sidebar__item">
+					<button
+						onClick={toggleTheme}
+						className="sidebar__link"
+						type="button"
+						aria-label="Toggle theme">
+						<Icon name={theme === 'light' ? 'Moon' : 'Sun'} size={20} />
+						<span>{theme === 'light' ? 'Dark' : 'Light'} Mode</span>
+					</button>
 				</li>
 			</ul>
 

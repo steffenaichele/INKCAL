@@ -2,7 +2,7 @@
 @use '../styles/utils/mixins' as *;
 
 .clock {
-	color: $white;
+	color: var(--text-primary);
 	display: flex;
 	gap: 1rem;
 

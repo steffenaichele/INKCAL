@@ -8,12 +8,13 @@
 	height: calc(100vh - 1rem);
 	box-shadow: $shadow-box;
 	--borderWidth: 1px;
-	background: #1d1f20;
+	background: var(--sidebar-bg);
 	position: relative;
 	border-radius: 16px;
 	display: flex;
 	flex-direction: column;
 	gap: $spacing-md;
+	transition: background-color 0.3s ease;
 
 	.gradient-border:after {
 		content: "";
@@ -52,12 +53,18 @@
 	&__link {
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: $spacing-xs;
-		color: $gray-700;
+		width: 100%;
+		height: 100%;
+		color: var(--text-secondary);
 		text-decoration: none;
 		font-weight: $font-weight-medium;
 		padding: $spacing-xs $spacing-sm;
 		border-radius: $border-radius-sm;
+		border: none;
+		background: transparent;
+		cursor: pointer;
 		@include transition(all);
 
 		&:hover {

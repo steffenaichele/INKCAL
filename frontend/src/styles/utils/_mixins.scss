@@ -32,24 +32,6 @@
   }
 }
 
-// Flexbox utilities
-@mixin flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@mixin flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-@mixin flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 // Typography
 @mixin text-truncate {
   overflow: hidden;
@@ -96,38 +78,31 @@
   outline: inherit;
 }
 
-// Scrollbar styling
-@mixin custom-scrollbar($width: 8px, $track-color: $gray-200, $thumb-color: $gray-400) {
-  &::-webkit-scrollbar {
-    width: $width;
-    height: $width;
+// Glassmorphism box with gradient border
+@mixin glass-box {
+  position: relative;
+  box-shadow: $shadow-box;
+  --borderWidth: 1px;
+  background: var(--bg-primary);
+  border-radius: $border-radius-xl;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--borderWidth));
+    left: calc(-1 * var(--borderWidth));
+    height: calc(100% + var(--borderWidth) * 2);
+    width: calc(100% + var(--borderWidth) * 2);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0) 41%,
+      rgba(255, 255, 255, 0) 57%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    border-radius: $border-radius-xl;
+    z-index: -1;
+    background-size: 300% 300%;
   }
-
-  &::-webkit-scrollbar-track {
-    background: $track-color;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $thumb-color;
-    border-radius: $border-radius-full;
-
-    &:hover {
-      background: color.scale($thumb-color, $lightness: -10%);
-    }
-  }
-}
-
-// Positioning
-@mixin absolute-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-// Grid
-@mixin grid($columns: 12, $gap: $spacing-md) {
-  display: grid;
-  grid-template-columns: repeat($columns, 1fr);
-  gap: $gap;
 }

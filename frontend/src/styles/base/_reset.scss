@@ -19,9 +19,10 @@ body {
   font-size: $font-size-base;
   font-weight: $font-weight-normal;
   line-height: $line-height-base;
-  color: $gray-900;
-  background-color: $white;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
   min-height: 100vh;
+  overflow: hidden;
 }
 
 // Remove default margins
