@@ -1,0 +1,53 @@
+@use "../../styles/utils/variables" as *;
+
+.layout {
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	background: var(--bg-tertiary);
+	position: relative;
+	overflow: hidden;
+}
+
+.layout__overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 100;
+	animation: fadeIn 0.3s ease-out;
+}
+
+.layout__settings-panel {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: min(600px, 90vw);
+	background: var(--bg-primary);
+	z-index: 101;
+	overflow-y: auto;
+	box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+	animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes slideInFromRight {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}

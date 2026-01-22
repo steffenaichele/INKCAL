@@ -1,7 +1,11 @@
 import "./Logo.scss";
 
-const Logo = () => (
-	<div className="logo-wrapper" aria-label="INKCAL logo">
+interface LogoProps {
+	className?: string;
+}
+
+const Logo = ({ className }: LogoProps) => (
+	<div className={`logo-wrapper ${className || ""}`} aria-label="INKCAL logo">
 		<svg
 			className="logo"
 			width="40"

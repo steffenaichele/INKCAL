@@ -1,0 +1,18 @@
+@use '../../styles/utils/variables' as *;
+@use '../../styles/utils/mixins' as *;
+
+.clock {
+	color: var(--text-primary);
+	display: flex;
+	gap: 1rem;
+
+	&__time-value {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-normal;
+	}
+
+	&__date-value {
+		font-size: $font-size-sm;
+		font-weight: $font-weight-normal;
+	}
+}
