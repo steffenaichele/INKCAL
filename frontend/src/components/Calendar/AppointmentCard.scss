@@ -1,337 +1,337 @@
-@use '../../styles/utils/variables' as *;
-@use '../../styles/utils/mixins' as *;
+@use "../../styles/utils/variables" as *;
+@use "../../styles/utils/mixins" as *;
 
 .appointment-card {
-  // Grid positioning handled by inline styles (gridRow, gridColumn)
-  padding: $spacing-xs;
-  margin: 2px; // Small margin to prevent overlapping borders
-  border-radius: $border-radius-md;
-  color: var(--text-primary);
-  cursor: pointer;
-  overflow: hidden;
-  @include transition(all);
-  box-shadow: $shadow-sm;
-  font-size: $font-size-xs;
-  line-height: 1.2;
-  z-index: 1;
+	// Grid positioning handled by inline styles (gridRow, gridColumn)
+	padding: $spacing-xs;
+	margin: 2px; // Small margin to prevent overlapping borders
+	border-radius: $border-radius-md;
+	color: var(--text-primary);
+	cursor: pointer;
+	overflow: hidden;
+	@include transition(all);
+	box-shadow: $shadow-sm;
+	font-size: $font-size-xs;
+	line-height: 1.2;
+	z-index: 1;
 
-  &:hover {
-    box-shadow: $shadow-md;
-    transform: scale(1.02);
-    z-index: 2;
-  }
+	&:hover {
+		box-shadow: $shadow-md;
+		transform: scale(1.02);
+		z-index: 2;
+	}
 
-  &:focus {
-    outline: 2px solid $white;
-    outline-offset: -2px;
-    z-index: 2;
-  }
+	&:focus {
+		outline: 2px solid $white;
+		outline-offset: -2px;
+		z-index: 2;
+	}
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: $spacing-xs / 2;
-    gap: $spacing-xs;
-  }
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: $spacing-xs / 2;
+		gap: $spacing-xs;
+	}
 
-  &__type {
-    font-weight: $font-weight-semibold;
-    font-size: $font-size-xs;
-    opacity: 0.9;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+	&__type {
+		font-weight: $font-weight-semibold;
+		font-size: $font-size-xs;
+		opacity: 0.9;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 
-  &__time {
-    font-size: $font-size-xs - 0.1rem;
-    opacity: 0.8;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
+	&__time {
+		font-size: $font-size-xs - 0.1rem;
+		opacity: 0.8;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
 
-  &__title {
-    font-weight: $font-weight-medium;
-    font-size: $font-size-sm;
-    margin-bottom: $spacing-xs / 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
+	&__title {
+		font-weight: $font-weight-medium;
+		font-size: $font-size-sm;
+		margin-bottom: $spacing-xs / 2;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
 
-  &__client {
-    font-size: $font-size-xs;
-    opacity: 0.9;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+	&__client {
+		font-size: $font-size-xs;
+		opacity: 0.9;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 
-  // Reduce padding and font sizes for very small appointment cards
-  &[style*="height"] {
-    min-height: 40px;
-  }
+	// Reduce padding and font sizes for very small appointment cards
+	&[style*="height"] {
+		min-height: 40px;
+	}
 
-  // Appointment type colors
-  &--newtattoo {
-    background-color: $appointment-newtattoo;
-  }
+	// Appointment type colors
+	&--newtattoo {
+		background-color: $appointment-newtattoo;
+	}
 
-  &--touchup {
-    background-color: $appointment-touchup;
-  }
+	&--touchup {
+		background-color: $appointment-touchup;
+	}
 
-  &--consultation {
-    background-color: $appointment-consultation;
-  }
+	&--consultation {
+		background-color: $appointment-consultation;
+	}
 
-  &--blocker {
-    background-color: $appointment-blocker;
-  }
+	&--blocker {
+		background-color: $appointment-blocker;
+	}
 }
 
 // Modal styles
 .appointment-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
 }
 
 .appointment-modal {
-  background: $white;
-  border-radius: $border-radius-xl;
-  box-shadow: $shadow-xl;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
+	background: $white;
+	border-radius: $border-radius-xl;
+	box-shadow: $shadow-xl;
+	max-width: 600px;
+	width: 100%;
+	max-height: 90vh;
+	overflow-y: auto;
+	position: relative;
 
-  @media (max-width: $breakpoint-sm) {
-    max-width: 100%;
-    max-height: 95vh;
-  }
+	@media (max-width: $breakpoint-sm) {
+		max-width: 100%;
+		max-height: 95vh;
+	}
 
-  &__header {
-    padding: $spacing-xl;
-    border-bottom: 1px solid $gray-200;
-    gap: $spacing-md;
-    position: sticky;
-    top: 0;
-    background: $white;
-    z-index: 10;
-    border-radius: $border-radius-xl $border-radius-xl 0 0;
-  }
+	&__header {
+		padding: $spacing-xl;
+		border-bottom: 1px solid $gray-200;
+		gap: $spacing-md;
+		position: sticky;
+		top: 0;
+		background: $white;
+		z-index: 10;
+		border-radius: $border-radius-xl $border-radius-xl 0 0;
+	}
 
-  &__title-section {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xs;
-    flex: 1;
-    min-width: 0;
-  }
+	&__title-section {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xs;
+		flex: 1;
+		min-width: 0;
+	}
 
-  &__title {
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $gray-900;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	&__title {
+		font-size: $font-size-xl;
+		font-weight: $font-weight-bold;
+		color: $gray-900;
+		margin: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 
-    @media (max-width: $breakpoint-sm) {
-      font-size: $font-size-lg;
-    }
-  }
+		@media (max-width: $breakpoint-sm) {
+			font-size: $font-size-lg;
+		}
+	}
 
-  &__type-badge {
-    display: inline-block;
-    padding: $spacing-xs $spacing-sm;
-    border-radius: $border-radius-xl;
-    font-size: $font-size-xs;
-    font-weight: $font-weight-bold;
-    color: $white;
-    align-self: flex-start;
+	&__type-badge {
+		display: inline-block;
+		padding: $spacing-xs $spacing-sm;
+		border-radius: $border-radius-xl;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-bold;
+		color: $white;
+		align-self: flex-start;
 
-    &--newtattoo {
-      background-color: $appointment-newtattoo;
-    }
+		&--newtattoo {
+			background-color: $appointment-newtattoo;
+		}
 
-    &--touchup {
-      background-color: $appointment-touchup;
-    }
+		&--touchup {
+			background-color: $appointment-touchup;
+		}
 
-    &--consultation {
-      background-color: $appointment-consultation;
-    }
+		&--consultation {
+			background-color: $appointment-consultation;
+		}
 
-    &--blocker {
-      background-color: $appointment-blocker;
-    }
-  }
+		&--blocker {
+			background-color: $appointment-blocker;
+		}
+	}
 
-  &__close {
-    @include button-reset;
-    padding: $spacing-xs;
-    border-radius: $border-radius-md;
-    color: $gray-600;
-    @include transition(all);
-    flex-shrink: 0;
+	&__close {
+		@include button-reset;
+		padding: $spacing-xs;
+		border-radius: $border-radius-md;
+		color: $gray-600;
+		@include transition(all);
+		flex-shrink: 0;
 
-    &:hover {
-      background: $gray-100;
-      color: $gray-900;
-    }
-  }
+		&:hover {
+			background: $gray-100;
+			color: $gray-900;
+		}
+	}
 
-  &__content {
-    padding: $spacing-xl;
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-xl;
-  }
+	&__content {
+		padding: $spacing-xl;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xl;
+	}
 
-  &__section {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing-md;
-  }
+	&__section {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-md;
+	}
 
-  &__section-title {
-    font-size: $font-size-lg;
-    font-weight: $font-weight-semibold;
-    color: $gray-900;
-    margin: 0;
-    margin-bottom: $spacing-xs;
-  }
+	&__section-title {
+		font-size: $font-size-lg;
+		font-weight: $font-weight-semibold;
+		color: $gray-900;
+		margin: 0;
+		margin-bottom: $spacing-xs;
+	}
 
-  &__info-item {
-    display: flex;
-    gap: $spacing-md;
-    align-items: flex-start;
+	&__info-item {
+		display: flex;
+		gap: $spacing-md;
+		align-items: flex-start;
 
-    &--full {
-      flex-direction: column;
-    }
-  }
+		&--full {
+			flex-direction: column;
+		}
+	}
 
-  &__icon {
-    color: $primary-color;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
+	&__icon {
+		color: $primary-color;
+		flex-shrink: 0;
+		margin-top: 2px;
+	}
 
-  &__label {
-    font-size: $font-size-xs;
-    color: $gray-600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: $font-weight-medium;
-    margin-bottom: $spacing-xs;
-  }
+	&__label {
+		font-size: $font-size-xs;
+		color: $gray-600;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		font-weight: $font-weight-medium;
+		margin-bottom: $spacing-xs;
+	}
 
-  &__value {
-    font-size: $font-size-md;
-    color: $gray-900;
-    line-height: $line-height-base;
-  }
+	&__value {
+		font-size: $font-size-md;
+		color: $gray-900;
+		line-height: $line-height-base;
+	}
 
-  &__footer {
-    padding: $spacing-lg $spacing-xl;
-    border-top: 1px solid $gray-200;
-    display: flex;
-    gap: $spacing-md;
-    justify-content: flex-end;
-    position: sticky;
-    bottom: 0;
-    background: $white;
-    border-radius: 0 0 $border-radius-xl $border-radius-xl;
+	&__footer {
+		padding: $spacing-lg $spacing-xl;
+		border-top: 1px solid $gray-200;
+		display: flex;
+		gap: $spacing-md;
+		justify-content: flex-end;
+		position: sticky;
+		bottom: 0;
+		background: $white;
+		border-radius: 0 0 $border-radius-xl $border-radius-xl;
 
-    @media (max-width: $breakpoint-sm) {
-      flex-direction: column-reverse;
-    }
-  }
+		@media (max-width: $breakpoint-sm) {
+			flex-direction: column-reverse;
+		}
+	}
 
-  &__button {
-    @include button-reset;
-    padding: $spacing-sm $spacing-lg;
-    border-radius: $border-radius-md;
-    font-size: $font-size-md;
-    font-weight: $font-weight-medium;
-    @include transition(all);
-    cursor: pointer;
+	&__button {
+		@include button-reset;
+		padding: $spacing-sm $spacing-lg;
+		border-radius: $border-radius-md;
+		font-size: $font-size-md;
+		font-weight: $font-weight-medium;
+		@include transition(all);
+		cursor: pointer;
 
-    @media (max-width: $breakpoint-sm) {
-      width: 100%;
-    }
+		@media (max-width: $breakpoint-sm) {
+			width: 100%;
+		}
 
-    &--primary {
-      background: $primary-color;
-      color: $white;
+		&--primary {
+			background: $primary-color;
+			color: $white;
 
-      &:hover {
-        background: darken($primary-color, 10%);
-      }
-    }
+			&:hover {
+				background: darken($primary-color, 10%);
+			}
+		}
 
-    &--secondary {
-      background: $white;
-      color: $gray-700;
-      border: 1px solid $gray-300;
+		&--secondary {
+			background: $white;
+			color: $gray-700;
+			border: 1px solid $gray-300;
 
-      &:hover {
-        background: $gray-100;
-        border-color: $gray-400;
-      }
-    }
-  }
+			&:hover {
+				background: $gray-100;
+				border-color: $gray-400;
+			}
+		}
+	}
 
-  // Type-specific border accent
-  &--newtattoo {
-    border-top: 4px solid $appointment-newtattoo;
-  }
+	// Type-specific border accent
+	&--newtattoo {
+		border-top: 4px solid $appointment-newtattoo;
+	}
 
-  &--touchup {
-    border-top: 4px solid $appointment-touchup;
-  }
+	&--touchup {
+		border-top: 4px solid $appointment-touchup;
+	}
 
-  &--consultation {
-    border-top: 4px solid $appointment-consultation;
-  }
+	&--consultation {
+		border-top: 4px solid $appointment-consultation;
+	}
 
-  &--blocker {
-    border-top: 4px solid $appointment-blocker;
-  }
+	&--blocker {
+		border-top: 4px solid $appointment-blocker;
+	}
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: scale(0.9) translateY(-20px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
 }
