@@ -15,21 +15,49 @@ export default defineConfig({
 		// Optimize chunk size
 		rollupOptions: {
 			output: {
-				manualChunks: {
-					// Separate vendor chunks for better caching
-					"react-vendor": [
-						"react",
-						"react-dom",
-						"react-router",
-						"react-router-dom",
-					],
-					"query-vendor": ["@tanstack/react-query"],
+				manualChunks: (id) => {
+					// Split large vendor libraries into separate chunks
+					if (id.includes("node_modules")) {
+						// Check more specific packages first before general react check
+
+						// Router (check before react to avoid matching "react-router")
+						if (id.includes("react-router")) {
+							return "router-vendor";
+						}
+						// React Query
+						if (id.includes("@tanstack/react-query")) {
+							return "query-vendor";
+						}
+						// Base UI components (can be large)
+						if (id.includes("@base-ui")) {
+							return "base-ui-vendor";
+						}
+						// Icons
+						if (
+							id.includes("feather-icons") ||
+							id.includes("react-feather")
+						) {
+							return "icons-vendor";
+						}
+						// Date utilities
+						if (id.includes("date-fns")) {
+							return "date-vendor";
+						}
+						// React core (after more specific react-* checks)
+						if (id.includes("react") || id.includes("react-dom")) {
+							return "react-vendor";
+						}
+						// All other node_modules
+						return "vendor";
+					}
 				},
 			},
 		},
 		// Target modern browsers for smaller bundles
 		target: "esnext",
 		minify: "esbuild",
+		// Increase chunk size warning limit to 600 kB
+		chunkSizeWarningLimit: 600,
 	},
 	server: {
 		proxy: {
