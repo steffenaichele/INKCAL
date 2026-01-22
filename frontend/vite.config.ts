@@ -61,7 +61,7 @@ export default defineConfig({
 		chunkSizeWarningLimit: 600,
 	},
 	optimizeDeps: {
-		include: ["react-feather"],
+		include: ["lucide-react"],
 	},
 	server: {
 		proxy: {

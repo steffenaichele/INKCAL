@@ -22,7 +22,7 @@ import {
 	Trash2,
 	User,
 	X,
-} from 'react-feather';
+} from 'lucide-react';
 
 // Map of icon names to components
 const iconMap = {
