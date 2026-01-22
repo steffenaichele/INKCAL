@@ -60,9 +60,7 @@ export default defineConfig({
 		// Increase chunk size warning limit to 600 kB
 		chunkSizeWarningLimit: 600,
 	},
-	optimizeDeps: {
-		include: ["lucide-react"],
-	},
+	// No external icon library dependencies
 	server: {
 		proxy: {
 			"/api": {
