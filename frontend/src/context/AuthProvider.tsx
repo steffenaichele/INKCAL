@@ -17,12 +17,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const getUser = async () => {
 			try {
-				const data = await me();
+				// Set a timeout to prevent hanging
+				const timeoutPromise = new Promise((_, reject) =>
+					setTimeout(() => reject(new Error('Session check timeout')), 5000)
+				);
+
+				const data = await Promise.race([me(), timeoutPromise]) as User;
 
 				setUser(data);
 				setSignedIn(() => true);
-			} catch {
-				// User not authenticated - this is fine
+			} catch (error) {
+				// User not authenticated or timeout - this is fine
+				console.warn('Session check failed:', error);
 				setSignedIn(() => false);
 				setUser(() => null);
 			} finally {
