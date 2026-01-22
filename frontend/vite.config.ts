@@ -32,13 +32,9 @@ export default defineConfig({
 						if (id.includes("@base-ui")) {
 							return "base-ui-vendor";
 						}
-						// Icons - bundle separately but keep together
-						if (
-							id.includes("feather-icons") ||
-							id.includes("react-feather")
-						) {
-							return "icons-vendor";
-						}
+						// Icons - DON'T chunk separately, keep in main bundle
+						// (Removed to avoid bundling issues with explicit imports)
+
 						// Date utilities
 						if (id.includes("date-fns")) {
 							return "date-vendor";
