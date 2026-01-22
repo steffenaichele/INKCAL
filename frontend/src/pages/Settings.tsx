@@ -4,13 +4,18 @@ import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Form } from "@base-ui/react/form";
 import { Field } from "@base-ui/react/field";
+import { Button as BaseButton } from "@base-ui/react/button";
 import Icon from "@/components/Icon";
 import { Button } from "@/components/ui/Button/Button";
 import { workdaysApi } from "@/services/api/workdays";
 import type { DayOfWeek, WorkdaysInput } from "@/types/api";
 import "@/styles/pages/Settings.scss";
 
-const Profile = () => {
+interface ProfileProps {
+	onClose?: () => void;
+}
+
+const Profile = ({ onClose }: ProfileProps) => {
 	const { signedIn, user, handleSignOut } = useAuth();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
@@ -73,10 +78,16 @@ const Profile = () => {
 	const saveWorkingDaysMutation = useMutation({
 		mutationFn: (payload: WorkdaysInput) =>
 			workdaysApi.update(user!._id, payload),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({
 				queryKey: ["workdays", user?._id],
+				refetchType: "active",
 			});
+			alert("Working days updated successfully!");
+		},
+		onError: (error: any) => {
+			console.error("Failed to update working days:", error);
+			alert("Failed to update working days. Please try again.");
 		},
 	});
 
@@ -143,6 +154,11 @@ const Profile = () => {
 	return (
 		<div className="profile">
 			<div className="profile__header">
+				{onClose && (
+					<BaseButton className="profile__close-btn" onClick={onClose}>
+						<Icon name="X" size={24} />
+					</BaseButton>
+				)}
 				<Icon name="User" size={48} className="profile__avatar" />
 				<h1>Profile</h1>
 			</div>

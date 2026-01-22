@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { appointmentsApi } from "@/services/api/appointments";
 import { useCalendarConfig } from "@/context";
+import type { Appointment } from "@/types/api";
 import Week from "./Week";
 import Icon from "@/components/Icon";
 import { Button } from "@/components/ui/Button/Button";
@@ -10,9 +11,11 @@ import "./Calendar.scss";
 
 export interface CalendarProps {
 	userId: string;
+	onEditAppointment?: (appointment: Appointment) => void;
+	onDeleteAppointment?: (appointment: Appointment) => void;
 }
 
-const Calendar = ({ userId }: CalendarProps) => {
+const Calendar = ({ userId, onEditAppointment, onDeleteAppointment }: CalendarProps) => {
 	const { isLoading: configLoading } = useCalendarConfig();
 	const [currentWeekStart, setCurrentWeekStart] = useState<Date>(() =>
 		getMonday(new Date()),
@@ -99,7 +102,12 @@ const Calendar = ({ userId }: CalendarProps) => {
 				</div>
 			)}
 
-			<Week startDate={currentWeekStart} appointments={appointments} />
+			<Week
+			startDate={currentWeekStart}
+			appointments={appointments}
+			onEditAppointment={onEditAppointment}
+			onDeleteAppointment={onDeleteAppointment}
+		/>
 		</div>
 	);
 };

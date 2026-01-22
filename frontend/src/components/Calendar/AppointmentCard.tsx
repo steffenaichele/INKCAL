@@ -4,6 +4,7 @@ import { createBlendy } from "blendy";
 import type { CSSProperties, KeyboardEvent as ReactKeyboardEvent } from "react";
 import type { Appointment } from "@/types/api";
 import { Button } from "@/components/ui/Button/Button";
+import "./AppointmentCard.scss";
 
 export interface AppointmentCardProps {
 	appointment: Appointment;
@@ -32,15 +33,6 @@ const modalStyle: CSSProperties = {
 	boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
 	minWidth: 260,
 	maxWidth: "90vw",
-};
-
-const cardBaseStyle: CSSProperties = {
-	border: "1px solid #ddd",
-	borderRadius: 6,
-	padding: "10px 12px",
-	cursor: "pointer",
-	background: "#fff",
-	boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
 };
 
 const AppointmentCard = ({
@@ -107,6 +99,9 @@ const AppointmentCard = ({
 	const showClient = appointment.appointmentType !== "Blocker";
 	const clientName = showClient ? appointment.clientName : null;
 
+	// Generate type class name (e.g., "NewTattoo" -> "appointment-card--newtattoo")
+	const typeClassName = `appointment-card--${appointment.appointmentType.toLowerCase()}`;
+
 	const handleEdit = () => {
 		onEdit?.(appointment);
 		closeModal();
@@ -165,16 +160,19 @@ const AppointmentCard = ({
 
 			<div
 				data-blendy-from={blendyId}
-				style={{ ...cardBaseStyle, ...style }}
+				className={`appointment-card ${typeClassName}`}
+				style={style}
 				onClick={openModal}
 				onKeyDown={handleKeyDown}
 				role="button"
 				tabIndex={0}
 				title={`${appointment.title} - ${timeRange}${clientName ? ` - ${clientName}` : ""}`}>
-				<div>{appointment.appointmentType}</div>
-				<div>{timeRange}</div>
-				<div>{appointment.title}</div>
-				{clientName && <div>{clientName}</div>}
+				<div className="appointment-card__header">
+					<div className="appointment-card__type">{appointment.appointmentType}</div>
+					<div className="appointment-card__time">{timeRange}</div>
+				</div>
+				<div className="appointment-card__title">{appointment.title}</div>
+				{clientName && <div className="appointment-card__client">{clientName}</div>}
 			</div>
 		</>
 	);

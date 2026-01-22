@@ -2,11 +2,15 @@
 @use "../../styles/utils/mixins" as *;
 
 .calendar-week {
+	width: min(60vw, 1200px);
+	height: 65vh;
 	min-width: 0;
 	min-height: 0;
 	display: flex;
-  gap: .25rem;
 	align-items: stretch;
+	padding: $spacing-xl;
+	@include glass-medium;
+	border-radius: $border-radius-2xl;
 
 	&__hours {
 		display: flex;
@@ -32,7 +36,7 @@
 		// Grid row set via inline style
 		display: flex;
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: center;
 		padding-right: $spacing-xs;
 		font-size: $font-size-xs;
 		color: var(--text-primary);
@@ -41,6 +45,7 @@
 
 	&__days {
 		display: flex;
+		gap: .5rem;
 		flex: 1; // take remaining space
 		min-width: 0;
 		min-height: 0;

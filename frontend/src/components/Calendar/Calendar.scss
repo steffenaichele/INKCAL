@@ -2,16 +2,13 @@
 @use '../../styles/utils/mixins' as *;
 
 .calendar {
-  width: min(60vw, 768px);
-  height: 65vh;
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  gap: $spacing-lg;
-  padding: $spacing-xl;
-  @include glass-medium;
-  border-radius: $border-radius-2xl;
-  margin: $spacing-sm;
-
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
 
   &__loading,
   &__error,
@@ -45,6 +42,8 @@
   }
 
   &__header {
+    width: min(60vw, 1200px);
+    padding: $spacing-md $spacing-xl;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,7 +52,7 @@
   &__title {
     font-size: $font-size-xl;
     font-weight: $font-weight-bold;
-    color: $gray-900;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: $spacing-sm;
@@ -62,10 +61,10 @@
 
   &__default-notice {
     font-size: $font-size-xs;
-    color: $gray-500;
+    color: var(--text-tertiary);
     font-style: italic;
     padding: $spacing-xs $spacing-sm;
-    background: $gray-100;
+    background: var(-bg-secondary);
     border-radius: $border-radius-md;
   }
 
@@ -104,7 +103,7 @@
     color: var(--text-primary);
 
     &:focus {
-      @include focus-ring($primary-color);
+      @include focus-ring(var(--primary-color));
     }
   }
 

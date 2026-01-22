@@ -17,9 +17,11 @@ export interface DayProps {
 	workdayConfig: DayConfig | null;
 	appointments: Appointment[]; // Pre-filtered by Week
 	config: CalendarConfig;
+	onEditAppointment?: (appointment: Appointment) => void;
+	onDeleteAppointment?: (appointment: Appointment) => void;
 }
 
-const Day = ({ date, workdayConfig, appointments, config }: DayProps) => {
+const Day = ({ date, workdayConfig, appointments, config, onEditAppointment, onDeleteAppointment }: DayProps) => {
 	const weekday = formatWeekdayShort(date);
 	const dateStr = formatDateShort(date);
 	const today = isToday(date);
@@ -115,11 +117,6 @@ const Day = ({ date, workdayConfig, appointments, config }: DayProps) => {
 							gridRow: `${range.startBlock} / ${range.endBlock + 1}`,
 							gridColumn: "1 / -1",
 						}}>
-						{isNonWorkday && (
-							<div className="calendar-day__non-working-label">
-								<span>Not a workday</span>
-							</div>
-						)}
 					</div>
 				))}
 
@@ -139,6 +136,8 @@ const Day = ({ date, workdayConfig, appointments, config }: DayProps) => {
 									gridRow: position.gridRow,
 									gridColumn: position.gridColumn,
 								}}
+								onEdit={onEditAppointment}
+								onDelete={onDeleteAppointment}
 							/>
 						);
 					})}

@@ -14,9 +14,11 @@ import "./Week.scss";
 export interface WeekProps {
 	startDate: Date; // Monday of the week
 	appointments: Appointment[];
+	onEditAppointment?: (appointment: Appointment) => void;
+	onDeleteAppointment?: (appointment: Appointment) => void;
 }
 
-const Week = ({ startDate, appointments }: WeekProps) => {
+const Week = ({ startDate, appointments, onEditAppointment, onDeleteAppointment }: WeekProps) => {
 	const { config } = useCalendarConfig();
 
 	if (!config) {
@@ -96,6 +98,8 @@ const Week = ({ startDate, appointments }: WeekProps) => {
 							workdayConfig={workdayConfig}
 							appointments={dayAppointments}
 							config={config}
+							onEditAppointment={onEditAppointment}
+							onDeleteAppointment={onDeleteAppointment}
 						/>
 					);
 				})}
