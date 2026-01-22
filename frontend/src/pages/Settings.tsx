@@ -92,7 +92,7 @@ const Profile = ({ onClose }: ProfileProps) => {
 	});
 
 	if (!signedIn || !user) {
-		return <Navigate to="/login" replace />;
+		return <Navigate to="/" replace />;
 	}
 
 	const onLogout = async () => {

@@ -5,7 +5,7 @@ import { Form } from "@base-ui/react/form";
 import { Field } from "@base-ui/react/field";
 import { Button } from "@/components/ui/Button/Button";
 import Logo from "@/components/ui/Logo/Logo";
-import styles from "@/styles/pages/Auth.module.scss";
+import "@/styles/pages/Home.scss";
 
 type AuthMode = "login" | "register";
 
@@ -58,75 +58,79 @@ const Home = () => {
 	};
 
 	return (
-		<div className={styles.Container}>
-			<div className={styles.Card}>
-				<div className={styles.LogoContainer}>
+		<div className="home">
+			<div className="home__card">
+				<div className="home__header">
 					<Logo />
-					<h1 className={styles.Title}>INKCAL</h1>
-					<p className={styles.Subtitle}>
-						Your tattoo appointment manager
-					</p>
+					<div className="home__logo-container">
+						<h1>INKCAL</h1>
+						<p className="home__subtitle">
+							Your tattoo appointment manager
+						</p>
+					</div>
 				</div>
 
-				<div className={styles.Tabs}>
+				<div className="home__tabs">
 					<button
 						type="button"
-						className={`${styles.Tab} ${mode === "login" ? styles.TabActive : ""}`}
+						className={`home__tab ${mode === "login" ? "home__tab--active" : ""}`}
 						onClick={() => switchMode("login")}>
 						Login
 					</button>
 					<button
 						type="button"
-						className={`${styles.Tab} ${mode === "register" ? styles.TabActive : ""}`}
+						className={`home__tab ${mode === "register" ? "home__tab--active" : ""}`}
 						onClick={() => switchMode("register")}>
 						Register
 					</button>
 				</div>
 
 				<Form
-					className={styles.Form}
+					className="home__form"
 					onSubmit={handleSubmit}
 					errors={errors}>
 					{mode === "register" && (
-						<Field.Root name="name" className={styles.Field}>
-							<Field.Label className={styles.Label}>
+						<Field.Root name="name" className="home__field">
+							<Field.Label className="home__label">
 								Name
 							</Field.Label>
 							<Field.Control
 								type="text"
 								required
 								placeholder="Enter your full name"
-								className={styles.Input}
+								className="home__input"
 								disabled={loading}
 							/>
-							<Field.Error className={styles.Error} />
+							<Field.Error className="home__error" />
 						</Field.Root>
 					)}
 
-					<Field.Root name="email" className={styles.Field}>
-						<Field.Label className={styles.Label}>Email</Field.Label>
+					<Field.Root name="email" className="home__field">
+						<Field.Label className="home__label">
+							Email
+						</Field.Label>
 						<Field.Control
 							type="email"
 							required
 							placeholder="Enter your email"
-							className={styles.Input}
+							className="home__input"
 							disabled={loading}
 						/>
-						<Field.Error className={styles.Error} />
+						<Field.Error className="home__error" />
 					</Field.Root>
 
-					<Field.Root name="password" className={styles.Field}>
-						<Field.Label className={styles.Label}>
+					<Field.Root name="password" className="home__field">
+						<Field.Label className="home__label">
 							Password
 						</Field.Label>
 						<Field.Control
 							type="password"
 							required
 							placeholder="Enter your password"
-							className={styles.Input}
+							className="home__input"
 							disabled={loading}
 						/>
-						<Field.Error className={styles.Error} />
+						<Field.Error className="home__error" />
 					</Field.Root>
 
 					<Button

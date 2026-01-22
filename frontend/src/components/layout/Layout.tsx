@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, lazy, Suspense } from "react";
+import { useState, createContext, useContext, Suspense } from "react";
 import { Outlet } from "react-router";
 import Settings from "@/pages/Settings";
 import "./Layout.scss";

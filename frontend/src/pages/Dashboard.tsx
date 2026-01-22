@@ -56,7 +56,7 @@ const Dashboard = () => {
 	};
 
 	if (!signedIn || !user) {
-		return <Navigate to="/login" replace />;
+		return <Navigate to="/" replace />;
 	}
 
 	return (
