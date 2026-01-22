@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Compiled CSS (build artifacts)
+*.css
+*.css.map
+
 # Environment variables
 .env
 .env.local

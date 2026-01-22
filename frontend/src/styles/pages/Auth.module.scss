@@ -1,0 +1,107 @@
+@use "../utils/variables" as *;
+@use "../utils/mixins" as *;
+
+.Container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background: linear-gradient(135deg, $primary-color, lighten($primary-color, 20%));
+	padding: $spacing-md;
+}
+
+.Card {
+	background: $white;
+	border-radius: $border-radius-xl;
+	box-shadow: $shadow-xl;
+	padding: $spacing-xl;
+	width: 100%;
+	max-width: 400px;
+}
+
+.LogoContainer {
+	text-align: center;
+	margin-bottom: $spacing-xl;
+}
+
+.Title {
+	font-size: $font-size-xxl;
+	font-weight: $font-weight-bold;
+	color: $primary-color;
+	margin: $spacing-sm 0 $spacing-xs 0;
+}
+
+.Subtitle {
+	font-size: $font-size-md;
+	color: $gray-600;
+	margin: 0;
+}
+
+.Tabs {
+	display: flex;
+	gap: $spacing-sm;
+	margin-bottom: $spacing-lg;
+	border-bottom: 2px solid $gray-200;
+}
+
+.Tab {
+	@include button-reset;
+	flex: 1;
+	padding: $spacing-sm $spacing-md;
+	font-size: $font-size-md;
+	font-weight: $font-weight-medium;
+	color: $gray-600;
+	@include transition(all);
+	border-bottom: 2px solid transparent;
+	margin-bottom: -2px;
+	cursor: pointer;
+
+	&:hover {
+		color: $primary-color;
+	}
+}
+
+.TabActive {
+	color: $primary-color;
+	border-bottom-color: $primary-color;
+}
+
+.Form {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-md;
+}
+
+.Field {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-xs;
+}
+
+.Label {
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $gray-700;
+}
+
+.Input {
+	padding: $spacing-sm $spacing-md;
+	border: 1px solid $gray-300;
+	border-radius: $border-radius-md;
+	font-size: $font-size-md;
+	@include transition(border-color);
+
+	&:focus {
+		outline: none;
+		border-color: $primary-color;
+	}
+}
+
+.Error {
+	font-size: $font-size-xs;
+	color: $danger-color;
+}
+
+.SubmitButton {
+	margin-top: $spacing-md;
+}

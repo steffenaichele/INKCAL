@@ -1,1 +1,0 @@
-{"version":3,"sourceRoot":"","sources":["Logo.scss"],"names":[],"mappings":"AAAA,cACC,WACA,YACA,aACA,mBACA,uBAGD,MACC,cACA,WACA,YACA","sourcesContent":[".logo-wrapper {\n\twidth: 56px;\n\theight: 56px;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n}\n\n.logo {\n\tdisplay: block;\n\twidth: 40px;\n\theight: 40px;\n\tfill: currentColor;\n}\n"]}

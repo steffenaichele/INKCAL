@@ -1,10 +1,10 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
-import Layout from "./components/Layout";
+import Layout from "./components/layout/Layout";
 
 // Lazy load all pages for optimal bundle splitting
 const Home = lazy(() => import("./pages/Home"));
-const Profile = lazy(() => import("./pages/Settings"));
+const Profile = lazy(() => import("./pages/Profile"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 // Loading fallback component

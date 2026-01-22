@@ -5,7 +5,7 @@ import { Form } from "@base-ui/react/form";
 import { Field } from "@base-ui/react/field";
 import { Button } from "@/components/ui/Button/Button";
 import Logo from "@/components/ui/Logo/Logo";
-import styles from "@/styles/pages/Auth.module.css";
+import styles from "@/styles/pages/Auth.module.scss";
 
 type AuthMode = "login" | "register";
 

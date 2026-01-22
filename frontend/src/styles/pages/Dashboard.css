@@ -1,1 +1,0 @@
-.dashboard{position:relative;width:100vw;height:100vh;display:grid;grid-template-rows:auto 1fr auto;background-color:var(--bg-tertiary)}.dashboard.__calendar-wrapper{display:flex;justify-content:center;align-items:center}.dashboard__actions{display:flex;justify-content:flex-end;align-items:center;gap:.5rem;padding:1rem 1.5rem}/*# sourceMappingURL=Dashboard.css.map */

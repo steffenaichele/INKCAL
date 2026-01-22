@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { useAuth } from "@/context";
-import { Navigate, useNavigate } from "react-router";
-import { useLayout } from "@/components/Layout";
+import { Navigate } from "react-router";
+import { useLayout } from "@/components/layout/Layout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { appointmentsApi } from "@/services/api/appointments";
-import Header from "@/components/Header";
-import Calendar from "@/components/Calendar";
-import Icon from "@/components/Icon";
+import Header from "@/components/layout/Header";
+import Calendar from "@/components/features/calendar/Calendar";
+import Icon from "@/components/common/Icon";
 import { Button } from "@/components/ui/Button";
-import CreateAppointmentDialog from "@/components/CreateAppointmentDialog";
+import CreateAppointmentDialog from "@/components/features/calendar/CreateAppointmentDialog";
 import type { Appointment } from "@/types/api";
 import "@/styles/pages/Dashboard.scss";
 
 const Dashboard = () => {
 	const { signedIn, user } = useAuth();
-	const navigate = useNavigate();
 	const { openSettings } = useLayout();
 	const queryClient = useQueryClient();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
