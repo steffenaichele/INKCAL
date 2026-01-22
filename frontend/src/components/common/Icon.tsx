@@ -1,7 +1,56 @@
 import React from 'react';
-import * as Icons from 'react-feather';
+import {
+	Activity,
+	AlertCircle,
+	Calendar,
+	Check,
+	ChevronDown,
+	ChevronLeft,
+	ChevronRight,
+	ChevronUp,
+	Clock,
+	Edit,
+	Home,
+	LogOut,
+	Mail,
+	Menu,
+	Moon,
+	Plus,
+	Save,
+	Settings,
+	Sun,
+	Trash2,
+	User,
+	X,
+} from 'react-feather';
 
-export type IconName = keyof typeof Icons;
+// Map of icon names to components
+const iconMap = {
+	Activity,
+	AlertCircle,
+	Calendar,
+	Check,
+	ChevronDown,
+	ChevronLeft,
+	ChevronRight,
+	ChevronUp,
+	Clock,
+	Edit,
+	Home,
+	LogOut,
+	Mail,
+	Menu,
+	Moon,
+	Plus,
+	Save,
+	Settings,
+	Sun,
+	Trash2,
+	User,
+	X,
+} as const;
+
+export type IconName = keyof typeof iconMap;
 
 export interface IconProps {
 	name: IconName;
@@ -20,16 +69,10 @@ const Icon = React.memo<IconProps>(({
 	strokeWidth = 2,
 	onClick,
 }) => {
-	const IconComponent = Icons[name] as React.ComponentType<{
-		className?: string;
-		size?: number | string;
-		color?: string;
-		strokeWidth?: number;
-		onClick?: () => void;
-	}>;
+	const IconComponent = iconMap[name];
 
 	if (!IconComponent) {
-		console.warn(`Icon "${name}" not found in react-feather`);
+		console.warn(`Icon "${name}" not found`);
 		return null;
 	}
 

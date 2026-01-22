@@ -32,7 +32,7 @@ export default defineConfig({
 						if (id.includes("@base-ui")) {
 							return "base-ui-vendor";
 						}
-						// Icons
+						// Icons - bundle separately but keep together
 						if (
 							id.includes("feather-icons") ||
 							id.includes("react-feather")
@@ -53,11 +53,19 @@ export default defineConfig({
 				},
 			},
 		},
+		// Optimize dependencies
+		commonjsOptions: {
+			include: [/node_modules/],
+			transformMixedEsModules: true,
+		},
 		// Target modern browsers for smaller bundles
 		target: "esnext",
 		minify: "esbuild",
 		// Increase chunk size warning limit to 600 kB
 		chunkSizeWarningLimit: 600,
+	},
+	optimizeDeps: {
+		include: ["react-feather"],
 	},
 	server: {
 		proxy: {
