@@ -1,6 +1,6 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, createContext, useContext, lazy, Suspense } from 'react';
 import { Outlet } from 'react-router';
-import Settings from '../../pages/Profile';
+import Settings from '@/pages/Settings';
 import './Layout.scss';
 
 interface LayoutContextType {
@@ -33,7 +33,9 @@ const Layout = () => {
                     <>
                         <div className="layout__overlay" onClick={closeSettings} />
                         <div className="layout__settings-panel">
-                            <Settings onClose={closeSettings} />
+                            <Suspense fallback={<div className="layout__settings-content">Loading settings...</div>}>
+                                <Settings onClose={closeSettings} />
+                            </Suspense>
                         </div>
                     </>
                 )}

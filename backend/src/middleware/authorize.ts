@@ -5,18 +5,23 @@ const authorize =
 	(req, res, next) => {
 		const { role, _id } = req.user!;
 
-        if (allowedRoles.includes('self') && req.params.id === _id) {
-            next();
-        }
+		// Allow the user to act on their own resources when "self" is permitted
+		if (allowedRoles.includes("self")) {
+			const targetId =
+				req.params.id ?? req.params.userId ?? req.params.user_id;
+			if (targetId && targetId === _id) {
+				return next();
+			}
+		}
 
 		if (allowedRoles.includes(role)) {
-			next();
-		} else {
-			throw new Error(
-				"Hell naw: You don't have enough street cred, lil homie",
-				{ cause: 403 }
-			);
+			return next();
 		}
+
+		throw new Error(
+			"Hell naw: You don't have enough street cred, lil homie",
+			{ cause: 403 },
+		);
 	};
 
 export default authorize;

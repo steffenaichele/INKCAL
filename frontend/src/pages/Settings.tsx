@@ -6,9 +6,9 @@ import { Form } from "@base-ui/react/form";
 import { Field } from "@base-ui/react/field";
 import { Button as BaseButton } from "@base-ui/react/button";
 import Icon from "@/components/common/Icon";
-import { Button } from "@/components/ui/Button/Button";
+import { Button } from "@/components/ui/Button";
 import { workdaysApi } from "@/services/api/workdays";
-import type { DayOfWeek, WorkdaysInput } from "@/types/api";
+import type { DayConfig, DayOfWeek, WorkdaysInput } from "@/types/api";
 import "@/styles/pages/Settings.scss";
 
 interface ProfileProps {
@@ -54,7 +54,7 @@ const Profile = ({ onClose }: ProfileProps) => {
 		() =>
 			dayOrder.map(({ label, value }) => {
 				const match = workdaysData?.workdays.find(
-					(w) => w.dayOfWeek === value,
+					(workday: DayConfig) => workday.dayOfWeek === value,
 				);
 				return {
 					label,
@@ -155,7 +155,9 @@ const Profile = ({ onClose }: ProfileProps) => {
 		<div className="profile">
 			<div className="profile__header">
 				{onClose && (
-					<BaseButton className="profile__close-btn" onClick={onClose}>
+					<BaseButton
+						className="profile__close-btn"
+						onClick={onClose}>
 						<Icon name="X" size={24} />
 					</BaseButton>
 				)}

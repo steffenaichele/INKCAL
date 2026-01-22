@@ -4,7 +4,6 @@ import Layout from "./components/layout/Layout";
 
 // Lazy load all pages for optimal bundle splitting
 const Home = lazy(() => import("./pages/Home"));
-const Profile = lazy(() => import("./pages/Profile"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 // Loading fallback component
@@ -29,9 +28,8 @@ function App() {
 				{/* Public auth route (no layout) */}
 				<Route index element={<Home />} />
 
-				{/* Authenticated routes with Layout (navbar + sidebar) */}
+				{/* Authenticated routes with Layout */}
 				<Route element={<Layout />}>
-					<Route path="/profile" element={<Profile />} />
 					<Route path="/dashboard" element={<Dashboard />} />
 				</Route>
 			</Routes>
